@@ -19,6 +19,7 @@ const Index14 = () =>import('@/view/stock/Num14')
 const Index15 = () =>import('@/view/stock/Num15')
 const Index16 = () =>import('@/view/stock/Num16')
 const Index17 = () =>import('@/view/stock/Num17')
+const Index18 = () =>import('@/view/stock/Num18')
 
 
 const LearnVue1 = () =>import('@/view/learn/Num1')
@@ -138,7 +139,11 @@ const routes = [
                 name: "index17",
                 component: Index17,
             },
-
+            {
+                path: "/index18",
+                name: "index18",
+                component: Index18,
+            },
 
             {
                 path: "/intervalStatic",

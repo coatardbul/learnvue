@@ -13,102 +13,174 @@ onMounted(()=>{
 })
 function init() {
   var myChart = echarts.init(chart.value);
-  var option;
 
-  option = {
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'cross' }
+  const dataAll = [
+    [
+      [10.0, 8.04],
+      [8.0, 6.95],
+      [13.0, 7.58],
+      [9.0, 8.81],
+      [11.0, 8.33],
+      [14.0, 9.96],
+      [6.0, 7.24],
+      [4.0, 4.26],
+      [12.0, 10.84],
+      [7.0, 4.82],
+      [5.0, 5.68]
+    ],
+    [
+      [10.0, 9.14],
+      [8.0, 8.14],
+      [13.0, 8.74],
+      [9.0, 8.77],
+      [11.0, 9.26],
+      [14.0, 8.1],
+      [6.0, 6.13],
+      [4.0, 3.1],
+      [12.0, 9.13],
+      [7.0, 7.26],
+      [5.0, 4.74]
+    ],
+    [
+      [10.0, 7.46],
+      [8.0, 6.77],
+      [13.0, 12.74],
+      [9.0, 7.11],
+      [11.0, 7.81],
+      [14.0, 8.84],
+      [6.0, 6.08],
+      [4.0, 5.39],
+      [12.0, 8.15],
+      [7.0, 6.42],
+      [5.0, 5.73]
+    ],
+    [
+      [8.0, 6.58],
+      [8.0, 5.76],
+      [8.0, 7.71],
+      [8.0, 8.84],
+      [8.0, 8.47],
+      [8.0, 7.04],
+      [8.0, 5.25],
+      [19.0, 12.5],
+      [8.0, 5.56],
+      [8.0, 7.91],
+      [8.0, 6.89]
+    ]
+  ];
+  const markLineOpt = {
+    animation: false,
+    label: {
+      formatter: 'y = 0.5 * x + 3',
+      align: 'right'
     },
-    legend: {
-      show: true,
-      //上面标签是否翻页，标签多的时候使用
-      type: "scroll",
-      selected: {
-        // 选中'系列1'
-        '降水量': true,
-        '温度': false,
+    lineStyle: {
+      type: 'solid'
+    },
+    tooltip: {
+      formatter: 'y = 0.5 * x + 3'
+    },
+    data: [
+      [
+        {
+          coord: [0, 3],
+          symbol: 'none'
+        },
+        {
+          coord: [20, 13],
+          symbol: 'none'
+        }
+      ]
+    ]
+  };
 
-      }
+  var option;
+  option = {
+    title: {
+      text: "Anscombe's quartet",
+      left: 'center',
+      top: 0
+    },
+    grid: [
+      { left: '7%', top: '7%', width: '38%', height: '100px' },
+      { right: '7%', top: '7%', width: '38%', height: '100px' },
+      { left: '7%', top: '200px', width: '38%', height: '100px' },
+      { right: '7%', top: '200px', width: '38%', height: '100px' },
+      { left: '7%', bottom: '7%', width: '38%', height: '38%' },
+      { right: '7%', bottom: '7%', width: '38%', height: '38%' },
+
+    ],
+    tooltip: {
+      formatter: 'Group {a}: ({c})'
     },
     xAxis: [
-      {
-        type: 'category',
-        axisTick: {
-          alignWithLabel: true
-        },
-        data: [
-          '1月',
-          '2月',
-          '3月',
-          '4月',
-          '5月',
-          '6月',
-          '7月',
-          '8月',
-          '9月',
-          '10月',
-          '11月',
-          '12月'
-        ]
-      }
+      { gridIndex: 0, min: 0, max: 20 },
+      { gridIndex: 1, min: 0, max: 20 },
+      { gridIndex: 2, min: 0, max: 20 },
+      { gridIndex: 3, min: 0, max: 20 },
+      { gridIndex: 4, min: 0, max: 20 },
+      { gridIndex: 5, min: 0, max: 20 }
     ],
     yAxis: [
-      {
-        type: 'value',
-        name: '降水量',
-        min: 0,
-        max: 250,
-        position: 'right',
-        axisLabel: {
-          formatter: '{value} ml'
-        }
-      },
-      {
-        type: 'value',
-        name: '温度',
-        min: 0,
-        max: 25,
-        position: 'left',
-        axisLabel: {
-          formatter: '{value} °C'
-        }
-      }
+      { gridIndex: 0, min: 0, max: 15 },
+      { gridIndex: 1, min: 0, max: 15 },
+      { gridIndex: 2, min: 0, max: 15 },
+      { gridIndex: 3, min: 0, max: 15 },
+      { gridIndex: 4, min: 0, max: 15 },
+      { gridIndex: 5, min: 0, max: 15 }
     ],
     series: [
       {
-        name: '降水量',
-        type: 'bar',
-        seriesIndex: 0,
-        data: [6, 32, 70, 86, 68.7, 100.7, 125.6, 112.2, 78.7, 48.8, 36.0, 19.3]
-      },
-      {
-        name: '降水量1',
-        type: 'radar',
+        name: 'I',
+        type: 'scatter',
+        xAxisIndex: 0,
         yAxisIndex: 0,
-        data: [6, 49, 70, 90, 68.7, 100.7, 125.6, 112.2, 78.7, 48.8, 36.0, 19.3]
+        data: dataAll[0],
+        markLine: markLineOpt
       },
       {
-        name: '温度',
-        type: 'line',
+        name: 'II',
+        type: 'scatter',
+        xAxisIndex: 1,
         yAxisIndex: 1,
-        data: [
-          6.0,
-          10.2,
-          10.3,
-          11.5,
-          10.3,
-          13.2,
-          14.3,
-          16.4,
-          18.0,
-          16.5,
-          12.0,
-          5.2
-        ]
+        data: dataAll[1],
+        markLine: markLineOpt
+      },
+      {
+        name: 'III',
+        type: 'scatter',
+        xAxisIndex: 2,
+        yAxisIndex: 2,
+        data: dataAll[2],
+        markLine: markLineOpt
+      },
+      {
+        name: 'IV',
+        type: 'scatter',
+        xAxisIndex: 3,
+        yAxisIndex: 3,
+        data: dataAll[3],
+        markLine: markLineOpt
+      },
+      {
+        name: '555',
+        type: 'scatter',
+        xAxisIndex: 4,
+        yAxisIndex: 4,
+        data: dataAll[3],
+        markLine: markLineOpt
+      },
+      {
+        name: '666',
+        type: 'scatter',
+        xAxisIndex: 5,
+        yAxisIndex: 5,
+        data: dataAll[3],
+        markLine: markLineOpt
       }
     ]
   };
+
 
   myChart.setOption(option);
 

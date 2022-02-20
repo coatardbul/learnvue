@@ -105,8 +105,6 @@ function getDayStaticByDateRange(queryParam) {
         })
         series.value.push(seriesIndex);
       })
-
-
     }
   })
 }

@@ -44,7 +44,8 @@ export default {
     isShow: {
       type: Boolean,
       default: false
-    }
+    },
+    isShowObject:{}
   },
   setup(props, context) {
     const queryParam = reactive({

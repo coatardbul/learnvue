@@ -10,8 +10,8 @@
       >
       </el-date-picker>
     </el-form-item>
-    <el-form-item label="对象标识">
-      <el-input v-model="queryParam.objectSign"></el-input>
+    <el-form-item label="对象标识"   v-show="isShowObjectSign">
+      <el-input v-model="queryParam.objectSign" ></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click.prevent="getIntervalStatic">查询</el-button>
@@ -20,10 +20,10 @@
       <el-button type="primary" @click.prevent="reset">重置</el-button>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click.prevent="refreshDate">刷新数据</el-button>
+      <el-button type="primary" @click.prevent="refreshDate"    v-show="showRefreshDate">刷新数据</el-button>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click.prevent="forceRefreshDate">强制刷新数据</el-button>
+      <el-button type="primary" @click.prevent="forceRefreshDate"  v-show="showRefreshDate">强制刷新数据</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -35,6 +35,10 @@ import {reactive} from "vue";
 export default {
   name: "EmotionDayFormLine.vue",
   props:{
+    isShowObjectSign:{
+      type:Boolean,
+      default:false
+    },
     showRefreshDate:{
       type:Boolean,
       default:false
