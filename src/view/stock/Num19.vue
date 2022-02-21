@@ -2,13 +2,13 @@
   <BaseLineChartNew
       :base-line-echarts="baseLineEcharts"
       :char-style="charStyle"
-      v-if=" baseLineEcharts.series.length>0"
+      :key="time"
   ></BaseLineChartNew>
 </template>
 
 <script>
 import BaseLineChartNew from "@/components/BaseLineChartNew";
-import {reactive, onMounted} from "vue";
+import {reactive, onMounted, ref} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 import BaseLineEcharts from "@/module/BaseLineEcharts";
@@ -38,13 +38,77 @@ export default {
   },
   setup(props, context) {
     //初始化参数
+const time =ref()
+    const baseLineEcharts = reactive({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          animation: false
+        }
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: 'all'
+          }
+        ]
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          axisLine: {onZero: true},
+          data: []
+        }
+      ],
+      yAxis: [
+        {
+          name: 'Evaporation(m^3/s)',
+          type: 'value',
+        },
+      ],
+      series: [],
+      grid: [
+        {
+          left: 60,
+          right: 50,
+          height: '100'
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '200',
+          height: '100'
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '400',
+          height: '100'
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '600',
+          height: '100'
+        }
+      ],
 
-    const baseLineEcharts = reactive(new BaseLineEcharts())
+
+    })
 
     function getAllStockInfoByDate() {
 
-      setLegend();
-      setGrid(baseLineEcharts,200);
+      // setGrid(baseLineEcharts, 100);
 
       axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
         beginDateStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
@@ -76,8 +140,7 @@ export default {
                 if (v === b.name) {
                   //坐标轴
                   if (v.indexOf("跌停") >= 0) {
-                    seriesIndex.xAxisIndex = 0;
-                    seriesIndex.yAxisIndex = 0;
+
                   }
                   if (v.indexOf("炸板") >= 0 || v.indexOf("涨停") >= 0) {
                     seriesIndex.xAxisIndex = 1;
@@ -104,27 +167,37 @@ export default {
           })
         }
 
+        debugger
 
         for (let i = 1; i < 4; i++) {
           let data = baseLineEcharts.xAxis[0].data;
-          let xaxis = new Xaxis();
+          let xaxis = {
+
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {onZero: true},
+            data: []
+
+          };
           xaxis.gridIndex = i;
-              xaxis.data = data;
+          xaxis.data = data;
           baseLineEcharts.xAxis.push(xaxis);
         }
 
         for (let i = 1; i < 4; i++) {
-          let yleftAxis = new YleftAxis();
+          let yleftAxis = {
+            name: 'Evaporation(m^3/s)',
+            type: 'value',
+          }
           yleftAxis.gridIndex = i;
           baseLineEcharts.yAxis.push(yleftAxis);
         }
+
+        time.value=new Date().getTime()
+
       });
     }
 
-
-    function setLegend(){
-      baseLineEcharts.legend.top=200;
-    }
 
     function setGrid(baseLineEcharts, num) {
       baseLineEcharts.grid.length = 0;
@@ -132,9 +205,9 @@ export default {
         let sb = {
           left: 60,
           right: 50,
-          height: num+'px'
+          height: '100'
         }
-        sb.top = 1.25* (i+1) * num + 'px';
+        sb.top = 2 * (i + 1) * num + 'px';
         baseLineEcharts.grid.push(sb);
       }
 
@@ -150,7 +223,7 @@ export default {
       getAllStockInfoByDate()
     })
     return {
-      baseLineEcharts, getAllStockInfoByDate
+      baseLineEcharts, getAllStockInfoByDate,time
     }
   }
 }

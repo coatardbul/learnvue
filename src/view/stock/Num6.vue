@@ -26,7 +26,7 @@ const beginDate=ref()
 const endDate=ref()
 const baseDayStatistic=ref()
 const dayRangeToolbar=ref(null)
-const charStypeMedian={width: '100%', height: '500px'};
+const charStypeMedian={width: '100%', height: '300px'};
 
 const charStypeUpDown={width: '100%', height: '5000px'};
 

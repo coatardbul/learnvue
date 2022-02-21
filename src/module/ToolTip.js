@@ -3,7 +3,9 @@ export default class ToolTip {
         this.trigger = 'axis';
         this.axisPointer =
             {
-                type: 'cross'
+                // type: 'cross',
+                animation: false
+
             }
 
         return this;

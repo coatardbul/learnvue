@@ -39,12 +39,76 @@ export default {
   setup(props, context) {
     //初始化参数
 
-    const baseLineEcharts = reactive(new BaseLineEcharts())
+    const baseLineEcharts = reactive({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          animation: false
+        }
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: 'all'
+          }
+        ]
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          axisLine: {onZero: true},
+          data: []
+        }
+      ],
+      yAxis: [
+        {
+          name: 'Evaporation(m^3/s)',
+          type: 'value',
+        },
+      ],
+      series: [],
+      grid: [
+        {
+          left: 60,
+          right: 50,
+          height: '100'
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '200',
+          height: '100'
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '400',
+          height: '100'
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '600',
+          height: '100'
+        }
+      ],
+
+
+    })
 
     function getAllStockInfoByDate() {
 
-      setLegend();
-      setGrid(baseLineEcharts,200);
+      // setGrid(baseLineEcharts, 100);
 
       axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
         beginDateStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
@@ -104,17 +168,28 @@ export default {
           })
         }
 
+        debugger
 
         for (let i = 1; i < 4; i++) {
           let data = baseLineEcharts.xAxis[0].data;
-          let xaxis = new Xaxis();
+          let xaxis = {
+
+            type: 'category',
+                boundaryGap: false,
+              axisLine: {onZero: true},
+            data: []
+
+          };
           xaxis.gridIndex = i;
-              xaxis.data = data;
+          xaxis.data = data;
           baseLineEcharts.xAxis.push(xaxis);
         }
 
         for (let i = 1; i < 4; i++) {
-          let yleftAxis = new YleftAxis();
+          let yleftAxis = {
+            name: 'Evaporation(m^3/s)',
+            type: 'value',
+          }
           yleftAxis.gridIndex = i;
           baseLineEcharts.yAxis.push(yleftAxis);
         }
@@ -122,19 +197,15 @@ export default {
     }
 
 
-    function setLegend(){
-      baseLineEcharts.legend.top=200;
-    }
-
     function setGrid(baseLineEcharts, num) {
       baseLineEcharts.grid.length = 0;
       for (let i = 0; i < 4; i++) {
         let sb = {
           left: 60,
           right: 50,
-          height: num+'px'
+          height: '100'
         }
-        sb.top = 1.25* (i+1) * num + 'px';
+        sb.top = 2 * (i + 1) * num + 'px';
         baseLineEcharts.grid.push(sb);
       }
 
