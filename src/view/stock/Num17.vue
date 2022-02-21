@@ -1,25 +1,31 @@
 <template>
-  <el-form :inline="true" :model="queryParam" class="demo-form-inline">
-    <el-form-item label="列总数">
-      <el-input v-model="queryParam.colTotal" type="number" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="日期">
-      <el-date-picker v-model="queryParam.dateStr" type="date" value-format="YYYY-MM-DD" placeholder="Pick a day">
-      </el-date-picker>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click.prevent="getColStatic">查询</el-button>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="reset">重置</el-button>
-    </el-form-item>
-  </el-form>
+  <el-affix :offset="90">
 
-  <div class="big-body"  :key="time">
-    <div class="jiang-en-column" v-for="i in queryParam.colTotal" >
-      <div class="jiang-en-row" v-for="j in queryParam.colTotal"  @mouseover="mouseover($event)"
-           @mouseleave="mouseleave($event)">
-        <!--        {{ i + ':' + j }}-->
+    <el-form :inline="true" :model="queryParam" class="demo-form-inline">
+      <el-form-item label="列总数">
+        <el-input v-model.number="queryParam.colTotal" type="number" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="lastDay">上一交易日</el-button>
+      </el-form-item>
+      <el-form-item label="日期">
+        <el-date-picker v-model="queryParam.dateStr" type="date" value-format="YYYY-MM-DD" placeholder="Pick a day">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="afterDay">下一交易日</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click.prevent="getJiangEnInfo">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="reset">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </el-affix>
+  <div class="big-body" :key="time">
+    <div class="jiang-en-column" v-for="i in queryParam.colTotal" :key="i">
+      <div :class="specialColClass(i,j)" v-for="j in queryParam.colTotal" :key="j">
         {{ getValueByArr(i, j) }}
       </div>
     </div>
@@ -27,15 +33,31 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {mixin, onMounted, onUpdated, reactive, ref} from "vue";
 import ConfigInfo from "@/constant/ConfigInfo";
+import axios from "axios";
+import AxiosUrl from "@/constant/AxiosUrl";
+import EmotionFormLine from './EmotionMinuteFormLine'
 
-const  time =ref(null)
+const time = ref(null)
+const days = ref(1)
 const colArr = reactive([])
 const queryParam = reactive({
   dateStr: ConfigInfo.nowDate,
-  colTotal: 11,
+  colTotal: ConfigInfo.jiangEnNum,
 })
+
+function specialColClass(i, j) {
+  if (days.value == getValueByArr(i, j)) {
+    return 'jiang-en-row-over';
+  } else if (i == Math.ceil(queryParam.colTotal / 2) || j == Math.ceil(queryParam.colTotal / 2)) {
+    return 'jiang-en-row-special-line';
+  } else if (i == j || i + j == queryParam.colTotal + 1) {
+    return 'jiang-en-row-special-cross';
+  } else {
+    return 'jiang-en-row';
+  }
+}
 
 function mouseover($event) {
   $event.currentTarget.className = "jiang-en-row-over";
@@ -45,23 +67,58 @@ function mouseleave($event) {
   $event.currentTarget.className = "jiang-en-row";
 }
 
-// function reset(){
-//   queryParam.colTotal=11;
-//   queryParam.dateStr=ConfigInfo.nowDate;
-// }
+function reset() {
+  queryParam.colTotal = ConfigInfo.jiangEnNum;
+  queryParam.dateStr = ConfigInfo.nowDate;
+  getJiangEnInfo();
+}
 
+function getJiangEnInfo() {
+  if (colArr.length != queryParam.colTotal) {
+    rebuildAndReload();
+  }
+  axios.post(AxiosUrl.river.calendar.getSubtractDay, {
+    beginDate: '2021-02-18',
+    endDate: queryParam.dateStr,
+    dateProp: 1,
+  }).then((res) => {
+    days.value = res;
+  });
+}
 
-function getColStatic(){
-  debugger
-  colArr.length=0;
-  getArray();
-  computerNum();
-  time.value=new Date();
+function lastDay() {
+  axios.post(AxiosUrl.river.calendar.getSpecialDay, {
+    dateStr: queryParam.dateStr,
+    dateProp: 1,
+    addDay: -1
+  }).then((res) => {
+    queryParam.dateStr = res
+    getJiangEnInfo();
 
+  });
+}
+
+function afterDay() {
+  axios.post(AxiosUrl.river.calendar.getSpecialDay, {
+    dateStr: queryParam.dateStr,
+    dateProp: 1,
+    addDay: 1
+  }).then((res) => {
+    queryParam.dateStr = res
+    getJiangEnInfo();
+  });
 }
 
 
-function computerNum() {
+function rebuildAndReload() {
+  colArr.length = 0;
+  getInitArray();
+  computerAndRebuildArr();
+}
+
+
+//通过算法获取数组
+function computerAndRebuildArr() {
   let centerNum = Math.ceil(queryParam.colTotal / 2);
   let count = 1;
   let addNum = 2;
@@ -109,8 +166,11 @@ function setArrNum(i, j, num, arr) {
   arr[i - 1][j - 1] = num;
 }
 
-
+//根据坐标获取数组上的值
 function getValueByArr(i, j) {
+  if (colArr.length != queryParam.colTotal) {
+    rebuildAndReload();
+  }
   if (colArr.length < i) {
     return '加载中';
   }
@@ -120,8 +180,8 @@ function getValueByArr(i, j) {
   return colArr[i - 1][j - 1];
 }
 
-
-function getArray() {
+//获取初始化的数组
+function getInitArray() {
   for (let i = 0; i < queryParam.colTotal; i++) {
     let colIndexArr = [];
     for (let j = 0; j < queryParam.colTotal; j++) {
@@ -132,8 +192,7 @@ function getArray() {
 }
 
 onMounted(() => {
-  getArray();
-  computerNum();
+  getJiangEnInfo();
 })
 
 </script>
@@ -146,9 +205,8 @@ onMounted(() => {
   line-height: 50px;
   border-style: solid;
   /*border-width: 5px;*/
-  border-color: #5fa25f;
+  border-color: #a3c7ad;
   /*background-color: powderblue;*/
-  color: #77133c;
   text-align: center;
   vertical-align: middle;
 }
@@ -160,6 +218,40 @@ onMounted(() => {
 
 }
 
+/*特殊字段*/
+.jiang-en-row-special-line {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-style: solid;
+  /*border-width: 5px;*/
+  font-size: 20px;
+  font-weight: bold;
+  border-color: #5fa25f;
+  /*background-color: #da8127;*/
+  color: #852121;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.jiang-en-row-special-cross {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-style: solid;
+  /*border-width: 5px;*/
+  /*font-size: 15px;*/
+  font-weight: bold;
+  border-color: #e3b726;
+  /*background-color: #da8127;*/
+  color: #e3b726;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
 .jiang-en-row-over {
   display: inline-block;
   width: 50px;
@@ -167,9 +259,11 @@ onMounted(() => {
   line-height: 50px;
   border-style: solid;
   /*border-width: 5px;*/
+  /*font-size: 20px;*/
+  font-weight: bold;
   border-color: #5fa25f;
-  background-color: #da8127;
-  color: #77133c;
+  background-color: #18bd18;
+  color: #852121;
   text-align: center;
   vertical-align: middle;
 }

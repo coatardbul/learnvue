@@ -45,7 +45,8 @@ const river = {
         refresh: 'river/timeInterval/refresh',
     },
     calendar:{
-        getSpecialDay:label.river+'/api/calendar/getSpecialDay'
+        getSpecialDay:label.river+'/api/calendar/getSpecialDay',
+        getSubtractDay:label.river+'/api/calendar/getSubtractDay',
     }
 
 

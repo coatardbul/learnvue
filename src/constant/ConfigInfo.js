@@ -26,6 +26,8 @@ function getDayStr(date){
     return  moment(date).format(DateFormat.yyyymmddSplit);
 }
 
+const jiangEnNum=21;
+
 export default {
-    emotionInfo, nowDate, DateFormat,getBeforeEndDayStr,dateUtil,getDayStr
+    emotionInfo, nowDate, DateFormat,getBeforeEndDayStr,dateUtil,getDayStr,jiangEnNum
 }
