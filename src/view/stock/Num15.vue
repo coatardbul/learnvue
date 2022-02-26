@@ -1,5 +1,7 @@
 <template>
-  <EmotionDayFormLine @query-day-emotion="getDayStatic"></EmotionDayFormLine>
+  <EmotionDayFormLine
+      :show-info="showInfo"
+      @query="getDayStatic"></EmotionDayFormLine>
 
   <NumEight :begin-date="'2022-01-01'"
             :end-date="'2022-12=31'"
@@ -27,6 +29,16 @@ import ConfigInfo from '/src/constant/ConfigInfo'
 import EmotionDayFormLine from './EmotionDayFormLine'
 import Vue from "vue";
 
+const showInfo=ref({
+  tradeButton: true,
+  baseButton: true,
+  forceRefreshButton: true,
+  objectSign:true,
+  timeInterval:true,
+  forceRefreshName: '强制刷新',
+  supplementRefreshButton:true,
+  supplementRefreshName:'补充刷新',
+})
 
 const baseLineChart = ref()
 const xAxis = ref({

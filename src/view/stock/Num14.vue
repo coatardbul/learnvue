@@ -1,5 +1,5 @@
 <template>
-  <EmotionDayFormLine  ref="dayRangeToolbar"  @query-day-emotion="getDayStatic"></EmotionDayFormLine>
+  <EmotionDayFormLine  ref="dayRangeToolbar"  @query="getDayStatic"></EmotionDayFormLine>
   <BaseLineChartNew
       :base-line-echarts="baseLineEcharts"
       :char-style="sssss"

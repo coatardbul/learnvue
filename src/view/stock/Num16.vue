@@ -1,10 +1,11 @@
 <template>
 
   <EmotionDayFormLine
+      :show-info="showInfo"
       :show-refresh-date="true"
-      @query-day-emotion="getDaylStatic"
-  @refresh-date="updateDate"
-      @force-refresh-date="forceUpdateDate"
+      @query="getDaylStatic"
+  @supplement-refresh="updateDate"
+      @refresh="forceUpdateDate"
   ></EmotionDayFormLine>
 
   <el-table :data="tableData" border highlight-current-row
@@ -43,9 +44,19 @@
 <script setup>
 import axios from 'axios';
 import AxiosUrl from '/src/constant/AxiosUrl'
-import {onMounted, reactive} from 'vue'
+import {onMounted,ref, reactive} from 'vue'
 import EmotionDayFormLine from './EmotionDayFormLine'
 import ConfigInfo from "@/constant/ConfigInfo";
+const showInfo=ref({
+  tradeButton: true,
+  baseButton: true,
+  forceRefreshButton: true,
+  objectSign:true,
+  timeInterval:true,
+  forceRefreshName: '强制刷新',
+  supplementRefreshButton:true,
+  supplementRefreshName:'补充刷新',
+})
 
 const tableData = reactive([])
 const queryParam = reactive({

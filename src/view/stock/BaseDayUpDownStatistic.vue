@@ -79,11 +79,11 @@ export default {
                     seriesIndex.xAxisIndex = 0;
                     seriesIndex.yAxisIndex = 0;
                   }
-                  if (v.indexOf("炸板") >= 0 || v.indexOf("涨停") >= 0) {
+                  if (v.indexOf("adjs") >= 0) {
                     seriesIndex.xAxisIndex = 1;
                     seriesIndex.yAxisIndex = 1;
                   }
-                  if (v.indexOf("adjs") >= 0) {
+                  if (v.indexOf("炸板") >= 0 || v.indexOf("涨停") >= 0) {
                     seriesIndex.xAxisIndex = 2;
                     seriesIndex.yAxisIndex = 2;
                   }
@@ -123,18 +123,45 @@ export default {
 
 
     function setLegend(){
-      baseLineEcharts.legend.top=200;
+      baseLineEcharts.legend.top="top";
     }
 
     function setGrid(baseLineEcharts, num) {
       baseLineEcharts.grid.length = 0;
+      let totalTop=0;
+      let onTop=40;
+      let intervalHeight=40;
       for (let i = 0; i < 4; i++) {
         let sb = {
           left: 60,
           right: 50,
           height: num+'px'
         }
-        sb.top = 1.25* (i+1) * num + 'px';
+        if(i==0){
+          sb.top = onTop + 'px';
+          sb.height=0.8*num;
+          totalTop+=onTop;
+          totalTop+=sb.height;
+        }
+        if(i==1){
+          sb.top = totalTop + 'px';
+          sb.height=0.7*num;
+          totalTop+=intervalHeight;
+          totalTop+=sb.height;
+        }
+        if(i==2){
+          sb.top = totalTop + 'px';
+          sb.height=2*num;
+          totalTop+=intervalHeight;
+          totalTop+=sb.height;
+        }
+
+        if(i==3){
+          sb.top = totalTop + 'px';
+          sb.height=1.5*num;
+          totalTop+=intervalHeight;
+          totalTop+=sb.height;
+        }
         baseLineEcharts.grid.push(sb);
       }
 

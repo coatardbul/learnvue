@@ -11,7 +11,6 @@ import * as echarts from 'echarts'
 import {onMounted, onUpdated, reactive, ref} from 'vue'
 
 import router from "@/config/router";
-import BaseLineEcharts from "@/module/BaseLineEcharts";
 import EchartsStyle from "@/module/EchartsStyle";
 
 export default {
@@ -19,14 +18,11 @@ export default {
   props:{
     baseLineEcharts:{
       type: Object,
-      // default: function () {
-      //   return new BaseLineEcharts();
-      // }
     },
     charStyle:{
       type: Object,
       default: function () {
-        return new BaseLineEcharts().stype;
+        return new EchartsStyle();
       }
     }
   },
@@ -50,11 +46,12 @@ export default {
         toolbox: props.baseLineEcharts.toolbox,
         xAxis:props.baseLineEcharts.xAxis,
         yAxis: props.baseLineEcharts.yAxis,
-        series: props.baseLineEcharts.series
+        series: props.baseLineEcharts.series,
+        axisPointer:props.baseLineEcharts.axisPointer,
       };
       if (props.baseLineEcharts.hasXaxisEvent) {
         myChart.on('click', function (params) {
-          router.push({path: props.xAxisRouter, query: {erb: params.value}})
+          router.push({path: props.baseLineEcharts.xAxisRouter, query: {erb: params.value}})
         });
       }
       // 使用刚指定的配置项和数据显示图表。

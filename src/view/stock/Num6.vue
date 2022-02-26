@@ -1,17 +1,18 @@
 <template>
-  <EmotionDayFormLine ref="dayRangeToolbar" @query-day-emotion="getDayStatic"></EmotionDayFormLine>
-  <div class="1111111">
-    <BaseDayMedianStatistic  :char-style="charStypeMedian"
+  <EmotionDayFormLine ref="dayRangeToolbar" @query="getDayStatic"></EmotionDayFormLine>
+  <el-affix >
+
+  <BaseDayMedianStatistic  :char-style="charStypeMedian"
                              :key="time"
                              :begin-date="beginDate"
                              :end-date="endDate"
     ></BaseDayMedianStatistic>
+  </el-affix>
     <BaseDayUpDownStatistic  :char-style="charStypeUpDown"
                              :key="time"
                              :begin-date="beginDate"
                              :end-date="endDate"
     ></BaseDayUpDownStatistic>
-  </div>
 
 </template>
 

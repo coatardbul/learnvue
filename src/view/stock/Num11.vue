@@ -1,18 +1,18 @@
 <template>
-  <EmotionFormLine :is-show="true"
-                   @query-minuter-emotion="getIntervalStatic"
-                   @refresh-minuter-emotion="refreshMinuterDate"
-                   @supplement-refresh-minuter-emotion="supplementRefreshMinuterDate"
+  <EmotionFormLine
+      ref="queryRef"
+      :show-info="showInfo"
+                   @query="getIntervalStatic"
+                   @refresh="refreshMinuterDate"
+                   @supplement-refresh="supplementRefreshMinuterDate"
   ></EmotionFormLine>
 
-  <BaseLineChart ref="baseLineChart" :x-axis="xAxis"
-                 :y-axis="yAxis"
-                 :x-data-array="xDataArray"
-                 :series="series"
-                 :has-xaxis-event="hasXaxisEvent"
-                 :legend-select-info="legendSelectInfo"
-                 v-if="xDataArray.length>0 && series.length>0"
-  ></BaseLineChart>
+  <BaseMintureStatistic
+      :query-param="queryParam"
+      :char-style="charStypeUpDown"
+      :key="time"
+  ></BaseMintureStatistic>
+
 </template>
 
 <script setup>
@@ -24,7 +24,24 @@ import moment from "moment";
 import {reactive} from "vue";
 import ConfigInfo from '/src/constant/ConfigInfo'
 import EmotionFormLine from './EmotionMinuteFormLine'
+import BaseLineChartNew from "@/components/BaseLineChartNew";
+import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 
+const charStypeUpDown={width: '100%', height: '5000px'};
+const time =ref()
+const showInfo=ref({
+  tradeButton: true,
+  baseButton: true,
+  forceRefreshButton: true,
+  objectSign:true,
+  timeInterval:true,
+  forceRefreshName: '强制刷新',
+  supplementRefreshButton:true,
+  supplementRefreshName:'补充刷新',
+})
+
+const queryRef=ref()
+const queryParam=ref()
 
 const baseLineChart = ref()
 const xAxis = ref({
@@ -48,9 +65,9 @@ const series = ref([])
 const hasXaxisEvent = ref(true)
 
 
-function getIntervalStatic(queryParam) {
-  clearDate()
-  getMinuteStaticByDate(queryParam);
+function getIntervalStatic(queryParamTemp) {
+  queryParam.value=queryParamTemp;
+  time.value=new Date().getTime();
 }
 
 function refreshMinuterDate(queryParam) {
@@ -101,17 +118,18 @@ function getMinuteStaticByDate(queryParam) {
           ybaseInfo.yAxisIndex = 0;
         }
 
-
         c.yaxiosInfo.forEach(v => {
           //判断横坐标中是否存在
           if (xDataArray.value.findIndex(t => {
-            t === v.dateTimeStr
+           return  v && t == v.dateTimeStr;
           })) {
-            if (c.name.includes("主板跌停")) {
-              ybaseInfo.data.push(0 - v.value)
-            } else {
-              ybaseInfo.data.push(v.value)
+            if(v&&v.value){
+              if (c.name.includes("主板跌停")) {
+                ybaseInfo.data.push(0 - v.value)
+              } else {
+                ybaseInfo.data.push(v.value)
 
+              }
             }
           } else {
             ybaseInfo.data.push(0)
@@ -135,7 +153,10 @@ function clearDate() {
 }
 
 onMounted(() => {
-  getMinuteStaticByDate()
+
+  queryParam.value=queryRef.value.queryParam
+  time.value=new Date();
+  // getMinuteStaticByDate()
 
 })
 </script>

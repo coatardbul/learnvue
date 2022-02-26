@@ -1,32 +1,32 @@
 <template>
   <el-form :inline="true" :model="queryParam" class="demo-form-inline">
-    <el-form-item>
-      <el-button type="primary" @click="lastDay" v-show="isShow">上一交易日</el-button>
+    <el-form-item v-show="showInfo.tradeButton">
+      <el-button type="primary" @click="lastDay" >上一交易日</el-button>
     </el-form-item>
     <el-form-item label="日期">
       <el-date-picker v-model="queryParam.dateStr" type="date" value-format="YYYY-MM-DD" placeholder="Pick a day">
       </el-date-picker>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="afterDay" v-show="isShow">下一交易日</el-button>
+    <el-form-item  v-show="showInfo.tradeButton">
+      <el-button type="primary" @click="afterDay" >下一交易日</el-button>
     </el-form-item>
-    <el-form-item label="对象标识">
+    <el-form-item label="对象标识"  v-show="showInfo.objectSign">
       <el-input v-model="queryParam.objectSign"></el-input>
     </el-form-item>
-    <el-form-item label="时间间隔">
+    <el-form-item label="时间间隔"  v-show="showInfo.timeInterval">
       <el-input v-model="queryParam.timeInterval" type="number" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item>
+    </el-form-item  >
+    <el-form-item v-show="showInfo.baseButton">
       <el-button type="primary" @click.prevent="getIntervalStatic">查询</el-button>
     </el-form-item>
-    <el-form-item>
+    <el-form-item v-show="showInfo.baseButton">
       <el-button type="primary" @click="reset">重置</el-button>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="refresh"   v-show="isShow">强制刷新</el-button>
+    <el-form-item   v-show="showInfo.forceRefreshButton">
+      <el-button type="primary" @click="refresh"  >{{showInfo.forceRefreshName}}</el-button>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="supplementRefresh"   v-show="isShow">补充刷新</el-button>
+    <el-form-item  v-show="showInfo.supplementRefreshButton">
+      <el-button type="primary" @click="supplementRefresh"  >{{showInfo.supplementRefreshName}}</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -41,11 +41,22 @@ import axios from "axios";
 export default {
   name: "EmotionMinuteFormLine.vue",
   props: {
-    isShow: {
-      type: Boolean,
-      default: false
+    showInfo: {
+      type: Object,
+      default: function () {
+        return {
+          tradeButton: true,
+          baseButton: true,
+          forceRefreshButton: false,
+          objectSign:false,
+          timeInterval:false,
+          forceRefreshName: '强制刷新',
+          supplementRefreshButton:false,
+          supplementRefreshName:'补充刷新',
+        }
+      }
     },
-    isShowObject:{}
+
   },
   setup(props, context) {
     const queryParam = reactive({
@@ -78,17 +89,17 @@ export default {
     }
 
     function refresh() {
-      context.emit('refresh-minuter-emotion', queryParam)
+      context.emit('refresh', queryParam)
 
     }
     function supplementRefresh() {
-      context.emit('supplement-refresh-minuter-emotion', queryParam)
+      context.emit('supplement-refresh', queryParam)
 
     }
 
 
     function getIntervalStatic() {
-      context.emit('query-minuter-emotion', queryParam)
+      context.emit('query', queryParam)
     }
 
     function reset() {

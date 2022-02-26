@@ -1,6 +1,6 @@
 <template>
 
-<EmotionFormLine :is-show="false" @query-minuter-emotion="getIntervalStatic"></EmotionFormLine>
+<EmotionFormLine :is-show="false" @query="getIntervalStatic"></EmotionFormLine>
 
   <el-table :data="tableData" border highlight-current-row
             style="width: 100%">

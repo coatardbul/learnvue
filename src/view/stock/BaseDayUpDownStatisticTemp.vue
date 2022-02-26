@@ -168,7 +168,7 @@ export default {
           })
         }
 
-        debugger
+
 
         for (let i = 1; i < 4; i++) {
           let data = baseLineEcharts.xAxis[0].data;

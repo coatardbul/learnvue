@@ -9,21 +9,21 @@
           end-placeholder="End Date"
       >
       </el-date-picker>
-    </el-form-item>
-    <el-form-item label="对象标识"   v-show="isShowObjectSign">
+    </el-form-item >
+    <el-form-item label="对象标识"  v-show="showInfo.objectSign" >
       <el-input v-model="queryParam.objectSign" ></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item  v-show="showInfo.baseButton">
       <el-button type="primary" @click.prevent="getIntervalStatic">查询</el-button>
     </el-form-item>
-    <el-form-item>
+    <el-form-item  v-show="showInfo.baseButton">
       <el-button type="primary" @click.prevent="reset">重置</el-button>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click.prevent="refreshDate"    v-show="showRefreshDate">刷新数据</el-button>
+    <el-form-item   v-show="showInfo.forceRefreshButton">
+      <el-button type="primary" @click="refresh"  >{{showInfo.forceRefreshName}}</el-button>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click.prevent="forceRefreshDate"  v-show="showRefreshDate">强制刷新数据</el-button>
+    <el-form-item  v-show="showInfo.supplementRefreshButton">
+      <el-button type="primary" @click="supplementRefresh"  >{{showInfo.supplementRefreshName}}</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -35,6 +35,21 @@ import {reactive} from "vue";
 export default {
   name: "EmotionDayFormLine.vue",
   props:{
+    showInfo: {
+      type: Object,
+      default: function () {
+        return {
+          tradeButton: true,
+          baseButton: true,
+          forceRefreshButton: false,
+          objectSign:false,
+          timeInterval:false,
+          forceRefreshName: '强制刷新',
+          supplementRefreshButton:false,
+          supplementRefreshName:'补充刷新',
+        }
+      }
+    },
     isShowObjectSign:{
       type:Boolean,
       default:false
@@ -51,7 +66,7 @@ export default {
     })
 
     function getIntervalStatic() {
-      context.emit('query-day-emotion', queryParam)
+      context.emit('query', queryParam)
     }
 
     function reset() {
@@ -61,17 +76,17 @@ export default {
       })
     }
 
-    function refreshDate(){
-      context.emit('refresh-date',queryParam)
+    function supplementRefresh(){
+      context.emit('supplement-refresh',queryParam)
     }
 
-    function forceRefreshDate(){
-      context.emit('force-refresh-date',queryParam)
+    function refresh(){
+      context.emit('refresh',queryParam)
 
     }
 
     return {
-      getIntervalStatic, reset, queryParam, refreshDate,forceRefreshDate
+      getIntervalStatic, reset, queryParam, supplementRefresh,refresh
     }
   }
 }

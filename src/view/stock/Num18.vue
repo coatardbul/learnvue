@@ -51,7 +51,6 @@ const dateInfo=ref()
 const calendar = ref()
 function selectDate (val)  {
   calendar.value.selectDate(val)
-  console.log(value.value)
 
   tableData.length=0
   getDayDetail();
