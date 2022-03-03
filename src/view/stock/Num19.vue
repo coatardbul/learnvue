@@ -2,19 +2,16 @@
   <BaseLineChartNew
       :base-line-echarts="baseLineEcharts"
       :char-style="charStyle"
-      :key="time"
+      v-if=" baseLineEcharts.series.length>0"
   ></BaseLineChartNew>
 </template>
 
 <script>
 import BaseLineChartNew from "@/components/BaseLineChartNew";
-import {reactive, onMounted, ref} from "vue";
+import {reactive, onMounted} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 import BaseLineEcharts from "@/module/BaseLineEcharts";
-import ConfigInfo from "@/constant/ConfigInfo";
-import Xaxis from "@/module/Xaxis";
-import YleftAxis from "@/module/YleftAxis";
 
 export default {
   components: {
@@ -37,193 +34,153 @@ export default {
     }
   },
   setup(props, context) {
-    //初始化参数
-const time =ref()
-    const baseLineEcharts = reactive({
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          animation: false
-        }
-      },
-      toolbox: {
-        feature: {
-          dataZoom: {
-            yAxisIndex: 'none'
-          },
-          restore: {},
-          saveAsImage: {}
-        }
-      },
-      axisPointer: {
-        link: [
-          {
-            xAxisIndex: 'all'
-          }
-        ]
-      },
-      xAxis: [
-        {
-          type: 'category',
-          boundaryGap: false,
-          axisLine: {onZero: true},
-          data: []
-        }
-      ],
-      yAxis: [
-        {
-          name: 'Evaporation(m^3/s)',
-          type: 'value',
-        },
-      ],
-      series: [],
-      grid: [
-        {
-          left: 60,
-          right: 50,
-          height: '100'
-        },
-        {
-          left: 60,
-          right: 50,
-          top: '200',
-          height: '100'
-        },
-        {
-          left: 60,
-          right: 50,
-          top: '400',
-          height: '100'
-        },
-        {
-          left: 60,
-          right: 50,
-          top: '600',
-          height: '100'
-        }
-      ],
+    const baseLineEcharts = reactive(new BaseLineEcharts())
 
-
-    })
 
     function getAllStockInfoByDate() {
-
-      // setGrid(baseLineEcharts, 100);
-
-      axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
-        beginDateStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
-        endDateStr: props.endDate == null || props.endDate.length === 0 ? '2022-12-31' : props.endDate,
-        objectEnumSign: props.queryParam == null || props.queryParam.objectSign.length == 0 ? ConfigInfo.emotionInfo.defaultDayObjectSign : props.queryParam.objectSign,
+      axios.post(AxiosUrl.stock.marketValueScatterStatic.getRangeStatic, {
+        dateBeginStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
+        dateEndStr: props.endDate == null || props.endDate.length === 0 ? '2022-12-31' : props.endDate,
+        objectEnumSign: 'day_market_Value_statistic'
       }).then((res) => {
-        if (res == null) {
-          return
-        }
-        if (res.length > 0) {
-          let nameArray = []
-          res.forEach((v) => {
-            baseLineEcharts.xAxis[0].data.push(v.date)
-            JSON.parse(v.objectStaticArray).forEach(c => {
-              if (nameArray.findIndex(t => t === c.name) < 0) {
-                nameArray.push(c.name)
-              }
-            })
-            //todo 判断是否包含名称，动态显示
-          })
-          nameArray.forEach(v => {
-            let seriesIndex = {
-              name: v,
-              type: 'line',
-              data: []
-            }
-            res.forEach(c => {
-              JSON.parse(c.objectStaticArray).forEach(b => {
-                if (v === b.name) {
-                  //坐标轴
-                  if (v.indexOf("跌停") >= 0) {
-
-                  }
-                  if (v.indexOf("炸板") >= 0 || v.indexOf("涨停") >= 0) {
-                    seriesIndex.xAxisIndex = 1;
-                    seriesIndex.yAxisIndex = 1;
-                  }
-                  if (v.indexOf("adjs") >= 0) {
-                    seriesIndex.xAxisIndex = 2;
-                    seriesIndex.yAxisIndex = 2;
-                  }
-                  if (v.indexOf("连涨") >= 0) {
-                    seriesIndex.xAxisIndex = 3;
-                    seriesIndex.yAxisIndex = 3;
-                  }
-
-                  if (v.indexOf("跌停") >= 0 || v.indexOf("未回封") >= 0) {
-                    seriesIndex.data.push(0 - b.value)
-                  } else {
-                    seriesIndex.data.push(b.value)
-                  }
-                }
-              })
-            })
-            baseLineEcharts.series.push(seriesIndex);
-          })
-        }
-
-
-
-        for (let i = 1; i < 4; i++) {
-          let data = baseLineEcharts.xAxis[0].data;
-          let xaxis = {
-
-            type: 'category',
-            boundaryGap: false,
-            axisLine: {onZero: true},
-            data: []
-
-          };
-          xaxis.gridIndex = i;
-          xaxis.data = data;
-          baseLineEcharts.xAxis.push(xaxis);
-        }
-
-        for (let i = 1; i < 4; i++) {
-          let yleftAxis = {
-            name: 'Evaporation(m^3/s)',
-            type: 'value',
+        let serviceIndex = {
+          name: '市值',
+          type: 'scatter',
+          itemStyle: {
+            opacity: 0.8,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(196,46,46,0.3)'
           }
-          yleftAxis.gridIndex = i;
-          baseLineEcharts.yAxis.push(yleftAxis);
         }
+        baseLineEcharts.series.push(serviceIndex);
+        let dataset = []
+        res.forEach(item => {
+          baseLineEcharts.xAxis[0].data.push(item.date);
+          JSON.parse(item.objectStaticArray).forEach(v => {
+                let dataIndex = [];
+                dataIndex.push(item.date);
+                dataIndex.push(v.marketValue);
+                dataIndex.push(v.code);
+                dataIndex.push(v.name);
+                dataIndex.push(v.tradeMoney);
+                dataIndex.push(v.turnoverRate);
+                dataset.push(dataIndex);
+              }
+          )
+        })
+        let datasetSourceIndex = {
+          source: dataset
+        }
+        baseLineEcharts.dataset.push(datasetSourceIndex);
 
-        time.value=new Date().getTime()
-
+        baseLineEcharts.yAxis = {
+          splitLine: {
+            lineStyle: {
+              type: 'dashed'
+            }
+          }
+        }
+        console.log([].toString());
       });
-    }
-
-
-    function setGrid(baseLineEcharts, num) {
-      baseLineEcharts.grid.length = 0;
-      for (let i = 0; i < 4; i++) {
-        let sb = {
-          left: 60,
-          right: 50,
-          height: '100'
-        }
-        sb.top = 2 * (i + 1) * num + 'px';
-        baseLineEcharts.grid.push(sb);
-      }
 
     }
-
 
     function clearCache() {
       baseLineEcharts.series.length = 0
+      baseLineEcharts.dataset.length = 0
+      baseLineEcharts.axisPointer = {}
+      baseLineEcharts.visualMap.length = 0
+      const schema = [
+        {name: 'date', index: 0, text: '日'},
+        {name: 'AQIindex', index: 1, text: '市值'},
+        {name: 'PM25', index: 2, text: '股票代码'},
+        {name: 'PM10', index: 3, text: '股票名称'},
+        {name: 'CO', index: 4, text: '交易金额'},
+        {name: 'NO2', index: 5, text: '换手率'},
+      ];
+      baseLineEcharts.tooltip = {
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        formatter: function (param) {
+          var value = param.value;
+          // prettier-ignore
+          return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+              + value[0] + '日：'
+              + '</div>'
+              + schema[1].text + '：' + value[1] + '<br>'
+              + schema[2].text + '：' + value[2] + '<br>'
+              + schema[3].text + '：' + value[3] + '<br>'
+              + schema[4].text + '：' + value[4] + '<br>'
+              + schema[5].text + '：' + value[5] + '<br>';
+        }
+      }
+      let visio = {
+        left: 'right',
+        top: '10%',
+        dimension: 4,
+        min: 100000000,
+        max: 11100000000,
+        itemWidth: 30,
+        itemHeight: 120,
+        calculable: true,
+        precision: 0.1,
+        text: ['圆形大小：PM2.5'],
+        textGap: 30,
+        inRange: {
+          symbolSize: [10, 70]
+        },
+        outOfRange: {
+          symbolSize: [10, 70],
+        },
+        controller: {
+          inRange: {
+            color: ['#c23531']
+          },
+          outOfRange: {
+            color: ['#999']
+          }
+        }
+      };
+
+      let visio1=    {
+        left: 'right',
+        bottom: '5%',
+        dimension: 6,
+        min: 0,
+        max: 50,
+        itemHeight: 120,
+        text: ['明暗：二氧化硫'],
+        textGap: 30,
+        inRange: {
+          colorLightness: [0.9, 0.5]
+        },
+        outOfRange: {
+          color: ['rgba(255,255,255,0.4)']
+        },
+        controller: {
+          inRange: {
+            color: ['#c23531']
+          },
+          outOfRange: {
+            color: ['#999']
+          }
+        }
+      }
+      baseLineEcharts.visualMap.push(visio);
+      baseLineEcharts.visualMap.push(visio1);
+
+
     }
 
     onMounted(() => {
       clearCache();
+
       getAllStockInfoByDate()
+
     })
     return {
-      baseLineEcharts, getAllStockInfoByDate,time
+      baseLineEcharts, getAllStockInfoByDate
     }
   }
 }

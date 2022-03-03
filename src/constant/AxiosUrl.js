@@ -27,6 +27,12 @@ const stock = {
         getDayDetail: label.stock + '/stockQuery/getDayDetail',
         getDayStatic: label.stock + '/stockQuery/getDayStatic',
         getRangeStatic:label.stock + '/stockQuery/getRangeStatic',
+    },
+    marketValueScatterStatic:{
+        refreshDay: label.stock + '/scatter/refreshDay',
+        refreshDayRange: label.stock + '/scatter/refreshDayRange',
+        forceRefreshDayRange: label.stock + '/scatter/forceRefreshDayRange',
+        getRangeStatic:label.stock + '/scatter/getRangeStatic',
     }
 }
 const river = {
@@ -37,7 +43,10 @@ const river = {
     },
     stockTemplate: {
         getList: 'river/api/stockTemplate/getList',
-        addHot: 'river/api/stockTemplate/addHot'
+        add:'river/api/stockTemplate/add',
+        modify:'river/api/stockTemplate/modify',
+        addHot: 'river/api/stockTemplate/addHot',
+        delete:'river/api/stockTemplate/delete',
     },
     intervalTime: {
         getIntervalStatic: 'river/timeInterval/getIntervalList',

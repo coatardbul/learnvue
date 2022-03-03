@@ -7,7 +7,7 @@ module.exports = {
         open: true,
         proxy: {
             '/river': {  //代理别名
-                target: 'http://localhost:9002',   //代理目标值
+                target: 'http://124.222.217.230:9002',   //代理目标值
                 changeOrigin: true,
                 secure: true,
                 pathRewrite: {  //替换路径中的/api
@@ -18,7 +18,7 @@ module.exports = {
                 }*/
             },
             '/stock': {  //代理别名
-                target: 'http://localhost:9006',   //代理目标值
+                target: 'http://124.222.217.230:9006',   //代理目标值
                 changeOrigin: true,
                 secure: true,
                 pathRewrite: {  //替换路径中的/api

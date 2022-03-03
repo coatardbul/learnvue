@@ -8,7 +8,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import {onMounted, onUpdated, reactive, ref} from 'vue'
+import {onMounted, ref} from 'vue'
 
 import router from "@/config/router";
 import EchartsStyle from "@/module/EchartsStyle";
@@ -33,11 +33,11 @@ export default {
     })
 
     function init() {
-
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(chart.value);
       // 指定图表的配置项和数据
       var option = {
+        // color:props.baseLineEcharts.color,
         //提示框组件
         tooltip: props.baseLineEcharts.tooltip,
         //图例组件
@@ -48,6 +48,8 @@ export default {
         yAxis: props.baseLineEcharts.yAxis,
         series: props.baseLineEcharts.series,
         axisPointer:props.baseLineEcharts.axisPointer,
+        visualMap:props.baseLineEcharts.visualMap,
+        dataset:props.baseLineEcharts.dataset,
       };
       if (props.baseLineEcharts.hasXaxisEvent) {
         myChart.on('click', function (params) {

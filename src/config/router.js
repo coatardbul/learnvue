@@ -4,7 +4,7 @@ const Home = () => import('@/view/layout/Home')
 const Login = () => import('@/view/Login')
 const Index1 = () =>import('@/view/stock/Num1')
 const Index2 = () =>import('@/view/stock/Num2')
-const Index3 = () =>import('@/view/stock/Num3')
+const Index3 = () =>import('@/view/stock/stratrgy/Num3')
 const Index4 = () =>import('@/view/stock/Num4')
 const Index5 = () =>import('@/view/stock/BaseLine')
 const Index6 = () =>import('@/view/stock/Num6')
@@ -21,6 +21,8 @@ const Index16 = () =>import('@/view/stock/Num16')
 const Index17 = () =>import('@/view/stock/Num17')
 const Index18 = () =>import('@/view/stock/Num18')
 const Index19 = () =>import('@/view/stock/Num19')
+const Index20 = () =>import('@/view/stock/Num20')
+// const Index21 = () =>import('@/view/stock/Num21')
 
 
 const LearnVue1 = () =>import('@/view/learn/Num1')
@@ -150,7 +152,11 @@ const routes = [
                 name: "index19",
                 component: Index19,
             },
-
+            {
+                path: "/index20",
+                name: "index20",
+                component: Index20,
+            },
             {
                 path: "/intervalStatic",
                 name: "intervalStatic",
