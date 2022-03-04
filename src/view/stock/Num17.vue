@@ -41,6 +41,47 @@ import EmotionFormLine from './EmotionMinuteFormLine'
 
 const time = ref(null)
 const days = ref(1)
+
+const jiangEnDateInfo = ref([
+  //   {
+  //   dateStr: '2018-01-29',
+  //   remark: '3587高点（2018-01-29）计算天数偏离太大',
+  //   type:1,
+  //   num: 1
+  // },
+  // {
+  //   dateStr: '2019-01-04',
+  //   remark: '2440低点（2019-01-04）计算天数偏离太大',
+  //   type:2,
+  //   num: 1
+  // },
+  {
+    dateStr: '2020-03-19',
+    remark: '2646低点（2020-03-19）',
+    type:2,
+    num: 1
+  },
+  {
+    dateStr: '2021-02-18',
+    remark: '3731高点（2021-02-18）',
+    type: 1,
+    num: 1
+  },
+  {
+    dateStr: '2021-07-28',
+    remark: '3312低点（2021-07-28）',
+    type: 2,
+    num: 1
+  },
+  {
+    dateStr: '2021-09-14',
+    remark: '3723高点（2021-09-14）',
+    type: 2,
+    num: 1
+  },
+])
+
+//结果集
 const colArr = reactive([])
 const queryParam = reactive({
   dateStr: ConfigInfo.nowDate,
@@ -48,9 +89,14 @@ const queryParam = reactive({
 })
 
 function specialColClass(i, j) {
-  if (days.value == getValueByArr(i, j)) {
-    return 'jiang-en-row-over';
-  } else if (i == Math.ceil(queryParam.colTotal / 2) || j == Math.ceil(queryParam.colTotal / 2)) {
+  let find = jiangEnDateInfo.value.find(item=>item.num==getValueByArr(i, j));
+  if(find){
+    if(find.type==1){
+      return 'jiang-en-row-height-over';
+    }else {
+      return 'jiang-en-row-low-over';
+    }
+  }else if (i == Math.ceil(queryParam.colTotal / 2) || j == Math.ceil(queryParam.colTotal / 2)) {
     return 'jiang-en-row-special-line';
   } else if (i == j || i + j == queryParam.colTotal + 1) {
     return 'jiang-en-row-special-cross';
@@ -59,13 +105,13 @@ function specialColClass(i, j) {
   }
 }
 
-function mouseover($event) {
-  $event.currentTarget.className = "jiang-en-row-over";
-}
-
-function mouseleave($event) {
-  $event.currentTarget.className = "jiang-en-row";
-}
+// function mouseover($event) {
+//   $event.currentTarget.className = "jiang-en-row-low-over";
+// }
+//
+// function mouseleave($event) {
+//   $event.currentTarget.className = "jiang-en-row";
+// }
 
 function reset() {
   queryParam.colTotal = ConfigInfo.jiangEnNum;
@@ -77,13 +123,16 @@ function getJiangEnInfo() {
   if (colArr.length != queryParam.colTotal) {
     rebuildAndReload();
   }
-  axios.post(AxiosUrl.river.calendar.getSubtractDay, {
-    beginDate: '2021-02-18',
-    endDate: queryParam.dateStr,
-    dateProp: 1,
-  }).then((res) => {
-    days.value = res;
-  });
+  for(let dateInfo of jiangEnDateInfo.value){
+      axios.post(AxiosUrl.river.calendar.getSubtractDay, {
+        beginDate: dateInfo.dateStr,
+        endDate: queryParam.dateStr,
+        dateProp: 1,
+      }).then((res) => {
+          dateInfo.num=res;
+      });
+  }
+  time.value=new Date().getMilliseconds();
 }
 
 function lastDay() {
@@ -112,6 +161,10 @@ function afterDay() {
 
 function rebuildAndReload() {
   colArr.length = 0;
+  //重置
+  for(let dateInfo of jiangEnDateInfo.value){
+    dateInfo.num=1;
+  }
   getInitArray();
   computerAndRebuildArr();
 }
@@ -200,9 +253,9 @@ onMounted(() => {
 <style scoped>
 .jiang-en-row {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   border-style: solid;
   /*border-width: 5px;*/
   border-color: #a3c7ad;
@@ -221,9 +274,9 @@ onMounted(() => {
 /*特殊字段*/
 .jiang-en-row-special-line {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   border-style: solid;
   /*border-width: 5px;*/
   font-size: 20px;
@@ -237,9 +290,9 @@ onMounted(() => {
 
 .jiang-en-row-special-cross {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   border-style: solid;
   /*border-width: 5px;*/
   /*font-size: 15px;*/
@@ -252,11 +305,11 @@ onMounted(() => {
 }
 
 
-.jiang-en-row-over {
+.jiang-en-row-low-over {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   border-style: solid;
   /*border-width: 5px;*/
   /*font-size: 20px;*/
@@ -267,6 +320,22 @@ onMounted(() => {
   text-align: center;
   vertical-align: middle;
 }
+.jiang-en-row-height-over {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-style: solid;
+  /*border-width: 5px;*/
+  /*font-size: 20px;*/
+  font-weight: bold;
+  border-color: #5fa25f;
+  background-color: #ce1121;
+  color: #852121;
+  text-align: center;
+  vertical-align: middle;
+}
+
 
 
 </style>

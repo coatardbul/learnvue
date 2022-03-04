@@ -1,5 +1,5 @@
 <template>
-  <FormLIne @query-strategy="queryStrategy"   :model="queryParam"></FormLIne>
+  <FormLIne   ref="queryRef" @query-strategy="queryStrategy"  ></FormLIne>
   <DialogMenuDetail :button-info="addButtonInfo" :strategy-info="strategyInfo"></DialogMenuDetail>
   <el-table :data="tableData" border highlight-current-row
             style="width: 100%">
@@ -66,36 +66,37 @@ function addHot(id){
     })
   });
 }
-const queryParam = reactive({
-  id: '',
-  name: '',
-  exampleStr:''
-})
+const queryRef = ref({})
 
 const editInfo = reactive(
     {
       buttonName: Button.buttonStatus.edit.name,
       buttonUrl: AxiosUrl.river.stockTemplate.modify,
     })
-function queryStrategy(queryParam){
-  getAllStockInfo(queryParam);
+function queryStrategy(){
+  getAllStockInfo(queryRef.value.queryParam);
 
 }
 
 onMounted(() => {
-  getAllStockInfo(null);
+  getAllStockInfo(queryRef.value.queryParam);
 })
 
 function deleteInfo(row){
   axios.post(AxiosUrl.river.stockTemplate.delete,{
     id:row.id,
-  }).then()
-  getAllStockInfo(queryParam);
+  }).then(()=>{
+
+    getAllStockInfo(queryRef.value.queryParam);
+      }
+  )
+
 }
 
 
 
 function getAllStockInfo(queryParam) {
+  debugger
   tableData.length=0;
   axios.post(AxiosUrl.river.stockTemplate.getList,{
     id:queryParam==null ?null:queryParam.id,

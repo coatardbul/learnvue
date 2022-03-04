@@ -1,6 +1,6 @@
 
 <template>
-  <el-form :inline="true" :model="queryParam" class="demo-form-inline">
+  <el-form :inline="true" v-model="queryParam" class="demo-form-inline">
     <el-form-item label="id">
       <el-input v-model="queryParam.id" placeholder="id精确查询"></el-input>
     </el-form-item>
@@ -20,7 +20,7 @@
 </template>
 
 <script >
-import {provide, reactive} from 'vue'
+import { reactive} from 'vue'
 
 export default {
   name:'FormLine',
