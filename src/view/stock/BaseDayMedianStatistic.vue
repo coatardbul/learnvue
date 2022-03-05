@@ -12,6 +12,8 @@ import {reactive, onMounted} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 import BaseLineEcharts from "@/module/BaseLineEcharts";
+import BaseEcharts from "@/module/BaseEcharts";
+import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   components: {
@@ -34,9 +36,7 @@ export default {
     }
   },
   setup(props, context) {
-    const baseLineEcharts = reactive(new BaseLineEcharts())
-
-
+    const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
     function getAllStockInfoByDate() {
       axios.post(AxiosUrl.stock.static.getDateStatic, {
         dateBeginStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
@@ -116,12 +116,10 @@ export default {
       });
     }
 
-    function clearCache() {
-      baseLineEcharts.series.length = 0
-    }
+
 
     onMounted(() => {
-      clearCache();
+     EchartsUtils. clearCache(baseLineEcharts);
 
       getAllStockInfoByDate()
 

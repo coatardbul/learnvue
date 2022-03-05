@@ -15,6 +15,7 @@ import BaseLineEcharts from "@/module/BaseLineEcharts";
 import ConfigInfo from "@/constant/ConfigInfo";
 import Xaxis from "@/module/Xaxis";
 import YleftAxis from "@/module/YleftAxis";
+import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   components: {
@@ -212,12 +213,10 @@ export default {
     }
 
 
-    function clearCache() {
-      baseLineEcharts.series.length = 0
-    }
+
 
     onMounted(() => {
-      clearCache();
+      EchartsUtils.clearCache(baseLineEcharts);
       getAllStockInfoByDate()
     })
     return {

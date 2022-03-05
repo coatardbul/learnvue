@@ -14,7 +14,7 @@ import {reactive, onMounted, ref} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 import BaseLineEcharts from "@/module/BaseLineEcharts";
-const baseLineEcharts = reactive(new BaseLineEcharts())
+const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
 
 const sssss=reactive(       {width: '50%',height:'360px'}
 )

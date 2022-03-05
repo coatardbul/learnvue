@@ -33,6 +33,12 @@ const stock = {
         refreshDayRange: label.stock + '/scatter/refreshDayRange',
         forceRefreshDayRange: label.stock + '/scatter/forceRefreshDayRange',
         getRangeStatic:label.stock + '/scatter/getRangeStatic',
+    },
+    callAuctionScatterStatic:{
+        refreshDay: label.stock + '/scatter/upLimit/refreshDay',
+        refreshDayRange: label.stock + '/scatter/upLimit/refreshDayRange',
+        forceRefreshDayRange: label.stock + '/scatter/upLimit/forceRefreshDayRange',
+        getRangeStatic:label.stock + '/scatter/upLimit/getRangeStatic',
     }
 }
 const river = {

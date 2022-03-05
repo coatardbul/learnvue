@@ -15,6 +15,8 @@ import BaseLineEcharts from "@/module/BaseLineEcharts";
 import ConfigInfo from "@/constant/ConfigInfo";
 import Xaxis from "@/module/Xaxis";
 import YleftAxis from "@/module/YleftAxis";
+import BaseEcharts from "@/module/BaseEcharts";
+import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   components: {
@@ -39,12 +41,11 @@ export default {
   setup(props, context) {
     //初始化参数
 
-    const baseLineEcharts = reactive(new BaseLineEcharts())
+    const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
 
     function getAllStockInfoByDate() {
 
-      setLegend();
-      setGrid(baseLineEcharts,200);
+      firstInit();
 
       axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
         beginDateStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
@@ -122,6 +123,13 @@ export default {
     }
 
 
+
+    function firstInit(){
+      setLegend();
+      setGrid(baseLineEcharts,200);
+    }
+
+
     function setLegend(){
       baseLineEcharts.legend.top="top";
     }
@@ -168,12 +176,8 @@ export default {
     }
 
 
-    function clearCache() {
-      baseLineEcharts.series.length = 0
-    }
-
     onMounted(() => {
-      clearCache();
+      EchartsUtils.clearCache(baseLineEcharts);
       getAllStockInfoByDate()
     })
     return {

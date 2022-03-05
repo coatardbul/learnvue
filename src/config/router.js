@@ -22,7 +22,9 @@ const Index17 = () =>import('@/view/stock/Num17')
 const Index18 = () =>import('@/view/stock/Num18')
 const Index19 = () =>import('@/view/stock/Num19')
 const Index20 = () =>import('@/view/stock/Num20')
-// const Index21 = () =>import('@/view/stock/Num21')
+const Index21 = () =>import('@/view/stock/Num21')
+const Index22 = () =>import('@/view/stock/Num22')
+const Index23 = () =>import('@/view/stock/Num23')
 
 
 const LearnVue1 = () =>import('@/view/learn/Num1')
@@ -156,6 +158,21 @@ const routes = [
                 path: "/index20",
                 name: "index20",
                 component: Index20,
+            },
+            {
+                path: "/index21",
+                name: "index21",
+                component: Index21,
+            },
+            {
+                path: "/index22",
+                name: "index22",
+                component: Index22,
+            },
+            {
+                path: "/index23",
+                name: "index23",
+                component: Index23,
             },
             {
                 path: "/intervalStatic",

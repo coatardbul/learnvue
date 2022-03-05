@@ -15,6 +15,8 @@ import BaseLineEcharts from "@/module/BaseLineEcharts";
 import ConfigInfo from "@/constant/ConfigInfo";
 import Xaxis from "@/module/Xaxis";
 import YleftAxis from "@/module/YleftAxis";
+import BaseEcharts from "@/module/BaseEcharts";
+import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   components: {
@@ -34,7 +36,7 @@ export default {
   setup(props, context) {
     //初始化参数
 
-    const baseLineEcharts = reactive(new BaseLineEcharts())
+    const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
 
     function getAllStockInfoByDate() {
       if(!props.queryParam){
@@ -133,13 +135,8 @@ export default {
 
     }
 
-
-    function clearCache() {
-      baseLineEcharts.series.length = 0
-    }
-
     onMounted(() => {
-      clearCache();
+      EchartsUtils.clearCache(baseLineEcharts);
       getAllStockInfoByDate()
     })
     return {

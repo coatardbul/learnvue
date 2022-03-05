@@ -5,6 +5,7 @@
       <el-date-picker
           v-model="queryParam.dateRangeArray"
           type="daterange"
+          value-format="YYYY-MM-DD"
           start-placeholder="Start Date"
           end-placeholder="End Date"
       >
@@ -62,7 +63,7 @@ export default {
   setup(props, context) {
     const queryParam = reactive({
       dateRangeArray: ConfigInfo.dateUtil.rangeDateArray,
-      objectSign: ConfigInfo.emotionInfo.defaultDayObjectSign,
+      // objectSign: ConfigInfo.emotionInfo.defaultDayObjectSign,
     })
 
     function getIntervalStatic() {
