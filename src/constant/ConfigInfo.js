@@ -8,6 +8,9 @@ const emotionInfo = {
 }
 const DateFormat = {
     yyyymmddSplit: 'YYYY-MM-DD',
+    hhmmSplit:'HH:mm',
+    second:'ss',
+
 }
 
 const dateUtil={
@@ -25,9 +28,16 @@ function getBeforeEndDayStr(dateStr,num){
 function getDayStr(date){
     return  moment(date).format(DateFormat.yyyymmddSplit);
 }
+function getTimeStr(date){
+    return  moment(date).utc() .format(DateFormat.hhmmSplit);
+    // return  moment(date) .format(DateFormat.hhmmSplit);
 
+}
+function getSecond(date){
+    return  moment(date).format(DateFormat.second);
+}
 const jiangEnNum=21;
 
 export default {
-    emotionInfo, nowDate, DateFormat,getBeforeEndDayStr,dateUtil,getDayStr,jiangEnNum
+    emotionInfo, nowDate, DateFormat,getBeforeEndDayStr,dateUtil,getDayStr,jiangEnNum,getTimeStr,getSecond
 }

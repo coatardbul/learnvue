@@ -5,7 +5,7 @@ const Login = () => import('@/view/Login')
 const Index1 = () =>import('@/view/stock/Num1')
 const Index2 = () =>import('@/view/stock/Num2')
 const Index3 = () =>import('@/view/stock/stratrgy/Num3')
-const Index4 = () =>import('@/view/stock/Num4')
+const Index4 = () =>import('@/view/stock/templatedQuery/Num4')
 const Index5 = () =>import('@/view/stock/BaseLine')
 const Index6 = () =>import('@/view/stock/Num6')
 const Index7 = () =>import('@/view/stock/Num7')
@@ -23,8 +23,12 @@ const Index18 = () =>import('@/view/stock/Num18')
 const Index19 = () =>import('@/view/stock/Num19')
 const Index20 = () =>import('@/view/stock/Num20')
 const Index21 = () =>import('@/view/stock/Num21')
-const Index22 = () =>import('@/view/stock/Num22')
-const Index23 = () =>import('@/view/stock/Num23')
+const Index22 = () =>import('@/view/stock/strategyWatch/Num22')
+const Index23 = () =>import('@/view/stock/optionalPool/Num23')
+const Index24 = () =>import('@/view/stock/Num24')
+const Index25 = () =>import('@/view/stock/Num25')
+const Index26 = () =>import('@/view/stock/Num26')
+
 
 
 const LearnVue1 = () =>import('@/view/learn/Num1')
@@ -173,6 +177,21 @@ const routes = [
                 path: "/index23",
                 name: "index23",
                 component: Index23,
+            },
+            {
+                path: "/index24",
+                name: "index24",
+                component: Index24,
+            },
+            {
+                path: "/index25",
+                name: "index25",
+                component: Index25,
+            },
+            {
+                path: "/index26",
+                name: "index26",
+                component: Index26,
             },
             {
                 path: "/intervalStatic",

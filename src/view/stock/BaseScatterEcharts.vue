@@ -140,7 +140,7 @@ export default {
     function setVisualMap() {
       let visio = {
         left: 'right',
-        top: '20%',
+        top: '1%',
         dimension: 10,
         min: 0,
         max: 35,

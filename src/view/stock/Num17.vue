@@ -79,6 +79,12 @@ const jiangEnDateInfo = ref([
     type: 2,
     num: 1
   },
+  {
+    dateStr: '2022-03-09',
+    remark: '3147低点（2022-03-09）',
+    type: 2,
+    num: 1
+  },
 ])
 
 //结果集

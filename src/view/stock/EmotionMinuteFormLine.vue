@@ -16,6 +16,9 @@
     <el-form-item label="时间间隔"  v-show="showInfo.timeInterval">
       <el-input v-model="queryParam.timeInterval" type="number" placeholder=""></el-input>
     </el-form-item  >
+    <el-form-item label="时间"  v-show="showInfo.timeStr">
+      <el-input v-model="queryParam.timeStr" placeholder="HH:mm"></el-input>
+    </el-form-item>
     <el-form-item v-show="showInfo.baseButton">
       <el-button type="primary" @click.prevent="getIntervalStatic">查询</el-button>
     </el-form-item>
@@ -23,10 +26,13 @@
       <el-button type="primary" @click="reset">重置</el-button>
     </el-form-item>
     <el-form-item   v-show="showInfo.forceRefreshButton">
-      <el-button type="primary" @click="refresh"  >{{showInfo.forceRefreshName}}</el-button>
+      <el-button type="warning" @click="refresh"  >{{showInfo.forceRefreshName}}</el-button>
     </el-form-item>
     <el-form-item  v-show="showInfo.supplementRefreshButton">
-      <el-button type="primary" @click="supplementRefresh"  >{{showInfo.supplementRefreshName}}</el-button>
+      <el-button type="warning" @click="supplementRefresh"  >{{showInfo.supplementRefreshName}}</el-button>
+    </el-form-item>
+    <el-form-item  v-show="showInfo.refreshTimeButton">
+      <el-button type="warning" @click="timeRefresh"  >{{showInfo.timeRefreshName}}</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -50,9 +56,12 @@ export default {
           forceRefreshButton: false,
           objectSign:false,
           timeInterval:false,
+          timeStr:false,
           forceRefreshName: '强制刷新',
           supplementRefreshButton:false,
           supplementRefreshName:'补充刷新',
+          refreshTimeButton:false,
+          timeRefreshName:"强制更新时间点",
         }
       }
     },
@@ -94,7 +103,9 @@ export default {
     }
     function supplementRefresh() {
       context.emit('supplement-refresh', queryParam)
-
+    }
+    function timeRefresh() {
+      context.emit('time-refresh', queryParam)
     }
 
 
@@ -110,7 +121,7 @@ export default {
     }
 
     return {
-      getIntervalStatic, reset, queryParam, lastDay, afterDay,refresh,supplementRefresh
+      getIntervalStatic, reset, queryParam, lastDay, afterDay,refresh,supplementRefresh,timeRefresh
     }
   }
 }

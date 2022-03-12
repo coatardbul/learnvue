@@ -39,15 +39,35 @@ const stock = {
         refreshDayRange: label.stock + '/scatter/upLimit/refreshDayRange',
         forceRefreshDayRange: label.stock + '/scatter/upLimit/forceRefreshDayRange',
         getRangeStatic:label.stock + '/scatter/upLimit/getRangeStatic',
-    }
+    },
+    stockWatch: {
+        findAll: label.stock +'/stockStrategyWatch/findAll',
+        add:label.stock +'/stockStrategyWatch/add',
+        modify:label.stock +'/stockStrategyWatch/modify',
+        delete:label.stock +'/stockStrategyWatch/delete',
+    },
+    stockOptionalPool: {
+        findAll: label.stock +'/stockOptionalPool/findAll',
+        add:label.stock +'/stockOptionalPool/add',
+        modify:label.stock +'/stockOptionalPool/modify',
+        delete:label.stock +'/stockOptionalPool/delete',
+    },
+    stockWarnLog: {
+        findAll: label.stock +'/stockWarnLog/findAll',
+    },
+    stockQuery:{
+        strategy:label.stock + '/stockQuery/strategy',
+    },
 }
 const river = {
+
     menu: {
         getAllMenu: 'river/menu/getAllMenu',
         editMenu: 'river/menu/modify',
         addMenu: 'river/menu/add'
     },
     stockTemplate: {
+        getQuery:'river/api/stockTemplate/getQuery',
         getList: 'river/api/stockTemplate/getList',
         add:'river/api/stockTemplate/add',
         modify:'river/api/stockTemplate/modify',

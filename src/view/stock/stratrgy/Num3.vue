@@ -96,7 +96,6 @@ function deleteInfo(row){
 
 
 function getAllStockInfo(queryParam) {
-  debugger
   tableData.length=0;
   axios.post(AxiosUrl.river.stockTemplate.getList,{
     id:queryParam==null ?null:queryParam.id,
