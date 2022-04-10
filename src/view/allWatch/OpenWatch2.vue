@@ -93,7 +93,6 @@ import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDevia
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
 import TemplateQueryTable from '@/view/stock/templatedQuery/TemplateQueryTable'
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
-import UpLimitStatic from '@/view/stock/UpLimitStatic'
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";

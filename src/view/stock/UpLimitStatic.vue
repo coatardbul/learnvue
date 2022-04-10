@@ -60,7 +60,6 @@ export default {
       axios.post(AxiosUrl.stock.specialStrategy.getUpLimitInfo, {
         dateStr: props.dateStr
       }).then((res) => {
-        debugger
         upLimitList.value = res;
         res.forEach(item => {
           describeArr.value.length = 0;

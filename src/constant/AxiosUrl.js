@@ -72,7 +72,13 @@ const stock = {
     },
     specialStrategy:{
         getUpLimitInfo:label.stock + '/specialStrategy/getUpLimitInfo',
+        getOnceUpLimitStrongWeakInfo:label.stock + '/specialStrategy/getOnceUpLimitStrongWeakInfo',
+        getUpLimitTheme:label.stock + '/specialStrategy/getUpLimitTheme',
 
+
+    },
+    cookie:{
+        simpleModify:label.stock + '/cookie/simpleModify',
     }
 }
 const river = {
