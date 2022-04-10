@@ -80,8 +80,8 @@ const jiangEnDateInfo = ref([
     num: 1
   },
   {
-    dateStr: '2022-03-09',
-    remark: '3147低点（2022-03-09）',
+    dateStr: '2022-03-16',
+    remark: '3023低点（2022-03-09）',
     type: 2,
     num: 1
   },

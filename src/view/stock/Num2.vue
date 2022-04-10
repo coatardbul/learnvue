@@ -10,6 +10,7 @@ import moment from "moment";
 import axios from "axios";
 import router from "@/config/router";
 import EmotionFormLine from './EmotionMinuteFormLine'
+import AxiosUrl from "@/constant/AxiosUrl";
 
 const showInfo = reactive({
   tradeButton: true,
@@ -28,7 +29,7 @@ onMounted(() => {
 })
 
 function refreashDayInfo(queryParam) {
-  axios.post("stock/stockQuery/saveDate", {
+  axios.post(AxiosUrl.stock.stockQuery.saveDate, {
     excelTemplateId: "1483051288928321536",
     dateBeginStr: queryParam.dateStr,
     dateEndStr: queryParam.dateStr

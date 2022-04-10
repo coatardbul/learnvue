@@ -15,6 +15,8 @@ export default class BaseEcharts {
         this.tooltip = {};
         //工具栏。内置有导出图片，数据视图，动态类型切换，数据区域缩放，重置五个工具。
         this.toolbox = {};
+        //标题
+        this.title={};
         this.xAxis = [];
         this.yAxis =[];
         //图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。

@@ -1,0 +1,88 @@
+<template>
+  <BaseLineChart
+      :base-line-echarts="baseLineEcharts"
+      :char-style="charStyle"
+      v-if=" baseLineEcharts.series.length>0"
+  ></BaseLineChart>
+</template>
+
+<script>
+import BaseLineChart from "@/components/BaseLineChart";
+import {reactive, onMounted} from "vue";
+import axios from "axios";
+import AxiosUrl from "@/constant/AxiosUrl";
+import BaseLineEcharts from "@/module/BaseLineEcharts";
+import BaseEcharts from "@/module/BaseEcharts";
+import EchartsUtils from "@/module/EchartsUtils";
+
+export default {
+  components: {
+    BaseLineChart
+  },
+  props: {
+    beginDate: {
+      type: String,
+      default: null,
+    },
+    endDate: {
+      type: String,
+      default: null,
+    },
+    charStyle: {
+      type: Object,
+      default: function () {
+        return {width: '50%', height: '360px'}
+      }
+    }
+  },
+  setup(props, context) {
+    const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
+
+    function getAllStockInfoByDate() {
+      axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
+        dateBeginStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
+        dateEndStr: props.endDate == null || props.endDate.length === 0 ? '2022-12-31' : props.endDate,
+        objectEnumSign: 'day_up_limit_promotion_statistic'
+      }).then((res) => {
+        res.forEach(obj => {
+          baseLineEcharts.xAxis[0].data.push(obj.date)
+          JSON.parse(obj.objectStaticArray).forEach(v => {
+            if (v.name.indexOf("晋级率") > -1) {
+              let seriesIndex = baseLineEcharts.series.find(item => item.name == v.name);
+              if (seriesIndex) {
+                seriesIndex.data.push(v.value);
+              } else {
+                let seriesIndexDateArr = []
+                seriesIndexDateArr.push(v.value);
+                let medianArrayObject = {
+                  name: v.name,
+                  type: 'line',
+                  data: seriesIndexDateArr
+                }
+                baseLineEcharts.series.push(medianArrayObject);
+
+              }
+            }
+          })
+        })
+
+      });
+    }
+
+
+    onMounted(() => {
+      EchartsUtils.clearCache(baseLineEcharts);
+
+      getAllStockInfoByDate()
+
+    })
+    return {
+      baseLineEcharts, getAllStockInfoByDate
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

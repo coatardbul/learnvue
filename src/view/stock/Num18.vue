@@ -1,4 +1,12 @@
 <template>
+  <EmotionFormLine
+      ref="queryRef"
+      :show-info="showInfo"
+      @refresh="refreshDate"
+      @query="getDayDetail"
+      @supplement-refresh="deleteDate"
+  ></EmotionFormLine>
+
   <el-calendar ref="calendar"    v-model="value">
     <template #header="{ date }">
       <span>Custom header content</span>
@@ -38,24 +46,55 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from 'vue'
+import {nextTick, onMounted, reactive, ref, watch} from 'vue'
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 import ConfigInfo from "@/constant/ConfigInfo";
 import moment from "moment";
+import EmotionFormLine from './EmotionMinuteFormLine'
+
+
+const queryRef=ref({})
+
+
+
 const content=ref()
 const value = ref(new Date())
 const  time =ref()
 const tableData=reactive([])
 const dateInfo=ref()
 const calendar = ref()
+const showInfo=ref({
+  tradeButton: true,
+  objectSign:true,
+  forceRefreshButton: true,
+  forceRefreshName: '强制刷新',
+  supplementRefreshButton:true,
+  supplementRefreshName:'删除数据',
+})
 function selectDate (val)  {
   calendar.value.selectDate(val)
-
   tableData.length=0
   getDayDetail();
 
 }
+
+
+
+function refreshDate(queryParam) {
+  axios.post(AxiosUrl.stock.stockDayStatic.refreshDay, {
+    dateStr: queryParam == null || queryParam.dateStr == null ? ConfigInfo.nowDate : queryParam.dateStr,
+    objectEnumSign:queryRef.value.queryParam.objectSign
+  }).then();
+}
+function deleteDate(queryParam) {
+  axios.post(AxiosUrl.stock.stockDayStatic.deleteDay, {
+    dateStr: queryParam == null || queryParam.dateStr == null ? ConfigInfo.nowDate : queryParam.dateStr,
+    objectEnumSign:queryRef.value.queryParam.objectSign
+  }).then();
+}
+
+
 
 function  getContent(data){
   let obj=   tableData.find(function (item){
@@ -65,11 +104,13 @@ function  getContent(data){
   return  obj;
 }
 
-function getDayDetail(){
+ function getDayDetail(queryTemp) {
+  tableData.length = 0;
   axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
-    beginDateStr: moment(value.value).format('YYYY-MM')+'-01',
-    endDateStr: moment(value.value).format('YYYY-MM')+'-31',
-    objectEnumSign:'day_up_dow_limit_statistic',
+    beginDateStr: moment(value.value).format('YYYY-MM') + '-01',
+    endDateStr: moment(value.value).format('YYYY-MM') + '-31',
+    objectEnumSign: queryTemp != null ? queryTemp.objectSign : queryRef.value.queryParam.objectSign
+    ,
   }).then((res) => {
     res.forEach(v => {
       tableData.push(v);

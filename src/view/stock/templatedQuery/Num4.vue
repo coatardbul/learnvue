@@ -2,10 +2,11 @@
   <TemplatedQueryFormLine ref="queryRef"
                           @query="getAllStockQuery"
                           @query-detail-list="getAllStockInfo">
-
   </TemplatedQueryFormLine>
   <div v-show="showInfo.tableIsShow">
     <el-button type="text" @click.prevent="addOptionalStock" round>+自选</el-button>
+    <el-button type="text" @click.prevent="addVolPrice" round>+量价时空</el-button>
+
     <el-table :data="tableData"
               border
               highlight-current-row
@@ -51,9 +52,26 @@ const showInfo = reactive({
   linkIsShow: false,
 })
 const mulitSelectArr = ref([])
+const templateList = ref([])
+
 onMounted(() => {
-  queryRef.value.queryParam.id = router.currentRoute.value.query.erb
-  // input.value=this.$router.query.erb==null?'':this.$router.query.erb
+  if(router.currentRoute.value.query.erb){
+    queryRef.value.queryParam.id = router.currentRoute.value.query.erb.split(',')
+  }
+  if(router.currentRoute.value.query.dateStr){
+    queryRef.value.queryParam.dateStr=router.currentRoute.value.query.dateStr
+  }
+  axios.post(AxiosUrl.river.stockTemplate.getList, {
+  }).then((res) => {
+    templateList.value.length=0
+    res.forEach(templateInfo=>{
+      let templateTemp={
+        label:templateInfo.name,
+        value:templateInfo.id,
+      }
+      templateList.value.push(templateTemp);
+    })
+  });
 })
 
 function selectionChange(val) {
@@ -72,8 +90,23 @@ function addOptionalStock() {
       });
     })
   }
-
 }
+
+
+function addVolPrice() {
+  if (mulitSelectArr.value.length > 0) {
+    mulitSelectArr.value.forEach(item => {
+      axios.post(AxiosUrl.stock.stockValPrice.execute, {
+        code: item.code,
+        dateStr: queryRef.value.queryParam.dateStr,
+      }).then((res) => {
+        getMsg.value = res
+      });
+    })
+  }
+}
+
+
 
 function formatter(row, column, cellValue, index) {
   if (column.property.indexOf('市值') != -1) {
@@ -124,11 +157,11 @@ function sortColumn(a, b, prop) {
 function getAllStockQuery() {
   showInfo.tableIsShow = false
   showInfo.linkIsShow = true
-  if (queryRef.value.queryParam.id == null || queryRef.value.queryParam.id == 0) {
+  if (queryRef.value.queryParam.id == null || queryRef.value.queryParam.id.length == 0) {
     queryRef.value.queryParam.id = '1481302460344696832'
   }
   axios.post(AxiosUrl.river.stockTemplate.getQuery, {
-    id: queryRef.value.queryParam.id,
+    id: queryRef.value.queryParam.id.join(),
     dateStr: queryRef.value.queryParam.dateStr,
     timeStr: queryRef.value.queryParam.timeStr,
     stockCode: queryRef.value.queryParam.stockCode,
@@ -146,7 +179,7 @@ function getAllStockInfo() {
     queryRef.value.queryParam.id = '1481302460344696832'
   }
   axios.post(AxiosUrl.stock.stockQuery.strategy, {
-    riverStockTemplateId: queryRef.value.queryParam.id,
+    riverStockTemplateId: queryRef.value.queryParam.id.join(),
     dateStr: queryRef.value.queryParam.dateStr,
     timeStr: queryRef.value.queryParam.timeStr,
     stockCode: queryRef.value.queryParam.stockCode,
@@ -160,6 +193,7 @@ function getAllStockInfo() {
       sortArr(keyArr, 'code','market_code');
       sortArr(keyArr, '股票简称');
       sortArr(keyArr, '竞价涨幅');
+      sortArr(keyArr, '竞价金额','{*}');
       sortArr(keyArr, '竞价金额','{/}');
       sortArr(keyArr, '{/}');
       sortArr(keyArr, '涨幅');

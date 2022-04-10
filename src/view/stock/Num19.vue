@@ -54,7 +54,7 @@ function getDayStatic(){
 
 function forceUpdateDate(queryParam){
 
-  axios.post(AxiosUrl.stock.marketValueScatterStatic.forceRefreshDayRange, {
+  axios.post(AxiosUrl.stock.scatterStatic.forceRefreshDayRange, {
     beginDate: queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[0]:queryParam.dateRangeArray[0],
     endDate:queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[1]:queryParam.dateRangeArray[1],
     objectEnumSign: 'day_market_Value_statistic'
@@ -64,7 +64,7 @@ function forceUpdateDate(queryParam){
 
 function updateDate(queryParam){
 
-  axios.post(AxiosUrl.stock.marketValueScatterStatic.refreshDayRange, {
+  axios.post(AxiosUrl.stock.scatterStatic.refreshDayRange, {
     beginDate: queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[0]:queryParam.dateRangeArray[0],
     endDate:queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[1]:queryParam.dateRangeArray[1],
     objectEnumSign: 'day_market_Value_statistic'

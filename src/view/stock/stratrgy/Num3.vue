@@ -20,9 +20,19 @@
         <span>{{ scope.row.exampleStr }}</span>
       </template>
     </el-table-column>
-    <el-table-column  label="脚本" width="500"  :show-overflow-tooltip="true">
+    <el-table-column  label="脚本" width="300"  :show-overflow-tooltip="true">
       <template #default="scope">
         <span>{{ scope.row.scriptStr }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column  label="指定例子当日日期" width="300"  :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span>{{ scope.row.todayStr }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column  label="备注" width="300"  :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span>{{ scope.row.remark }}</span>
       </template>
     </el-table-column>
     <el-table-column  label="点击量" width="120"  :show-overflow-tooltip="true">

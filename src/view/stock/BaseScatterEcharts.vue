@@ -1,13 +1,13 @@
 <template>
-  <BaseLineChartNew
+  <BaseLineChart
       :base-line-echarts="baseLineEcharts"
       :char-style="charStyle"
       v-if=" baseLineEcharts.series.length>0"
-  ></BaseLineChartNew>
+  ></BaseLineChart>
 </template>
 
 <script>
-import BaseLineChartNew from "@/components/BaseLineChartNew";
+import BaseLineChart from "@/components/BaseLineChart";
 import {reactive, onMounted} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
@@ -19,7 +19,7 @@ import YleftAxis from "@/module/YleftAxis";
 
 export default {
   components: {
-    BaseLineChartNew
+    BaseLineChart
   },
   props: {
     beginDate: {
@@ -42,7 +42,7 @@ export default {
 
 
     function getAllStockInfoByDate() {
-      axios.post(AxiosUrl.stock.marketValueScatterStatic.getRangeStatic, {
+      axios.post(AxiosUrl.stock.scatterStatic.getRangeStatic, {
         dateBeginStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
         dateEndStr: props.endDate == null || props.endDate.length === 0 ? '2022-12-31' : props.endDate,
         objectEnumSign: 'day_call_auction_statistic'

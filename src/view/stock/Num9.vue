@@ -99,6 +99,7 @@
 import {ref, reactive,onMounted} from "vue";
 import axios from "axios";
 import moment from "moment";
+import AxiosUrl from "@/constant/AxiosUrl";
 
 const tableData = reactive([])
 const dateRangeRefreshArray=ref([])
@@ -111,7 +112,7 @@ onMounted(() => {
 })
 
 function handleClick(row){
-  axios.post("stock/stockQuery/saveDate", {
+  axios.post(AxiosUrl.stock.stockQuery.saveDate, {
     excelTemplateId: "1483051288928321536",
     dateBeginStr: row.date,
     dateEndStr: row.date
@@ -126,7 +127,7 @@ function handleClick(row){
 function refreshAllStockInfo(){
   let beginDate = moment(dateRangeRefreshArray.value[0]).format("YYYY-MM-DD")
   let endDate = moment(dateRangeRefreshArray.value[1]).format("YYYY-MM-DD")
-  axios.post("stock/stockQuery/saveDate", {
+  axios.post(AxiosUrl.stock.stockQuery.saveDate, {
     excelTemplateId: "1483051288928321536",
     dateBeginStr: beginDate,
     dateEndStr: endDate

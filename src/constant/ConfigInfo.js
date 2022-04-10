@@ -4,7 +4,7 @@ const emotionInfo = {
     defaultMinuterObjectSign: 'minute_emotion_statistic',
     defaultDayObjectSign: 'day_up_dow_limit_statistic',
 
-    defaultTimeInterval: 5
+    defaultTimeInterval: 2
 }
 const DateFormat = {
     yyyymmddSplit: 'YYYY-MM-DD',
@@ -29,7 +29,7 @@ function getDayStr(date){
     return  moment(date).format(DateFormat.yyyymmddSplit);
 }
 function getTimeStr(date){
-    return  moment(date).utc() .format(DateFormat.hhmmSplit);
+    return  moment(date) .format(DateFormat.hhmmSplit);
     // return  moment(date) .format(DateFormat.hhmmSplit);
 
 }

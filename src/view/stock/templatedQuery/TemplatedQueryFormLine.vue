@@ -1,17 +1,31 @@
 <template>
   <el-form :inline="true" :model="queryParam" class="demo-form-inline">
-    <el-form-item label="id"  >
-      <el-input v-model="queryParam.id"  ></el-input>
+    <el-form-item>
+      <el-select
+          filterable
+          v-model="queryParam.id"
+          multiple
+          placeholder="Select"
+          style="width: 240px"
+      >
+        <el-option
+            v-for="item in templateList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
     </el-form-item>
-    <el-form-item >
-      <el-button type="success" round @click="lastDay" >←</el-button>
+
+    <el-form-item>
+      <el-button type="success" round @click="lastDay">←</el-button>
     </el-form-item>
     <el-form-item label="日期">
       <el-date-picker v-model="queryParam.dateStr" type="date" value-format="YYYY-MM-DD" placeholder="Pick a day">
       </el-date-picker>
     </el-form-item>
-    <el-form-item  >
-      <el-button type="success" round @click="afterDay" >→</el-button>
+    <el-form-item>
+      <el-button type="success" round @click="afterDay">→</el-button>
     </el-form-item>
     <el-form-item label="时间">
       <el-input v-model="queryParam.timeStr" placeholder="HH:mm"></el-input>
@@ -33,7 +47,7 @@
 
 <script>
 import ConfigInfo from '/src/constant/ConfigInfo'
-import {reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 
@@ -43,6 +57,7 @@ export default {
     const queryParam = reactive({
       dateStr: ConfigInfo.nowDate,
     })
+    const templateList = ref([])
 
     function query() {
       context.emit('query', queryParam)
@@ -52,12 +67,13 @@ export default {
       context.emit('query-detail-list', queryParam)
 
     }
+
     function lastDay() {
       axios.post(AxiosUrl.river.calendar.getSpecialDay, {
         dateStr: queryParam.dateStr,
         dateProp: 1,
         addDay: -1
-      }).then((res)=>{
+      }).then((res) => {
         queryParam.dateStr = res
         queryDetailList();
 
@@ -69,11 +85,12 @@ export default {
         dateStr: queryParam.dateStr,
         dateProp: 1,
         addDay: 1
-      }).then((res)=>{
+      }).then((res) => {
         queryParam.dateStr = res
         queryDetailList();
       });
     }
+
     function reset() {
       //清空reactive引用的对象
       Object.keys(queryParam).map(key => {
@@ -81,13 +98,27 @@ export default {
       })
     }
 
+    onMounted(() => {
+      axios.post(AxiosUrl.river.stockTemplate.getList, {}).then((res) => {
+        templateList.value.length = 0
+        res.forEach(templateInfo => {
+          let templateTemp = {
+            label: templateInfo.name,
+            value: templateInfo.id,
+          }
+          templateList.value.push(templateTemp);
+        })
+      });
+    })
     return {
-      query, reset, queryParam, queryDetailList,lastDay,afterDay
+      query, reset, queryParam, queryDetailList, lastDay, afterDay, templateList
     }
   }
 }
 </script>
 
 <style scoped>
-
+.el-select .el-input__inner {
+  vertical-align: bottom !important;
+}
 </style>

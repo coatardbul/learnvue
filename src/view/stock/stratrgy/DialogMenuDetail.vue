@@ -5,6 +5,7 @@
   </el-button
   >
   <el-dialog v-model="dialogFormVisible" title="策略问句信息" append-to-body>
+    <span>支持：1.YYYY年MM月DD日 2.HH点MM分 3.包含001001</span>
     <el-form :model="strategyInfo">
       <el-form-item label="id" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.id" ></el-input>
@@ -13,10 +14,16 @@
         <el-input v-model="strategyInfo.name" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="例子" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.exampleStr"  type="textarea"></el-input>
+        <el-input v-model="strategyInfo.exampleStr" autosize type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="指定例子当日日期" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.todayStr" autosize type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="脚本" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.scriptStr" type="textarea"></el-input>
+        <el-input v-model="strategyInfo.scriptStr" autosize type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.remark" autosize type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="点击量" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.hotValue" autocomplete="off"></el-input>
@@ -59,7 +66,9 @@ export default {
           id: '',
           name: '',
           exampleStr:'',
+          todayStr:'',
           scriptStr: '',
+          remark:'',
           hotValue: '',
         }
       }
@@ -77,7 +86,9 @@ export default {
         id: props.strategyInfo.id,
         name: props.strategyInfo.name,
         exampleStr: props.strategyInfo.exampleStr,
+        todayStr: props.strategyInfo.todayStr,
         scriptStr: props.strategyInfo.scriptStr,
+        remark: props.strategyInfo.remark,
         hotValue: props.strategyInfo.hotValue,
       }).then()
       dialogFormVisible.value = false

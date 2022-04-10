@@ -1,5 +1,8 @@
 <template>
-  <div class="gua-lists">
+  <div class="huangdi_jj">
+
+
+  <div class="gua-lists"   style="margin-left: -0.1rem; overflow: hidden">
     <div class="guaitem">
       <el-link href="https://www.k366.com/gua/1200000-11-01.htm" target="_blank">
         <div class="guatu_item_1"></div>
@@ -703,8 +706,8 @@
         <div class="guatu_item_0"></div>
         <div class="gua_name">火水未济</div>
       </a>
-      11
     </div>
+  </div>
   </div>
 </template>
 
@@ -719,6 +722,40 @@ export default {
   display: inline-block;
   width: 12.5%;
   height: 80px;
+}
+
+.huangdi_jj {
+  overflow: hidden;
+  margin-top: 0.2rem;
+  background: #fff;
+  padding-bottom: 0.3rem;
+}
+.gua_name {
+  font-size: 0.28rem;
+  color: #666666;
+  text-align: center;
+  margin-top: 0.1rem;
+  margin-left: 0.2rem;
+}
+/*.guaitem {*/
+/*  width: 1.5rem;*/
+/*  float: left;*/
+/*  margin-top: 0.3rem;*/
+/*  margin-left: 0.4rem;*/
+/*}*/
+.guatu_item_1{
+  background-image: url(../images/guatu.png);
+  width: 1.3rem;
+  height: 0.16rem;
+  margin: 0rem 0.2rem 0.08rem 0.2rem;
+}
+.guatu_item_0{
+  background-image: url(../images/guatu.png);
+  width: 1.3rem;
+  height: 0.16rem;
+  margin: 0rem 0.2rem 0.08rem 0.2rem;
+  background-position: 0rem -0.16rem;
+  background-size: 100%;
 }
 
 

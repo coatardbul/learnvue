@@ -1,13 +1,13 @@
 <template>
-  <BaseLineChartNew
+  <BaseLineChart
       :base-line-echarts="baseLineEcharts"
       :char-style="charStyle"
       v-if=" baseLineEcharts.series.length>0"
-  ></BaseLineChartNew>
+  ></BaseLineChart>
 </template>
 
 <script>
-import BaseLineChartNew from "@/components/BaseLineChartNew";
+import BaseLineChart from "@/components/BaseLineChart";
 import {reactive, onMounted} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
@@ -20,7 +20,7 @@ import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   components: {
-    BaseLineChartNew
+    BaseLineChart
   },
   props: {
     charStyle: {
@@ -43,10 +43,10 @@ export default {
         return
       }
       setLegend();
-      setGrid(baseLineEcharts,300);
+      setGrid(baseLineEcharts,parseInt(props.charStyle.height.replace('px',''))/2.3);
       axios.post(AxiosUrl.stock.stockMinuteStatic.getDayDetail, {
         dateStr: props.queryParam == null || props.queryParam.dateStr == null ? ConfigInfo.nowDate : props.queryParam.dateStr,
-        objectEnumSign: props.queryParam == null || props.queryParam.objectSign == null ? ConfigInfo.emotionInfo.defaultMinuterObjectSign : props.queryParam.objectSign,
+        objectEnumSign:  ConfigInfo.emotionInfo.defaultMinuterObjectSign ,
         timeInterval: props.queryParam == null || props.queryParam.timeInterval == null ? ConfigInfo.emotionInfo.defaultTimeInterval : props.queryParam.timeInterval
       }).then((res) => {
         if (res == null) {
@@ -126,7 +126,7 @@ export default {
           height: num+'px'
         }
         if(i==0){
-          sb.top = 50 + 'px';
+          sb.top = 25 + 'px';
         }else {
           sb.top = 1.25* i* num + 'px';
         }

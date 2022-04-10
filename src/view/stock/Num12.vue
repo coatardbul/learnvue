@@ -4,9 +4,9 @@
   </div>
   <el-table :data="tableData" border highlight-current-row
             style="width: 100%">
-    <el-table-column label="id" width="180">
+    <el-table-column label="id" width="180" >
       <template #default="scope">
-        <router-link :to="{path:'/intervalTime',query:{erb:scope.row.id}}">{{scope.row.id }}</router-link>
+        <span>{{ scope.row.id}}</span>
       </template>
     </el-table-column>
     <el-table-column label="统计纬度" width="100">
@@ -19,9 +19,9 @@
         <span>{{ scope.row.objectEnumSign }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="间隔分钟数" width="200">
+    <el-table-column label="说明" width="200">
       <template #default="scope">
-        <span>{{ scope.row.timeInterval }}</span>
+        <span>{{ scope.row.remark }}</span>
       </template>
     </el-table-column>
     <el-table-column label="排序信息" width="200">
@@ -49,7 +49,7 @@ onMounted(() => {
 })
 
 function getIntervalStatic() {
-  axios.post(AxiosUrl.stock.staticTemplate.findAll).then((res) => {
+  axios.post(AxiosUrl.stock.staticTemplate.findAll,{}).then((res) => {
     res.forEach(v => {
       tableData.push(v);
     })

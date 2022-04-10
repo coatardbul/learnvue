@@ -6,6 +6,7 @@
                    @refresh="refreshMinuterDate"
                    @supplement-refresh="supplementRefreshMinuterDate"
                    @time-refresh="refreshTimeMinuterDate"
+                  @filter-date="filterDate"
   ></EmotionFormLine>
 
   <BaseMintureStatistic
@@ -20,18 +21,17 @@
 import { onMounted, ref} from "vue";
 import AxiosUrl from '/src/constant/AxiosUrl'
 import axios from "axios";
-
+import { ElMessage } from 'element-plus'
 import ConfigInfo from '/src/constant/ConfigInfo'
 import EmotionFormLine from './EmotionMinuteFormLine'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 
-const charStypeUpDown={width: '100%', height: '5000px'};
+const charStypeUpDown={width: '100%', height: '700px'};
 const time =ref()
 const showInfo=ref({
   tradeButton: true,
   baseButton: true,
   forceRefreshButton: true,
-  objectSign:true,
   timeInterval:true,
   timeStr:true,
   forceRefreshName: '强制刷新',
@@ -39,6 +39,8 @@ const showInfo=ref({
   supplementRefreshName:'补充刷新',
   refreshTimeButton:true,
   timeRefreshName:"强制更新时间点",
+  filterDateButton:true,
+  filterDateName:"过滤数据",
 })
 
 const queryRef=ref()
@@ -72,20 +74,28 @@ function getIntervalStatic(queryParamTemp) {
 }
 
 function refreshMinuterDate(queryParam) {
-  axios.post(AxiosUrl.stock.stockMinuteStatic.refreshDay, {
+  axios.post(AxiosUrl.stock.stockMinuteStatic.forceRefreshDay, {
     dateStr: queryParam == null || queryParam.dateStr == null ? ConfigInfo.nowDate : queryParam.dateStr,
-    objectEnumSign: queryParam == null || queryParam.objectSign == null ? ConfigInfo.emotionInfo.defaultMinuterObjectSign : queryParam.objectSign,
+    objectEnumSign:  ConfigInfo.emotionInfo.defaultMinuterObjectSign ,
     timeInterval: queryParam == null || queryParam.timeInterval == null ? ConfigInfo.emotionInfo.defaultTimeInterval : queryParam.timeInterval
   }).then();
 }
+
+function filterDate(queryParam) {
+  axios.post(AxiosUrl.stock.stockMinuteStatic.filterDate, {
+    dateStr: queryParam == null || queryParam.dateStr == null ? ConfigInfo.nowDate : queryParam.dateStr,
+    objectEnumSign:  ConfigInfo.emotionInfo.defaultMinuterObjectSign ,
+  }).then();
+}
+
 function refreshTimeMinuterDate(queryParam) {
   if(queryParam == null || queryParam.timeStr == null){
-    alert("时间不能为空");
+    ElMessage.error('时间不能为空')
     return;
   }
   axios.post(AxiosUrl.stock.stockMinuteStatic.refreshDay, {
     dateStr: queryParam == null || queryParam.dateStr == null ? ConfigInfo.nowDate : queryParam.dateStr,
-    objectEnumSign: queryParam == null || queryParam.objectSign == null ? ConfigInfo.emotionInfo.defaultMinuterObjectSign : queryParam.objectSign,
+    objectEnumSign:  ConfigInfo.emotionInfo.defaultMinuterObjectSign ,
     timeStr:  queryParam.timeStr
   }).then();
 }
@@ -96,7 +106,7 @@ function refreshTimeMinuterDate(queryParam) {
 function supplementRefreshMinuterDate(queryParam) {
   axios.post(AxiosUrl.stock.stockMinuteStatic.supplementRefreshDay, {
     dateStr: queryParam == null || queryParam.dateStr == null ? ConfigInfo.nowDate : queryParam.dateStr,
-    objectEnumSign: queryParam == null || queryParam.objectSign == null ? ConfigInfo.emotionInfo.defaultMinuterObjectSign : queryParam.objectSign,
+    objectEnumSign:  ConfigInfo.emotionInfo.defaultMinuterObjectSign ,
     timeInterval: queryParam == null || queryParam.timeInterval == null ? ConfigInfo.emotionInfo.defaultTimeInterval : queryParam.timeInterval
   }).then();
 }
@@ -111,10 +121,7 @@ function clearDate() {
 }
 
 onMounted(() => {
-
   queryParam.value=queryRef.value.queryParam
-  time.value=new Date();
-
 })
 </script>
 

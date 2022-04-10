@@ -1,31 +1,33 @@
 <template>
-
+  <el-row>
+    <el-col :span="24"><div class="grid-content" /></el-col>
+  </el-row>
+  <el-row :gutter="20">
+    <el-col :span="12"><div class=" bg-purple" /></el-col>
+    <el-col :span="12"><div class=" bg-purple" /></el-col>
+  </el-row>
 
 </template>
 
-<script  setup>
-import { ref } from 'vue'
-
-
-
-
-</script>
-<style scoped>
-.demo-radius .title {
-  color: var(--el-text-color-regular);
-  font-size: 18px;
-  margin: 10px 0;
+<style>
+.el-row {
+  margin-bottom: 30px;
 }
-.demo-radius .value {
-  color: var(--el-text-color-primary);
-  font-size: 16px;
-  margin: 10px 0;
+
+.bg-purple {
+  border-radius: 4px;
+  min-height: 36px;
+  background-color: #18bd18;}
+.bg-purple-light {
+  background: #e5e9f2;
 }
-.demo-radius .radius {
-  height: 40px;
-  width: 70%;
-  border: 1px solid var(--el-border-color-base);
-  border-radius: 0;
-  margin-top: 20px;
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+  background-color: #ce1121;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
-  <BaseLineChartNew
+  <BaseLineChart
       :base-line-echarts="baseLineEcharts"
       :char-style="charStyle"
       v-if=" baseLineEcharts.series.length>0"
-  ></BaseLineChartNew>
+  ></BaseLineChart>
 </template>
 
 <script>
-import BaseLineChartNew from "@/components/BaseLineChartNew";
+import BaseLineChart from "@/components/BaseLineChart";
 import {reactive, onMounted} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
@@ -19,7 +19,7 @@ import YleftAxis from "@/module/YleftAxis";
 
 export default {
   components: {
-    BaseLineChartNew
+    BaseLineChart
   },
   props: {
 

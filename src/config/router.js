@@ -1,5 +1,11 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
+const AllWatch = () => import('@/view/allWatch/OpenWatch')
+const OpenWatch1 = () => import('@/view/allWatch/OpenWatch1')
+const OpenWatch2 = () => import('@/view/allWatch/OpenWatch2')
+
+const CloseWatch = () => import('@/view/allWatch/CloseWatch')
+
 const Home = () => import('@/view/layout/Home')
 const Login = () => import('@/view/Login')
 const Index1 = () =>import('@/view/stock/Num1')
@@ -26,8 +32,18 @@ const Index21 = () =>import('@/view/stock/Num21')
 const Index22 = () =>import('@/view/stock/strategyWatch/Num22')
 const Index23 = () =>import('@/view/stock/optionalPool/Num23')
 const Index24 = () =>import('@/view/stock/Num24')
-const Index25 = () =>import('@/view/stock/Num25')
+const Index25 = () =>import('@/view/stock/moduleFuture/Num25')
 const Index26 = () =>import('@/view/stock/Num26')
+const Index27 = () =>import('@/view/stock/Num27')
+const Index28 = () =>import('@/view/stock/Num28')
+const Index29 = () =>import('@/view/stock/Num29')
+const Index30 = () =>import('@/view/stock/Num30')
+const Index31 = () =>import('@/view/stock/Num31')
+const Index32 = () =>import('@/view/stock/Num32')
+const Index33 = () =>import('@/view/stock/Num33')
+const Index34 = () =>import('@/view/stock/Num34')
+const Index35 = () =>import('@/view/stock/Num35')
+const Index36 = () =>import('@/view/stock/Num36')
 
 
 
@@ -57,6 +73,26 @@ const routes = [
         path: "/Login",
         name: "Login",
         component: Login,
+    },
+    {
+        path: "/AllWatch",
+        name: "AllWatch",
+        component: AllWatch,
+    },
+    {
+        path: "/OpenWatch1",
+        name: "OpenWatch1",
+        component: OpenWatch1,
+    },
+    {
+        path: "/OpenWatch2",
+        name: "OpenWatch2",
+        component: OpenWatch2,
+    },
+    {
+        path: "/CloseWatch",
+        name: "CloseWatch",
+        component: CloseWatch,
     },
     {
         path: "/",
@@ -192,6 +228,56 @@ const routes = [
                 path: "/index26",
                 name: "index26",
                 component: Index26,
+            },
+            {
+                path: "/index27",
+                name: "index27",
+                component: Index27,
+            },
+            {
+                path: "/index28",
+                name: "index28",
+                component: Index28,
+            },
+            {
+                path: "/index29",
+                name: "index29",
+                component: Index29,
+            },
+            {
+                path: "/index30",
+                name: "index30",
+                component: Index30,
+            },
+            {
+                path: "/index31",
+                name: "index31",
+                component: Index31,
+            },
+            {
+                path: "/index32",
+                name: "index32",
+                component: Index32,
+            },
+            {
+                path: "/index33",
+                name: "index33",
+                component: Index33,
+            },
+            {
+                path: "/index34",
+                name: "index34",
+                component: Index34,
+            },
+            {
+                path: "/index35",
+                name: "index35",
+                component: Index35,
+            },
+            {
+                path: "/index36",
+                name: "index36",
+                component: Index36,
             },
             {
                 path: "/intervalStatic",

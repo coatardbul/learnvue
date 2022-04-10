@@ -1,5 +1,6 @@
 import axios from "axios";
 import qs from "qs";
+import { ElMessage } from 'element-plus'
 
 // axios.defaults.baseURL = ''  //正式
 // axios.defaults.baseURL = 'api/river' //测试
@@ -24,7 +25,7 @@ axios.interceptors.response.use(
             if(response.data &&response.data.code==200){
                 return Promise.resolve(response.data.data);
             }else {
-                alert(`500 异常请求：`)
+                ElMessage.error(response.data.message)
                 return Promise.reject(response.data.message);
             }
         } else {
@@ -32,7 +33,7 @@ axios.interceptors.response.use(
         }
     },
     error => {
-        alert(`异常请求：${JSON.stringify(error.message)}`)
+        ElMessage.error(`异常请求：${JSON.stringify(error.message)}`)
     }
 );
 export default {

@@ -1,13 +1,13 @@
 <template>
-  <BaseLineChartNew
+  <BaseLineChart
       :base-line-echarts="baseLineEcharts"
       :char-style="charStyle"
       v-if=" baseLineEcharts.series.length>0"
-  ></BaseLineChartNew>
+  ></BaseLineChart>
 </template>
 
 <script>
-import BaseLineChartNew from "@/components/BaseLineChartNew";
+import BaseLineChart from "@/components/BaseLineChart";
 import {reactive, onMounted} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
@@ -20,7 +20,7 @@ import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   components: {
-    BaseLineChartNew
+    BaseLineChart
   },
   props: {
     beginDate: {
@@ -34,22 +34,21 @@ export default {
     charStyle: {
       type: Object,
       default: function () {
-        return {width: '50%', height: '3600px'}
+        return {width: '100%', height: '1000px'}
       }
     }
   },
   setup(props, context) {
     //初始化参数
-
     const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
 
     function getAllStockInfoByDate() {
-
+      //第一次初始化
       firstInit();
 
       axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
-        beginDateStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
-        endDateStr: props.endDate == null || props.endDate.length === 0 ? '2022-12-31' : props.endDate,
+        dateBeginStr: props.beginDate == null || props.beginDate.length === 0 ? '2022-01-01' : props.beginDate,
+        dateEndStr: props.endDate == null || props.endDate.length === 0 ? '2022-12-31' : props.endDate,
         objectEnumSign: props.queryParam == null || props.queryParam.objectSign.length == 0 ? ConfigInfo.emotionInfo.defaultDayObjectSign : props.queryParam.objectSign,
       }).then((res) => {
         if (res == null) {
@@ -84,15 +83,14 @@ export default {
                     seriesIndex.xAxisIndex = 1;
                     seriesIndex.yAxisIndex = 1;
                   }
-                  if (v.indexOf("炸板") >= 0 || v.indexOf("涨停") >= 0) {
+                  if (v.indexOf("连涨") >= 0) {
                     seriesIndex.xAxisIndex = 2;
                     seriesIndex.yAxisIndex = 2;
                   }
-                  if (v.indexOf("连涨") >= 0) {
+                  if (v.indexOf("炸板") >= 0 || v.indexOf("涨停") >= 0) {
                     seriesIndex.xAxisIndex = 3;
                     seriesIndex.yAxisIndex = 3;
                   }
-
                   if (v.indexOf("跌停") >= 0 || v.indexOf("未回封") >= 0) {
                     seriesIndex.data.push(0 - b.value)
                   } else {
@@ -110,7 +108,7 @@ export default {
           let data = baseLineEcharts.xAxis[0].data;
           let xaxis = new Xaxis();
           xaxis.gridIndex = i;
-              xaxis.data = data;
+          xaxis.data = data;
           baseLineEcharts.xAxis.push(xaxis);
         }
 
@@ -123,52 +121,53 @@ export default {
     }
 
 
-
-    function firstInit(){
+    function firstInit() {
       setLegend();
-      setGrid(baseLineEcharts,200);
+      let heightStr = props.charStyle.height.replace('px', '');
+      let heightIndexNum = (Number(heightStr) / 6).toFixed(0);
+      setGrid(baseLineEcharts, heightIndexNum);
     }
 
 
-    function setLegend(){
-      baseLineEcharts.legend.top="top";
+    function setLegend() {
+      baseLineEcharts.legend.top = "top";
     }
 
     function setGrid(baseLineEcharts, num) {
       baseLineEcharts.grid.length = 0;
-      let totalTop=0;
-      let onTop=40;
-      let intervalHeight=40;
+      let totalTop = 0;
+      let onTop = 40;
+      let intervalHeight = 40;
       for (let i = 0; i < 4; i++) {
         let sb = {
           left: 60,
           right: 50,
-          height: num+'px'
+          height: num + 'px'
         }
-        if(i==0){
+        if (i == 0) {
           sb.top = onTop + 'px';
-          sb.height=0.8*num;
-          totalTop+=onTop;
-          totalTop+=sb.height;
+          sb.height = 0.8 * num;
+          totalTop += onTop;
+          totalTop += sb.height;
         }
-        if(i==1){
+        if (i == 1) {
           sb.top = totalTop + 'px';
-          sb.height=0.7*num;
-          totalTop+=intervalHeight;
-          totalTop+=sb.height;
+          sb.height = 0.7 * num;
+          totalTop += intervalHeight;
+          totalTop += sb.height;
         }
-        if(i==2){
+        if (i == 2) {
           sb.top = totalTop + 'px';
-          sb.height=2*num;
-          totalTop+=intervalHeight;
-          totalTop+=sb.height;
+          sb.height = 2 * num;
+          totalTop += intervalHeight;
+          totalTop += sb.height;
         }
 
-        if(i==3){
+        if (i == 3) {
           sb.top = totalTop + 'px';
-          sb.height=1.5*num;
-          totalTop+=intervalHeight;
-          totalTop+=sb.height;
+          sb.height = 1.5 * num;
+          totalTop += intervalHeight;
+          totalTop += sb.height;
         }
         baseLineEcharts.grid.push(sb);
       }

@@ -1,10 +1,14 @@
 <template>
-
+<!--    <el-radio-group v-model="isCollapse" style="margin-top: 10px">-->
+<!--      <el-radio-button :label="false">expand</el-radio-button>-->
+<!--      <el-radio-button :label="true">collapse</el-radio-button>-->
+<!--    </el-radio-group>-->
   <el-menu
       active-text-color="#ffd04b"
       background-color="#545c64"
       class="el-menu-vertical-demo"
       default-active="2"
+      :collapse="isCollapse"
       text-color="#fff"
       router
   >
@@ -61,6 +65,7 @@ const list = ref([
   }
 ])
 
+const isCollapse=ref(false)
 function getMenuInfo() {
   axios.post(AxiosUrl.river.menu.getAllMenu, {}).then((res) => {
     list.value.length=0

@@ -1,39 +1,40 @@
 <template>
   <EmotionDayFormLine ref="dayRangeToolbar" @query="getDayStatic"></EmotionDayFormLine>
-  <div  style="width: 90%;">
-  <el-affix >
-  <BaseDayMedianStatistic  :char-style="charStypeMedian"
-                             :key="time"
-                             :begin-date="beginDate"
-                             :end-date="endDate"
-    ></BaseDayMedianStatistic>
-  </el-affix>
-    <BaseDayUpDownStatistic  :char-style="charStypeUpDown"
+  <div  style="width: 100%;">
+    <BaseDayStandardDeviationStatistic  :char-style="charStyleMedian"
+                                        :key="time"
+                                        :begin-date="beginDate"
+                                        :end-date="endDate">
+    </BaseDayStandardDeviationStatistic>
+    <BaseDayUpLimitPromotionStatistic  :char-style="charStyleMedian"
+                                       :key="time"
+                                       :begin-date="beginDate"
+                                       :end-date="endDate">
+    </BaseDayUpLimitPromotionStatistic>
+    <BaseDayUpDownStatistic  :char-style="charStyleUpDown"
                              :key="time"
                              :begin-date="beginDate"
                              :end-date="endDate"
     ></BaseDayUpDownStatistic>
   </div>
-
 </template>
 
 <script setup>
 import EmotionDayFormLine from './EmotionDayFormLine'
-import BaseDayMedianStatistic from './BaseDayMedianStatistic'
 import BaseDayUpDownStatistic from './BaseDayUpDownStatistic'
+import  BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
+import  BaseDayUpLimitPromotionStatistic from '@/view/stock/BaseDayUpLimitPromotionStatistic'
 
 import {ref} from "vue";
 const time =ref()
 const beginDate=ref()
 const endDate=ref()
-const baseDayStatistic=ref()
 const dayRangeToolbar=ref(null)
-const charStypeMedian={width: '100%', height: '300px'};
+const charStyleMedian={width: '100%', height: '250px'};
 
-const charStypeUpDown={width: '100%', height: '5000px'};
+const charStyleUpDown={width: '100%', height: '1000px'};
 
 function getDayStatic(){
-
   if(dayRangeToolbar.value.queryParam.dateRangeArray){
     beginDate.value=dayRangeToolbar.value.queryParam.dateRangeArray[0]
     endDate.value=dayRangeToolbar.value.queryParam.dateRangeArray[1]
@@ -42,7 +43,6 @@ function getDayStatic(){
     endDate.value='2022-12-01'
   }
   time.value=new Date().getTime()
-
 }
 
 
