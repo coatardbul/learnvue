@@ -6,7 +6,15 @@
   <div>跌幅前20数据</div>
   <div>破剑式</div>
   <div >昨曾模式</div>
-  <div  @click="ss">点我打开收盘预览</div>
+  <div>
+    <el-button  type="warning"  plain @click="ss">收盘预览</el-button>
+  </div>
+  <div>
+    <el-button color="#e3b726"  @click="tt">昨曾模式详情</el-button>
+  </div>
+
+
+
 </template>
 
 <script  setup>
@@ -16,6 +24,10 @@ const router=useRouter()
 
 function ss(){
   const{ href } = router.resolve({name:"CloseWatch",query:{}});
+  window.open(href,'_blank');
+}
+function tt(){
+  const{ href } = router.resolve({name:"CloseWatch1",query:{}});
   window.open(href,'_blank');
 }
 </script>

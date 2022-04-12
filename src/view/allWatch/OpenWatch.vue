@@ -167,6 +167,9 @@ const charStypeUpDown = {width: '100%', height: '300px'};
 const charStypeDayMedian = {width: '100%', height: '300px'};
 
 function getIntervalStatic() {
+  if (queryRef.value == null) {
+    return;
+  }
   endDate.value = queryRef.value.queryParam.dateStr;
   templateTableQueryParam.value.dateStr = queryRef.value.queryParam.dateStr;
   templateTableQueryParam1.value.dateStr = queryRef.value.queryParam.dateStr;

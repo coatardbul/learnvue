@@ -33,9 +33,9 @@
       </div>
     </el-col>
     <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
-        xxxxxxxxxxxxxx
-      </div>
+      <UpLimitDayStatic :date-str="endDate"
+                          :key="time">
+      </UpLimitDayStatic >
     </el-col>
   </el-row>
 
@@ -75,8 +75,9 @@ import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDevia
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
 import TemplateQueryTable from '@/view/stock/templatedQuery/TemplateQueryTable'
 import FirstUpLimitStatic from '@/view/stock/FirstUpLimitStatic'
+import UpLimitDayStatic from '@/view/stock/UpLimitDayStatic'
 
-import OnceUplimitTemplateQueryTable from '@/view/stock/templatedQuery/OnceUplimitTemplateQueryTable'
+import OnceUplimitTemplateQueryTable from '@/view/stock/OnceUplimitTemplateQueryTable'
 
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
 

@@ -63,6 +63,7 @@ const stock = {
     stockPredict:{
         execute:label.stock + '/stockPredict/execute',
         getAll:label.stock + '/stockPredict/getAll',
+        deleteById:label.stock + '/stockPredict/deleteById',
     },
     stockValPrice:{
         execute:label.stock + '/stockValPrice/execute',
@@ -74,6 +75,7 @@ const stock = {
         getUpLimitInfo:label.stock + '/specialStrategy/getUpLimitInfo',
         getOnceUpLimitStrongWeakInfo:label.stock + '/specialStrategy/getOnceUpLimitStrongWeakInfo',
         getUpLimitTheme:label.stock + '/specialStrategy/getUpLimitTheme',
+        getOnceUpLimitData:label.stock + '/specialStrategy/getOnceUpLimitData',
 
 
     },
@@ -104,6 +106,7 @@ const river = {
     calendar:{
         getSpecialDay:label.river+'/api/calendar/getSpecialDay',
         getSubtractDay:label.river+'/api/calendar/getSubtractDay',
+        getDate:label.river+'/api/calendar/getDate',
     }
 
 

@@ -5,6 +5,7 @@ const OpenWatch1 = () => import('@/view/allWatch/OpenWatch1')
 const OpenWatch2 = () => import('@/view/allWatch/OpenWatch2')
 
 const CloseWatch = () => import('@/view/allWatch/CloseWatch')
+const CloseWatch1 = () => import('@/view/allWatch/CloseWatch1')
 
 const Home = () => import('@/view/layout/Home')
 const Login = () => import('@/view/Login')
@@ -93,6 +94,11 @@ const routes = [
         path: "/CloseWatch",
         name: "CloseWatch",
         component: CloseWatch,
+    },
+    {
+        path: "/CloseWatch1",
+        name: "CloseWatch1",
+        component: CloseWatch1,
     },
     {
         path: "/",

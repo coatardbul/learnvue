@@ -99,6 +99,7 @@ import AxiosUrl from "@/constant/AxiosUrl";
 import ConfigInfo from "@/constant/ConfigInfo";
 import {useRouter} from 'vue-router';
 import  BaseDayUpLimitPromotionStatistic from '@/view/stock/BaseDayUpLimitPromotionStatistic'
+import UpLimitStatic from '@/view/stock/UpLimitStatic'
 
 const router = useRouter()
 const showInfo = ref({
@@ -173,6 +174,7 @@ function getIntervalStatic() {
       addDay: -1
     }).then((res) => {
       queryParam.value.dateStr = res;
+      yesterday.value=res;
       time.value = new Date().getTime();
     });
   });
@@ -191,7 +193,7 @@ onMounted(() => {
 
 <style scoped>
 .bg-purple {
-  background: #b3e8ea;
+  background: #e3b726;
 }
 
 .ss {

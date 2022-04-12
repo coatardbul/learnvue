@@ -56,16 +56,22 @@ export default {
     }
 
     function getUpLimitInfo() {
+      axios.post(AxiosUrl.river.calendar.getSpecialDay, {
+        dateStr: props.dateStr,
+        dateProp: 1,
+        addDay: -1
+      }).then((lastDay) => {
       upLimitList.value.length=0
       axios.post(AxiosUrl.stock.specialStrategy.getUpLimitInfo, {
-        dateStr: props.dateStr
+        dateStr: lastDay
       }).then((res) => {
         upLimitList.value = res;
         res.forEach(item => {
           describeArr.value.length = 0;
           item.nameList.forEach(nameTemp => {
             axios.post(AxiosUrl.stock.stockValPrice.getDescribe, {
-              name: nameTemp
+              name: nameTemp,
+              dateStr: props.dateStr,
             }).then((resss) => {
               if (resss != null) {
                 let sb = {
@@ -77,6 +83,7 @@ export default {
             });
           });
         })
+      });
       });
     }
 

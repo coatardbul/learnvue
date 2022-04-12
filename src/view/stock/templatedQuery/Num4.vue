@@ -192,6 +192,7 @@ function getAllStockInfo() {
       })
       sortArr(keyArr, 'code','market_code');
       sortArr(keyArr, '股票简称');
+      sortArr(keyArr, '涨停强弱概览');
       sortArr(keyArr, '竞价涨幅');
       sortArr(keyArr, '竞价金额','{*}');
       sortArr(keyArr, '竞价金额','{/}');
