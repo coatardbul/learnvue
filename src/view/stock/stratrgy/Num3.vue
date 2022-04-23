@@ -4,7 +4,7 @@
   <el-table :data="tableData" border highlight-current-row
             style="width: 100%">
     <el-table-column type="index" width="50"/>
-    <el-table-column label="id" width="180">
+    <el-table-column label="id" width="190">
       <template #default="scope">
         <router-link :to="{path:'/index4',query:{erb:scope.row.id}}" @click="addHot(scope.row.id)">{{scope.row.id }}</router-link>
       </template>
@@ -25,9 +25,14 @@
         <span>{{ scope.row.scriptStr }}</span>
       </template>
     </el-table-column>
-    <el-table-column  label="指定例子当日日期" width="300"  :show-overflow-tooltip="true">
+    <el-table-column  label="指定例子当日日期" width="150"  :show-overflow-tooltip="true">
       <template #default="scope">
         <span>{{ scope.row.todayStr }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column  label="模板标识" width="300"  :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span>{{ scope.row.templateSign }}</span>
       </template>
     </el-table-column>
     <el-table-column  label="备注" width="300"  :show-overflow-tooltip="true">

@@ -104,6 +104,9 @@ function  getContent(data){
   return  obj;
 }
 
+
+
+
  function getDayDetail(queryTemp) {
   tableData.length = 0;
   axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {

@@ -15,8 +15,21 @@
       <el-form-item label="name" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.name"  type="textarea"></el-input>
       </el-form-item>
-      <el-form-item label="类型" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.type" autocomplete="off"></el-input>
+      <el-form-item label="自选板快">
+        <el-select
+            filterable
+            clearable
+            v-model="strategyInfo.plateId"
+            placeholder="Select"
+            style="width: 240px"
+        >
+          <el-option
+              v-for="item in plateList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+          />
+        </el-select>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -39,6 +52,9 @@ import axios from "axios";
 export default {
   name: 'DialogMenuDetail',
   props: {
+    plateList:{
+      type: Object,
+    },
     buttonInfo: {
       type: Object,
       default: function () {
@@ -56,7 +72,7 @@ export default {
           id: '',
           code: '',
           name:'',
-          // watchLevel: 1,
+          plateId: '',
           // type: 1,
         }
       }
@@ -74,7 +90,7 @@ export default {
         id: props.strategyInfo.id,
         code: props.strategyInfo.code,
         name: props.strategyInfo.name,
-        type: props.strategyInfo.type,
+        plateId: props.strategyInfo.plateId,
       }).then()
       dialogFormVisible.value = false
     }

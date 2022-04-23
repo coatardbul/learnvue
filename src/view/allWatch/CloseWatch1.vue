@@ -10,6 +10,7 @@
   <PanelGroup></PanelGroup>
   <el-row :gutter="32">
     <el-col :xs="24" :sm="24" :lg="24">
+      <div>历史30日涨停数据</div>
       <UplimitDescriptTable :query-param="templateTableQueryParam"
                                      :key="time"
       >
@@ -20,7 +21,9 @@
 
   <el-row :gutter="32">
     <el-col :xs="24" :sm="24" :lg="24">
-      <div @click="jumpTo({erb:templateTableQueryParam.id,dateStr: endDate})">昨曾模式</div>
+      <el-button type="success"   @click="jumpTo({erb:templateTableQueryParam.id,dateStr: endDate})" plain>昨曾模式</el-button>
+
+      <el-button type="text"  @click="buildHisUpLimitDate">立即构建历史数据</el-button>
       <OnceUplimitTemplateQueryTable :query-param="templateTableQueryParam"
                           :key="time"
       >
@@ -42,15 +45,10 @@
 
 <script setup>
 import PanelGroup from '@/components/PanelGroup'
-import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
-import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
-import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
-import TemplateQueryTable from '@/view/stock/templatedQuery/TemplateQueryTable'
-import FirstUpLimitStatic from '@/view/stock/FirstUpLimitStatic'
-import UpLimitDayStatic from '@/view/stock/UpLimitDayStatic'
+
 import UplimitDescriptTable from '@/view/stock/UpLimitDescribeTable'
 
-import OnceUplimitTemplateQueryTable from '@/view/stock/OnceUplimitTemplateQueryTable'
+import OnceUplimitTemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
 
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
 
@@ -88,6 +86,21 @@ const templateTableQueryParam1 = ref({
 
 const charStypeUpDown = {width: '100%', height: '300px'};
 const charStypeDayMedian = {width: '100%', height: '300px'};
+
+
+function buildHisUpLimitDate(){
+  if (queryRef.value == null) {
+    return;
+  }
+  if (queryRef.value .queryParam== null) {
+    return;
+  }
+  axios.post(AxiosUrl.stock.stockAnomalousBehavior.buildLastUpLimitInfo, {
+    dateStr:  queryRef.value.queryParam.dateStr,
+    riverStockTemplateId: '1501584345410961408',
+  }).then();
+}
+
 
 function getIntervalStatic() {
   if (queryRef.value == null) {

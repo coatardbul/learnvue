@@ -40,14 +40,7 @@
   </el-row>
 
   <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="16">
-      <div @click="jumpTo({erb:templateTableQueryParam.id,dateStr: endDate})">昨曾模式</div>
-      <OnceUplimitTemplateQueryTable :query-param="templateTableQueryParam"
-                          :key="time"
-      >
-      </OnceUplimitTemplateQueryTable>
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="8">
+    <el-col :xs="24" :sm="24" :lg="24">
       <div @click="jumpTo({erb:templateTableQueryParam1.id,dateStr: endDate})">外侧</div>
       <TemplateQueryTable :query-param="templateTableQueryParam1"
                           :key="time"
@@ -73,11 +66,11 @@ import PanelGroup from '@/components/PanelGroup'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
-import TemplateQueryTable from '@/view/stock/templatedQuery/TemplateQueryTable'
+import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
 import FirstUpLimitStatic from '@/view/stock/FirstUpLimitStatic'
 import UpLimitDayStatic from '@/view/stock/UpLimitDayStatic'
 
-import OnceUplimitTemplateQueryTable from '@/view/stock/OnceUplimitTemplateQueryTable'
+import OnceUplimitTemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
 
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
 

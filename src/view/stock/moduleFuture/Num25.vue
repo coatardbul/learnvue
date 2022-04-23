@@ -68,7 +68,7 @@
     </el-table-column>
     <el-table-column label="增长百分比" width="100" sortable :show-overflow-tooltip="true">
       <template #default="scope">
-        <span>{{
+        <span  :style="getIncreaseRate(scope.row)">{{
             Number((scope.row.salePrice - scope.row.buyPrice) / scope.row.buyPrice * 100).toFixed(2) + '%'
           }}</span>
       </template>
@@ -124,6 +124,28 @@ function deleteInfo(row) {
   )
 
 }
+
+function getIncreaseRate(row){
+ let increaseRate= Number((row.salePrice - row.buyPrice) / row.buyPrice * 100).toFixed(2);
+
+  if(increaseRate>10){
+    return {color: '#f6061b'}
+  }
+ if(increaseRate>5){
+    return {color: '#cb1d2c'}
+  }
+  if(increaseRate>0){
+    return {color: '#8d3a42'}
+  }
+  if(increaseRate<-10){
+    return {color: '#06f806'}
+  }
+  if(increaseRate<0){
+    return {color: '#2cb42c'}
+  }
+
+}
+
 
 function formatter(row, column, cellValue, index) {
   if (column.property.indexOf('市值') != -1) {

@@ -91,7 +91,7 @@ import PanelGroup from '@/components/PanelGroup'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
-import TemplateQueryTable from '@/view/stock/templatedQuery/TemplateQueryTable'
+import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";

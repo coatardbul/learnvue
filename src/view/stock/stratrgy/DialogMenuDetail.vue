@@ -7,8 +7,8 @@
   <el-dialog v-model="dialogFormVisible" title="策略问句信息" append-to-body>
     <span>支持：1.YYYY年MM月DD日 2.HH点MM分 3.包含001001</span>
     <el-form :model="strategyInfo">
-      <el-form-item label="id" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.id" ></el-input>
+      <el-form-item label="id"   :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.id"  disabled ></el-input>
       </el-form-item>
       <el-form-item label="名称" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.name" autocomplete="off"></el-input>
@@ -16,17 +16,20 @@
       <el-form-item label="例子" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.exampleStr" autosize type="textarea"></el-input>
       </el-form-item>
-      <el-form-item label="指定例子当日日期" :label-width="formLabelWidth">
+      <el-form-item label="指定日期" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.todayStr" autosize type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="脚本" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.scriptStr" autosize type="textarea"></el-input>
+        <el-input v-model="strategyInfo.scriptStr"  disabled autosize type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="模板标识" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.templateSign" autosize type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="备注" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.remark" autosize type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="点击量" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.hotValue" autocomplete="off"></el-input>
+        <el-input v-model="strategyInfo.hotValue" disabled autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -76,7 +79,7 @@ export default {
   },
   setup(props) {
     const dialogFormVisible = ref(false)
-    const formLabelWidth = '50px'
+    const formLabelWidth = '100px'
     const confirmName = ref(Button.buttonStatus.confirm.name)
     const cancelName = ref(Button.buttonStatus.cancel.name)
 
@@ -88,6 +91,7 @@ export default {
         exampleStr: props.strategyInfo.exampleStr,
         todayStr: props.strategyInfo.todayStr,
         scriptStr: props.strategyInfo.scriptStr,
+        templateSign: props.strategyInfo.templateSign,
         remark: props.strategyInfo.remark,
         hotValue: props.strategyInfo.hotValue,
       }).then()

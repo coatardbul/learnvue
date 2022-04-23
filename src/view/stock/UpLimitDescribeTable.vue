@@ -27,10 +27,7 @@
             raw-content
             placement="top"
         >
-          <span>{{ scope.row[item.prop] }}</span>
-<!--          <span>{{ JSON.stringify(scope.row) }}</span>-->
-<!--          <span>{{ scope.row['code'] }}</span>-->
-
+          <span :style="getTableStype(item.prop,scope.row[item.prop])">{{ scope.row[item.prop] }}</span>
         </el-tooltip>
       </template>
     </el-table-column>
@@ -58,7 +55,17 @@ export default {
       getAllStockInfo();
     })
 
+   function getTableStype(itemProp,tableColumnInfo){
 
+      if(tableColumnInfo=='涨停'){
+        return {color:'#f5071b' }
+      }
+     if(tableColumnInfo=='昨曾'){
+       return {color: '#b63f13',backgroundColor: 'yellow'}
+     }
+     return null;
+
+    }
     function getDescribe(code, propName) {
       let sb = tableDescribe.value;
       if (sb.has(code)) {
@@ -82,13 +89,13 @@ export default {
           endDate: props.queryParam.dateStr,
           dateProp: 1,
         }).then((dateStrList) => {
-          getOnceUpLimitData(dateStrList);
+          getAllAnomalousBehaviorData(dateStrList);
         });
 
       });
     }
 
-    function getOnceUpLimitData(dateStrList) {
+    function getAllAnomalousBehaviorData(dateStrList) {
       tableData.value.length = 0;
       tableProp.value.length = 0;
       tableDescribe.value = {}
@@ -109,7 +116,7 @@ export default {
         }
         tableProp.value.push(propInfo);
       })
-      axios.post(AxiosUrl.stock.specialStrategy.getOnceUpLimitData, {
+      axios.post(AxiosUrl.stock.stockAnomalousBehavior.getAllAnomalousBehaviorData, {
         riverStockTemplateId: props.queryParam.id == null || props.queryParam.id == 0 ? '1501584345410961408' : props.queryParam.id,
         dateStr: props.queryParam.dateStr,
       }).then((res) => {
@@ -149,7 +156,7 @@ export default {
 
 
     return {
-      getAllStockInfo, tableData, tableProp, tableDescribe,getDescribe
+      getAllStockInfo, tableData, tableProp, tableDescribe,getDescribe,getTableStype
     }
   }
 }

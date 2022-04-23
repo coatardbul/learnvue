@@ -62,6 +62,10 @@ export default {
     }
 
     function getDescribe(name) {
+
+      if(upDescriptList.value.length==0){
+        return '';
+      }
       let find = upDescriptList.value.data.find(item => item.股票简称 == name);
       if (find) {
         return '<span>'+ (find.涨停强弱概览.replaceAll('\n','<br>'))+'</span>';

@@ -44,7 +44,11 @@ const Index32 = () =>import('@/view/stock/Num32')
 const Index33 = () =>import('@/view/stock/Num33')
 const Index34 = () =>import('@/view/stock/Num34')
 const Index35 = () =>import('@/view/stock/Num35')
-const Index36 = () =>import('@/view/stock/Num36')
+const Index36 = () =>import('@/view/stock/anomalousBehavior/Num36')
+const Index37 = () =>import('@/view/stock/optionalPlate/Num37')
+const Index38 = () =>import('@/view/stock/Num38')
+const Index39 = () =>import('@/view/stock/Num39')
+const Index40 = () =>import('@/view/stock/Num40')
 
 
 
@@ -284,6 +288,26 @@ const routes = [
                 path: "/index36",
                 name: "index36",
                 component: Index36,
+            },
+            {
+                path: "/index37",
+                name: "index37",
+                component: Index37,
+            },
+            {
+                path: "/index38",
+                name: "index38",
+                component: Index38,
+            },
+            {
+                path: "/index39",
+                name: "index39",
+                component: Index39,
+            },
+            {
+                path: "/index40",
+                name: "index40",
+                component: Index40,
             },
             {
                 path: "/intervalStatic",

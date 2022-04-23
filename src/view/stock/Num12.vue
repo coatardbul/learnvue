@@ -11,7 +11,7 @@
     </el-table-column>
     <el-table-column label="统计纬度" width="100">
       <template #default="scope">
-        <span>{{ scope.row.staticLatitude }}</span>
+        <span>{{ format(scope.row.staticLatitude) }}</span>
       </template>
     </el-table-column>
     <el-table-column label="对象标识" width="200">
@@ -43,6 +43,13 @@ import {onMounted, reactive} from 'vue'
 
 const tableData = reactive([])
 
+function  format(value){
+  if(1==value){
+    return '分钟';
+  }else {
+    return '天';
+  }
+}
 
 onMounted(() => {
   getIntervalStatic();

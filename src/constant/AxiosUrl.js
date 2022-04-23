@@ -47,8 +47,16 @@ const stock = {
     stockOptionalPool: {
         findAll: label.stock +'/stockOptionalPool/findAll',
         add:label.stock +'/stockOptionalPool/add',
+        addPlateStock:label.stock +'/stockOptionalPool/addPlateStock',
         modify:label.stock +'/stockOptionalPool/modify',
         delete:label.stock +'/stockOptionalPool/delete',
+
+    },
+    stockOptionalPlate: {
+        findAll: label.stock +'/stockOptionalPlate/findAll',
+        add:label.stock +'/stockOptionalPlate/add',
+        modify:label.stock +'/stockOptionalPlate/modify',
+        delete:label.stock +'/stockOptionalPlate/delete',
     },
     stockWarnLog: {
         findAll: label.stock +'/stockWarnLog/findAll',
@@ -73,14 +81,20 @@ const stock = {
     },
     specialStrategy:{
         getUpLimitInfo:label.stock + '/specialStrategy/getUpLimitInfo',
-        getOnceUpLimitStrongWeakInfo:label.stock + '/specialStrategy/getOnceUpLimitStrongWeakInfo',
         getUpLimitTheme:label.stock + '/specialStrategy/getUpLimitTheme',
-        getOnceUpLimitData:label.stock + '/specialStrategy/getOnceUpLimitData',
-
+    },
+    stockAnomalousBehavior:{
+        buildLastUpLimitInfo:label.stock + '/stockAnomalousBehavior/buildLastUpLimitInfo',
+        forceBuildLastUpLimitInfo:label.stock + '/stockAnomalousBehavior/forceBuildLastUpLimitInfo',
+        getAllAnomalousBehaviorData:label.stock + '/stockAnomalousBehavior/getAllAnomalousBehaviorData',
+        deleteAnomalousBehaviorData:label.stock + '/stockAnomalousBehavior/deleteAnomalousBehaviorData',
 
     },
     cookie:{
         simpleModify:label.stock + '/cookie/simpleModify',
+    },
+    ip:{
+        getAllIps:label.stock + '/ip/getAllIps',
     }
 }
 const river = {
