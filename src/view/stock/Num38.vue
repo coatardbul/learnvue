@@ -1,13 +1,14 @@
 <template>
-<p    style="width:60px;text-align:left;  overflow: hidden;
-  text-overflow: ellipsis;
-">44444444444444444444444444444444444444444444444444444444444444444444444
-</p></template>
+  <BaseDayUpDownNumStatistic :char-style="charStyleUpDown"
+                          :key="time"
+                          begin-date="2022-03-29"
+                          end-date="2022-04-29"
+  ></BaseDayUpDownNumStatistic>
+</template>
 
-<script>
-export default {
-  name: "Num38.vue"
-}
+<script  setup>
+import BaseDayUpDownNumStatistic from '@/view/stock/BaseDayUpDownNumStatistic'
+
 </script>
 
 <style scoped>

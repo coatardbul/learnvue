@@ -19,6 +19,9 @@
       <el-form-item label="指定日期" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.todayStr" autosize type="textarea"></el-input>
       </el-form-item>
+      <el-form-item label="指定题材" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.themeStr" autosize type="textarea"></el-input>
+      </el-form-item>
       <el-form-item label="脚本" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.scriptStr"  disabled autosize type="textarea"></el-input>
       </el-form-item>
@@ -70,6 +73,7 @@ export default {
           name: '',
           exampleStr:'',
           todayStr:'',
+          themeStr:'',
           scriptStr: '',
           remark:'',
           hotValue: '',
@@ -90,6 +94,7 @@ export default {
         name: props.strategyInfo.name,
         exampleStr: props.strategyInfo.exampleStr,
         todayStr: props.strategyInfo.todayStr,
+        themeStr: props.strategyInfo.themeStr,
         scriptStr: props.strategyInfo.scriptStr,
         templateSign: props.strategyInfo.templateSign,
         remark: props.strategyInfo.remark,

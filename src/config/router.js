@@ -3,6 +3,9 @@ import {createRouter, createWebHistory} from 'vue-router'
 const AllWatch = () => import('@/view/allWatch/OpenWatch')
 const OpenWatch1 = () => import('@/view/allWatch/OpenWatch1')
 const OpenWatch2 = () => import('@/view/allWatch/OpenWatch2')
+const OpenWatch3 = () => import('@/view/allWatch/OpenWatch3')
+const OpenWatch4 = () => import('@/view/allWatch/OpenWatch4')
+const OpenTheme = () => import('@/view/allWatch/OpenTheme')
 
 const CloseWatch = () => import('@/view/allWatch/CloseWatch')
 const CloseWatch1 = () => import('@/view/allWatch/CloseWatch1')
@@ -47,7 +50,7 @@ const Index35 = () =>import('@/view/stock/Num35')
 const Index36 = () =>import('@/view/stock/anomalousBehavior/Num36')
 const Index37 = () =>import('@/view/stock/optionalPlate/Num37')
 const Index38 = () =>import('@/view/stock/Num38')
-const Index39 = () =>import('@/view/stock/Num39')
+const Index39 = () =>import('@/view/stock/abStatic/Num39')
 const Index40 = () =>import('@/view/stock/Num40')
 
 
@@ -93,6 +96,21 @@ const routes = [
         path: "/OpenWatch2",
         name: "OpenWatch2",
         component: OpenWatch2,
+    },
+    {
+        path: "/OpenWatch3",
+        name: "OpenWatch3",
+        component: OpenWatch3,
+    },
+    {
+        path: "/OpenWatch4",
+        name: "OpenWatch4",
+        component: OpenWatch4,
+    },
+    {
+        path: "/OpenTheme",
+        name: "OpenTheme",
+        component: OpenTheme,
     },
     {
         path: "/CloseWatch",

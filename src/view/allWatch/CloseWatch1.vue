@@ -22,8 +22,9 @@
   <el-row :gutter="32">
     <el-col :xs="24" :sm="24" :lg="24">
       <el-button type="success"   @click="jumpTo({erb:templateTableQueryParam.id,dateStr: endDate})" plain>昨曾模式</el-button>
-
       <el-button type="text"  @click="buildHisUpLimitDate">立即构建历史数据</el-button>
+      <el-button type="text" @click="stockDetail({erb:templateTableQueryParam.id,dateStr: endDate})">详情</el-button>
+
       <OnceUplimitTemplateQueryTable :query-param="templateTableQueryParam"
                           :key="time"
       >
@@ -86,7 +87,10 @@ const templateTableQueryParam1 = ref({
 
 const charStypeUpDown = {width: '100%', height: '300px'};
 const charStypeDayMedian = {width: '100%', height: '300px'};
-
+function stockDetail(routerParam) {
+  const {href} = router.resolve({name: "OpenWatch3", query: routerParam});
+  window.open(href, '_blank');
+}
 
 function buildHisUpLimitDate(){
   if (queryRef.value == null) {

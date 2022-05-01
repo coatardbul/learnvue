@@ -11,6 +11,7 @@
           <el-tooltip
               trigger='hover'
               class="box-item"
+              disabled="tooltipDisable"
               effect="dark"
               :content="getDescribe(name)"
               raw-content
@@ -35,7 +36,12 @@ export default {
   name: "UpLimitStatic",
   props: {
     dateStr: {
-      default: ConfigInfo.nowDate
+      type:String,
+    },
+    tooltipDisable:{
+      default:function (){
+        return false;
+      }
     }
   },
   setup(props, context) {
@@ -48,7 +54,6 @@ export default {
       }
       let find = describeArr.value.find(item=>item.name==nameTemp);
       if(find){
-
         return '<span>'+ (find.describe.replaceAll('\n','<br>'))+'</span>';
       }else {
         return null;
@@ -56,6 +61,9 @@ export default {
     }
 
     function getUpLimitInfo() {
+      if(!props.dateStr){
+        return;
+      }
       axios.post(AxiosUrl.river.calendar.getSpecialDay, {
         dateStr: props.dateStr,
         dateProp: 1,
@@ -66,6 +74,9 @@ export default {
         dateStr: lastDay
       }).then((res) => {
         upLimitList.value = res;
+        if(props.tooltipDisable){
+          return;
+        }
         res.forEach(item => {
           describeArr.value.length = 0;
           item.nameList.forEach(nameTemp => {

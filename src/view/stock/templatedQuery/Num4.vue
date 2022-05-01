@@ -129,6 +129,7 @@ function getAllStockQuery() {
     dateStr: queryRef.value.queryParam.dateStr,
     timeStr: queryRef.value.queryParam.timeStr,
     stockCode: queryRef.value.queryParam.stockCode,
+    themeStr: queryRef.value.queryParam.themeStr,
   }).then((res) => {
     getMsg.value = res
   });

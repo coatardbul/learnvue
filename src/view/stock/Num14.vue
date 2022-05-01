@@ -1,13 +1,19 @@
 <template>
   <div>
-    <el-button type="text"  @click="ss('AllWatch')">情绪综合图谱</el-button>
+    <el-button type="text" @click="ss('AllWatch')">情绪综合图谱</el-button>
   </div>
   <div>
-    <el-button type="text"  @click="ss('OpenWatch1')">首板，二板预览界面</el-button>
-  </div> <div>
-  <el-button type="text"  @click="ss('OpenWatch2')">两板以上涨停预览界面</el-button>
-</div>
-
+    <el-button type="text" @click="ss('OpenWatch1')">首板，二板预览界面</el-button>
+  </div>
+  <div>
+    <el-button type="text" @click="ss('OpenWatch2')">两板以上涨停预览界面</el-button>
+  </div>
+  <div>
+    <el-button type="text" @click="ss('OpenWatch4')">首板，二板预览界面(新)</el-button>
+  </div>
+  <div>
+    <el-button type="text" @click="ss('OpenTheme')">一进二，二板以上题材</el-button>
+  </div>
 </template>
 
 <script setup>

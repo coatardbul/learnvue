@@ -30,6 +30,11 @@
         <span>{{ scope.row.todayStr }}</span>
       </template>
     </el-table-column>
+    <el-table-column  label="指定题材信息" width="150"  :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span>{{ scope.row.themeStr }}</span>
+      </template>
+    </el-table-column>
     <el-table-column  label="模板标识" width="300"  :show-overflow-tooltip="true">
       <template #default="scope">
         <span>{{ scope.row.templateSign }}</span>

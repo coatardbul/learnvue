@@ -8,33 +8,38 @@
     ></EmotionFormLine>
   </el-affix>
   <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="10">
-      <div>################################################################</div>
-
-      <BaseDayUpDownStatistic  :char-style="charStyleUpDown"
-                               :key="time"
-                               :begin-date="beginDate"
-                               :end-date="queryParam.dateStr"
-      ></BaseDayUpDownStatistic>
-
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="14">
-
+    <el-col :xs="24" :sm="24" :lg="24">
+        <div @click="jumpTo({erb:templateTableQueryParam6.id,dateStr: endDate})">破剑式+二板以上集合竞价</div>
+        <TemplateQueryTable :query-param="templateTableQueryParam6"
+                            :key="time">
+        </TemplateQueryTable>
     </el-col>
   </el-row>
-  <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
-        <BaseDayUpLimitPromotionStatistic  :char-style="charStypeDayMedian"
+  <el-row :gutter="5">
+    <el-col :span="10">
+      <div style="background-color: rgb(236,245,255)">
+        晋级率
+        <BaseDayUpLimitPromotionStatistic  :char-style="charStyleMedian"
                                            :key="time"
                                            :begin-date="beginDate"
                                            :end-date="queryParam.dateStr">
         </BaseDayUpLimitPromotionStatistic>
       </div>
-
     </el-col>
-    <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
+    <el-col :span="6">
+      <div style="background-color: rgb(236,245,255)">
+
+        <el-scrollbar max-height="400px">
+          <BaseDayUpDownStatistic :char-style="charStyleUpDown"
+                                  :key="time"
+                                  :begin-date="beginDate"
+                                  :end-date="queryParam.dateStr"
+          ></BaseDayUpDownStatistic>
+        </el-scrollbar>
+      </div>
+    </el-col>
+    <el-col :span="4">
+      <div style="background-color: rgb(236,245,255)">
         喇叭口
         <BaseDayStandardDeviationStatistic :char-style="charStypeDayMedian"
                                            :key="time"
@@ -43,8 +48,8 @@
         ></BaseDayStandardDeviationStatistic>
       </div>
     </el-col>
-    <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
+    <el-col :span="4">
+      <div style="background-color: rgb(236,245,255)">
         昨日情绪
         <BaseMintureStatistic
             :query-param="queryParam"
@@ -56,22 +61,18 @@
   </el-row>
 
   <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="14">
+    <el-col :xs="24" :sm="24" :lg="24">
       <UpLimitStatic :date-str="endDate"
                      :key="time">
       </UpLimitStatic >
-      <div @click="jumpTo({erb:templateTableQueryParam.id,dateStr: endDate})">两板以上集合竞价</div>
+      <el-button @click="jumpTo({erb:templateTableQueryParam.id,dateStr: endDate})">两板以上集合竞价</el-button>
+      <el-button type="text" @click="stockDetail({erb:templateTableQueryParam.id,dateStr: endDate})">详情</el-button>
+
       <TemplateQueryTable :query-param="templateTableQueryParam"
                           :key="time">
       </TemplateQueryTable>
     </el-col>
-    <el-col :xs="24" :sm="24" :lg="10">
-      <div @click="jumpTo({erb:templateTableQueryParam6.id,dateStr: endDate})">破剑式+二板以上集合竞价</div>
-      <TemplateQueryTable :query-param="templateTableQueryParam6"
-                          :key="time">
-      </TemplateQueryTable>
 
-    </el-col>
   </el-row>
 
 
@@ -87,7 +88,6 @@
 </template>
 
 <script setup>
-import PanelGroup from '@/components/PanelGroup'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
@@ -122,26 +122,6 @@ const templateTableQueryParam = ref({
   id: '1481302460344696832',
   dateStr: endDate.value,
 })
-const templateTableQueryParam1 = ref({
-  id: '1502896274603638784,1505216687434235904',
-  dateStr: endDate.value,
-})
-const templateTableQueryParam2 = ref({
-  id: '1505216687434235904',
-  dateStr: endDate.value,
-})
-const templateTableQueryParam3 = ref({
-  id: '1505357737901555712',
-  dateStr: endDate.value,
-})
-const templateTableQueryParam4 = ref({
-  id: '1505911842550185984',
-  dateStr: endDate.value,
-})
-const templateTableQueryParam5 = ref({
-  id: '1506450265249808384,1508081049291325440',
-  dateStr: endDate.value,
-})
 const templateTableQueryParam6 = ref({
   id: '1502896274603638784,1481302460344696832',
   dateStr: endDate.value,
@@ -156,11 +136,6 @@ function getIntervalStatic() {
   }
   endDate.value = queryRef.value.queryParam.dateStr;
   templateTableQueryParam.value.dateStr = queryRef.value.queryParam.dateStr;
-  templateTableQueryParam1.value.dateStr = queryRef.value.queryParam.dateStr;
-  templateTableQueryParam2.value.dateStr = queryRef.value.queryParam.dateStr;
-  templateTableQueryParam3.value.dateStr = queryRef.value.queryParam.dateStr;
-  templateTableQueryParam4.value.dateStr = queryRef.value.queryParam.dateStr;
-  templateTableQueryParam5.value.dateStr = queryRef.value.queryParam.dateStr;
   templateTableQueryParam6.value.dateStr = queryRef.value.queryParam.dateStr;
   axios.post(AxiosUrl.river.calendar.getSpecialDay, {
     dateStr: endDate.value,
@@ -179,7 +154,10 @@ function getIntervalStatic() {
     });
   });
 }
-
+function stockDetail(routerParam) {
+  const {href} = router.resolve({name: "OpenWatch3", query: routerParam});
+  window.open(href, '_blank');
+}
 function jumpTo(routerParam) {
   const {href} = router.resolve({name: "index4", query: routerParam});
   window.open(href, '_blank');

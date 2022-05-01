@@ -88,6 +88,7 @@ const stock = {
         forceBuildLastUpLimitInfo:label.stock + '/stockAnomalousBehavior/forceBuildLastUpLimitInfo',
         getAllAnomalousBehaviorData:label.stock + '/stockAnomalousBehavior/getAllAnomalousBehaviorData',
         deleteAnomalousBehaviorData:label.stock + '/stockAnomalousBehavior/deleteAnomalousBehaviorData',
+        getAbStatic:label.stock + '/stockAnomalousBehavior/getAbStatic',
 
     },
     cookie:{

@@ -1,125 +1,124 @@
 <template>
-  <div>11111111111111111111111111111111111111</div>
-  <div>11111111111111111111111111111111111111</div>
-  <div>11111111111111111111111111111111111111</div>
-  <div>11111111111111111111111111111111111111</div>
-  <div>11111111111111111111111111111111111111</div>
-
-  <el-affix :offset="30">
-    <EmotionFormLine
-        ref="queryRef"
-        :show-info="showInfo"
-        @query="getIntervalStatic"
-    ></EmotionFormLine>
-  </el-affix>
-
-  <AnomalousBehaviorTableForm
-      :tableProp="tableProp"
-      :tableData="tableDataHead"
-      :tableDescribe="tableDescribeHead"
-  >
-  </AnomalousBehaviorTableForm>
-
-
-  <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="10">
-      <div>################################################################</div>
-      <el-button @click="jumpTo({erb:templateTableQueryParam7.id,dateStr: endDate})">首板高开</el-button>
-      <el-button type="text" @click="buildAbDate({id:templateTableQueryParam7.id,dateStr: endDate})">构建数据</el-button>
-      <TemplateQueryTable :query-param="templateTableQueryParam7"
-                          :key="time">
-      </TemplateQueryTable>
-
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="14">
-      <div> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</div>
-      <el-button @click="jumpTo({erb:templateTableQueryParam2.id,dateStr: endDate})">二板高于预期</el-button>
-      <el-button type="text" @click="buildAbDate({id:templateTableQueryParam2.id,dateStr: endDate})">构建数据</el-button>
-      <TemplateQueryTable :query-param="templateTableQueryParam2"
-                          :key="time"
-      >
-      </TemplateQueryTable>
-      <el-button @click="jumpTo({erb:templateTableQueryParam3.id,dateStr: endDate})">二板高于预期快速冲板,未上板注意洗盘动作</el-button>
-      <el-button type="text" @click="buildAbDate({id:templateTableQueryParam3.id,dateStr: endDate})">构建数据</el-button>
-      <TemplateQueryTable :query-param="templateTableQueryParam3"
-                          :key="time"
-      >
-      </TemplateQueryTable>
-
-
-    </el-col>
-  </el-row>
-  <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
-        昨日情绪
-        <BaseMintureStatistic
-            :query-param="queryParam"
-            :char-style="charStypeUpDown"
-            :key="time"
-        ></BaseMintureStatistic>
-      </div>
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
-        喇叭口
-        <BaseDayStandardDeviationStatistic :char-style="charStypeDayMedian"
-                                           :key="time"
-                                           :begin-date="beginDate"
-                                           :end-date="endDate"
-        ></BaseDayStandardDeviationStatistic>
-      </div>
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="8">
-      <div class="chart-wrapper">
-        <div># 破剑式超过1亿需要小心。</div>
-        <div># 用兵不复。</div>
-        <div> # 客观,不能带有任何主观思想。</div>
-        <div> # 首次涨停（查看二板栏板），盘中买，不能开盘买</div>
-        <div> # 危机中孕育着希望，一致中孕育着危机。</div>
-        <div> # 有的时候，出手的机会只有一次。</div>
-        <div> # 高位有量的票，往往都有一次自保的机会。</div>
-        <div> # 用价来平衡量</div>
-        <div> # 买新不买就</div>
-        <div> # 不买抛压重的票</div>
-
-
-      </div>
-    </el-col>
-  </el-row>
-  <AnomalousBehaviorTableForm
-      :tableProp="tableProp"
-      :tableData="tableDataBody"
-      :tableDescribe="tableDescribeBody"
-  >
-  </AnomalousBehaviorTableForm>
-  <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="12">
-      <BaseDayUpDownStatistic :char-style="charStyleUpDown"
-                              :key="time"
-                              :begin-date="beginDate"
-                              :end-date="queryParam.dateStr"
-      ></BaseDayUpDownStatistic>
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="12">
-      <el-button @click="jumpTo({erb:templateTableQueryParam5.id,dateStr: endDate})">首次涨停（查看二板栏板）</el-button>
-      <el-button type="text" @click="buildAbDate({id:templateTableQueryParam5.id,dateStr: endDate})">构建数据</el-button>
-      <TemplateQueryTable :query-param="templateTableQueryParam5"
-                          :key="time">
-      </TemplateQueryTable>
-    </el-col>
-  </el-row>
-
-
   <div>
-    <div class="ss" style="width:600px ">
 
-    </div>
-    <div class="ss" style="width:600px ">
 
+    <el-affix :offset="30">
+      <EmotionFormLine
+          ref="queryRef"
+          :show-info="showInfo"
+          @query="getIntervalStatic"
+      ></EmotionFormLine>
+    </el-affix>
+
+    <AnomalousBehaviorTableForm
+        :tableProp="tableProp"
+        :tableData="tableDataHead"
+        :tableDescribe="tableDescribeHead"
+    >
+    </AnomalousBehaviorTableForm>
+
+
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="10">
+        <div>################################################################</div>
+        <el-button @click="jumpTo({erb:templateTableQueryParam7.id,dateStr: endDate})">首板高开</el-button>
+        <el-button type="text" @click="buildAbDate({id:templateTableQueryParam7.id,dateStr: endDate})">构建数据</el-button>
+        <TemplateQueryTable :query-param="templateTableQueryParam7"
+                            :key="time">
+        </TemplateQueryTable>
+
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="14">
+        <div> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</div>
+        <el-button @click="jumpTo({erb:templateTableQueryParam2.id,dateStr: endDate})">二板高于预期</el-button>
+        <el-button type="text" @click="buildAbDate({id:templateTableQueryParam2.id,dateStr: endDate})">构建数据</el-button>
+        <TemplateQueryTable :query-param="templateTableQueryParam2"
+                            :key="time"
+        >
+        </TemplateQueryTable>
+        <el-button @click="jumpTo({erb:templateTableQueryParam3.id,dateStr: endDate})">二板高于预期快速冲板,未上板注意洗盘动作</el-button>
+        <el-button type="text" @click="buildAbDate({id:templateTableQueryParam3.id,dateStr: endDate})">构建数据</el-button>
+        <TemplateQueryTable :query-param="templateTableQueryParam3"
+                            :key="time"
+        >
+        </TemplateQueryTable>
+
+
+      </el-col>
+    </el-row>
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          昨日情绪
+          <BaseMintureStatistic
+              :query-param="queryParam"
+              :char-style="charStypeUpDown"
+              :key="time"
+          ></BaseMintureStatistic>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          喇叭口
+          <BaseDayStandardDeviationStatistic :char-style="charStypeDayMedian"
+                                             :key="time"
+                                             :begin-date="beginDate"
+                                             :end-date="endDate"
+          ></BaseDayStandardDeviationStatistic>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <div># 破剑式超过1亿需要小心。</div>
+          <div># 用兵不复。</div>
+          <div> # 客观,不能带有任何主观思想。</div>
+          <div> # 首次涨停（查看二板栏板），盘中买，不能开盘买</div>
+          <div> # 危机中孕育着希望，一致中孕育着危机。</div>
+          <div> # 有的时候，出手的机会只有一次。</div>
+          <div> # 高位有量的票，往往都有一次自保的机会。</div>
+          <div> # 用价来平衡量</div>
+          <div> # 买新不买就</div>
+          <div> # 不买抛压重的票</div>
+
+
+        </div>
+      </el-col>
+    </el-row>
+    <AnomalousBehaviorTableForm
+        :tableProp="tableProp"
+        :tableData="tableDataBody"
+        :tableDescribe="tableDescribeBody"
+    >
+    </AnomalousBehaviorTableForm>
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="12">
+        <BaseDayUpDownStatistic :char-style="charStyleUpDown"
+                                :key="time"
+                                :begin-date="beginDate"
+                                :end-date="queryParam.dateStr"
+        ></BaseDayUpDownStatistic>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="12">
+        <el-button @click="jumpTo({erb:templateTableQueryParam5.id,dateStr: endDate})">首次涨停（查看二板栏板）</el-button>
+        <el-button type="text" @click="stockDetail({erb:templateTableQueryParam5.id,dateStr: endDate})">详情</el-button>
+
+        <el-button type="text" @click="buildAbDate({id:templateTableQueryParam5.id,dateStr: endDate})">构建数据</el-button>
+        <TemplateQueryTable :query-param="templateTableQueryParam5"
+                            :key="time">
+        </TemplateQueryTable>
+      </el-col>
+    </el-row>
+
+
+    <div>
+      <div class="ss" style="width:600px ">
+
+      </div>
+      <div class="ss" style="width:600px ">
+
+      </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
@@ -214,6 +213,11 @@ function getIntervalStatic() {
 
 function jumpTo(routerParam) {
   const {href} = router.resolve({name: "index4", query: routerParam});
+  window.open(href, '_blank');
+}
+
+function stockDetail(routerParam) {
+  const {href} = router.resolve({name: "OpenWatch3", query: routerParam});
   window.open(href, '_blank');
 }
 

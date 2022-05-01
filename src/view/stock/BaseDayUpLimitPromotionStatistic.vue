@@ -31,7 +31,7 @@ export default {
     charStyle: {
       type: Object,
       default: function () {
-        return {width: '50%', height: '360px'}
+        return {width: '100%', height: '360px'}
       }
     }
   },

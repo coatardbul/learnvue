@@ -33,8 +33,11 @@
     <el-form-item label="股票代码">
       <el-input v-model="queryParam.stockCode" placeholder="000000"></el-input>
     </el-form-item>
+    <el-form-item label="题材">
+      <el-input v-model="queryParam.themeStr" placeholder="请输入涨停题材"></el-input>
+    </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click.prevent="query">查询</el-button>
+      <el-button type="primary" @click.prevent="query">查询问句</el-button>
     </el-form-item>
     <el-form-item>
       <el-button type="success" round @click.prevent="queryDetailList">查询信息</el-button>

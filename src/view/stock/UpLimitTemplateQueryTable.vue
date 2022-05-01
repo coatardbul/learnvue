@@ -2,6 +2,7 @@
   <el-table :data="tableData"
             empty-text="无"
             border
+            max-height=" calc(100% - 3rem)"
             highlight-current-row
             fit="true"
             @selection-change="selectionChange"
@@ -19,7 +20,7 @@
         :sort-method="(a,b) => sortColumn(a ,b , item.prop)"
         :prop="item.prop"
         :label="item.label"
-        :min-width="item.prop=='code' || item.prop.indexOf('股票简称')!=-1?90:130"
+        :min-width="getMinWidth(item)"
     >
       <template v-slot="scope">
         <el-tooltip
@@ -45,7 +46,7 @@
 import axios from 'axios';
 import {reactive, onMounted, ref} from 'vue'
 import AxiosUrl from '/src/constant/AxiosUrl'
-
+import StockInfoUtil from '@/constant/StockInfoUtil'
 export default {
   name: "OnceTemplateQueryTable.vue",
   props: {
@@ -69,26 +70,49 @@ export default {
       let propName = item.prop;
       if (propName.indexOf("涨停强弱概览") > -1) {
         return '<span>' + (propValue.replaceAll('\n', '<br>')) + '</span>';
-      }else if ((propValue&&propValue.length > scope.column.width)||propName.indexOf("所属概念") > -1) {
+      }else if (propName.indexOf("涨停明细数据") > -1||propName.indexOf("所属概念") > -1||propName.indexOf("所属同花顺行业") > -1
+      ||propName.indexOf("跌停明细数据") > -1||propName.indexOf("涨停原因类别") > -1 ||propName.indexOf("经营范围") > -1
+      ) {
         return propValue;
       } else {
         return null;
       }
     }
-
-    function selectionChange(val) {
-      context.emit('selection-change',val)
-    }
-
     function disable(item,scope) {
-      let propValue= scope.row[item.prop];
       let propName = item.prop;
-      if ((propValue && propValue.length > scope.column.width)||propName.indexOf("所属概念") > -1||propName.indexOf("涨停强弱概览") > -1) {
+      if (propName.indexOf("所属概念") > -1||propName.indexOf("涨停强弱概览") > -1
+          ||propName.indexOf("涨停明细数据") > -1||propName.indexOf("所属同花顺行业") > -1
+          ||propName.indexOf("跌停明细数据") > -1 ||propName.indexOf("涨停原因类别") > -1
+          ||propName.indexOf("经营范围") > -1
+      ) {
         return false;
       } else {
         return true;
       }
     }
+    function selectionChange(val) {
+      context.emit('selection-change',val)
+    }
+
+
+    function getMinWidth(item){
+      if( item.prop=='code' || item.prop.indexOf('股票简称')!=-1){
+        return 90;
+      }
+      if(item.prop.indexOf('封单范围')!=-1){
+        return 150;
+      }
+      if(item.prop.indexOf('金额')!=-1||item.prop.indexOf('封单额')!=-1||item.prop.indexOf('成交额')!=-1){
+        return 130;
+      }
+      if(item.prop.indexOf('涨停强弱概览')!=-1){
+        return 170;
+      }
+      return 100;
+    }
+
+
+
 
 
 
@@ -104,21 +128,7 @@ export default {
         wordBreak: 'keep-all',
       }
       if (itemProp.indexOf("竞价涨幅") > -1 || itemProp.indexOf("涨幅") > -1 || itemProp.indexOf("涨跌幅") > -1) {
-        if (rowValue > 10) {
-          return {color: '#f6061b'};
-        }
-        if (rowValue > 5) {
-          return {color: '#cb1d2c'};
-        }
-        if (rowValue > 0) {
-          return {color: '#8d3a42'};
-        }
-        if (rowValue < -10) {
-          return {color: '#06f806'};
-        }
-        if (rowValue < 0) {
-          return {color: '#2cb42c'};
-        }
+        return StockInfoUtil.increaseRateColor(rowValue);
       }
       if (itemProp.indexOf("{/}") > -1) {
         if (rowValue > 100) {
@@ -141,7 +151,6 @@ export default {
 
     function formatter(item,scope) {
 
-      let row = scope.row;
       let column=item.prop;
       let cellValue=scope.row[item.prop];
 
@@ -157,18 +166,18 @@ export default {
         return Number(cellValue).toFixed(2) + '%';
       } else if (column.indexOf('涨幅') != -1 || column.indexOf('涨跌幅') != -1) {
         return Number(cellValue).toFixed(2) + '%';
-      } else {
+      }  else if (column.indexOf('{/}') != -1) {
+        return Number(cellValue).toFixed(2);
+      } else if (column.indexOf('振幅') != -1) {
+        return Number(cellValue).toFixed(2) + '%';
+      }  else {
         return cellValue;
       }
     }
 
 
     function forMatterMoneyNum(cellValue) {
-      if (Number(cellValue) / 10000 / 10000 > 1) {
-        return (Number(cellValue) / 10000 / 10000).toFixed(2) + '亿';
-      } else {
-        return (Number(cellValue) / 10000).toFixed(2) + '千万';
-      }
+      return StockInfoUtil.forMatMoneyNum(cellValue);
     }
 
 
@@ -209,7 +218,7 @@ export default {
           convert=props.queryParam.id;
         }
       }
-      if(props.queryParam.id == null||props.queryParam.dateStr == null){
+      if(props.queryParam.id == null||props.queryParam.dateStr == null||props.queryParam.dateStr.length==0){
         return;
       }
       axios.post(AxiosUrl.stock.stockQuery.strategy, {
@@ -217,9 +226,14 @@ export default {
         dateStr: props.queryParam.dateStr,
         timeStr: props.queryParam.timeStr,
         stockCode: props.queryParam.stockCode,
+        themeStr: props.queryParam.themeStr,
+
       }).then((res) => {
         if (res.data) {
           let datum = res.data[0];
+          if(!datum){
+            return;
+          }
           let keyArr = []
           Object.keys(datum).forEach(key => {
             keyArr.push(key)
@@ -227,8 +241,12 @@ export default {
           sortArr(keyArr, 'code', 'market_code');
           sortArr(keyArr, '股票简称');
           sortArr(keyArr, '涨停强弱概览');
+          sortArr(keyArr, '封单范围');
           sortArr(keyArr, '首次封单差值');
           sortArr(keyArr, '有效封单差值');
+          sortArr(keyArr, '打开涨停次数');
+          sortArr(keyArr, '封单比率');
+          sortArr(keyArr, '首次涨停时间');
           sortArr(keyArr, '竞价涨幅');
           sortArr(keyArr, '竞价金额', '{*}');
           sortArr(keyArr, '竞价金额', '{/}');
@@ -281,7 +299,7 @@ export default {
     }
 
     return {
-      getAllStockInfo, sortColumn, formatter, tableData, tableProp, getStyleRate, getDescribe, disable,selectionChange
+      getAllStockInfo, sortColumn, formatter, tableData, tableProp, getStyleRate, getDescribe, disable,selectionChange,getMinWidth
     }
   }
 }
