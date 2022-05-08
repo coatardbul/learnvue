@@ -10,7 +10,6 @@
   <FirstUpLimitStatic :date-str="endDate"
                       :key="time">
   </FirstUpLimitStatic >
-  <PanelGroup></PanelGroup>
   <el-row :gutter="32">
     <el-col :xs="24" :sm="24" :lg="8">
       <div class="chart-wrapper">
@@ -62,7 +61,6 @@
 </template>
 
 <script setup>
-import PanelGroup from '@/components/PanelGroup'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'

@@ -1,79 +1,82 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {Config} from "@antv/x6";
+import ConfigInfo from "@/constant/ConfigInfo";
 
 const AllWatch = () => import('@/view/allWatch/OpenWatch')
 const OpenWatch1 = () => import('@/view/allWatch/OpenWatch1')
 const OpenWatch2 = () => import('@/view/allWatch/OpenWatch2')
 const OpenWatch3 = () => import('@/view/allWatch/OpenWatch3')
 const OpenWatch4 = () => import('@/view/allWatch/OpenWatch4')
+const OpenWatch5 = () => import('@/view/allWatch/ThemeHistorySimulate')
 const OpenTheme = () => import('@/view/allWatch/OpenTheme')
+const HistoryAuctionSimulate = () => import('@/view/allWatch/HistoryAuctionSimulate')
+const FilterUpLimitInfo = () => import('@/view/allWatch/FilterUpLimitInfo')
 
 const CloseWatch = () => import('@/view/allWatch/CloseWatch')
 const CloseWatch1 = () => import('@/view/allWatch/CloseWatch1')
 
 const Home = () => import('@/view/layout/Home')
 const Login = () => import('@/view/Login')
-const Index1 = () =>import('@/view/stock/Num1')
-const Index2 = () =>import('@/view/stock/Num2')
-const Index3 = () =>import('@/view/stock/stratrgy/Num3')
-const Index4 = () =>import('@/view/stock/templatedQuery/Num4')
-const Index5 = () =>import('@/view/stock/BaseLine')
-const Index6 = () =>import('@/view/stock/Num6')
-const Index7 = () =>import('@/view/stock/Num7')
-const Index8 = () =>import('@/view/stock/Num8')
-const Index9 = () =>import('@/view/stock/Num9')
-const Index10 = () =>import('@/view/stock/Num10')
-const Index11 = () =>import('@/view/stock/Num11')
-const Index12 = () =>import('@/view/stock/Num12')
-const Index13 = () =>import('@/view/stock/Num13')
-const Index14 = () =>import('@/view/stock/Num14')
-const Index15 = () =>import('@/view/stock/Num15')
-const Index16 = () =>import('@/view/stock/Num16')
-const Index17 = () =>import('@/view/stock/Num17')
-const Index18 = () =>import('@/view/stock/Num18')
-const Index19 = () =>import('@/view/stock/Num19')
-const Index20 = () =>import('@/view/stock/Num20')
-const Index21 = () =>import('@/view/stock/Num21')
-const Index22 = () =>import('@/view/stock/strategyWatch/Num22')
-const Index23 = () =>import('@/view/stock/optionalPool/Num23')
-const Index24 = () =>import('@/view/stock/Num24')
-const Index25 = () =>import('@/view/stock/moduleFuture/Num25')
-const Index26 = () =>import('@/view/stock/Num26')
-const Index27 = () =>import('@/view/stock/Num27')
-const Index28 = () =>import('@/view/stock/Num28')
-const Index29 = () =>import('@/view/stock/Num29')
-const Index30 = () =>import('@/view/stock/Num30')
-const Index31 = () =>import('@/view/stock/Num31')
-const Index32 = () =>import('@/view/stock/Num32')
-const Index33 = () =>import('@/view/stock/Num33')
-const Index34 = () =>import('@/view/stock/Num34')
-const Index35 = () =>import('@/view/stock/Num35')
-const Index36 = () =>import('@/view/stock/anomalousBehavior/Num36')
-const Index37 = () =>import('@/view/stock/optionalPlate/Num37')
-const Index38 = () =>import('@/view/stock/Num38')
-const Index39 = () =>import('@/view/stock/abStatic/Num39')
-const Index40 = () =>import('@/view/stock/Num40')
+const Index1 = () => import('@/view/stock/Num1')
+const Index2 = () => import('@/view/stock/Num2')
+const Index3 = () => import('@/view/stock/stratrgy/Num3')
+const Index4 = () => import('@/view/stock/templatedQuery/Num4')
+const Index5 = () => import('@/view/stock/BaseLine')
+const Index6 = () => import('@/view/stock/Num6')
+const Index7 = () => import('@/view/stock/Num7')
+const Index8 = () => import('@/view/stock/Num8')
+const Index9 = () => import('@/view/stock/Num9')
+const Index10 = () => import('@/view/stock/Num10')
+const Index11 = () => import('@/view/stock/Num11')
+const Index12 = () => import('@/view/stock/Num12')
+const Index13 = () => import('@/view/stock/Num13')
+const Index14 = () => import('@/view/stock/Num14')
+const Index15 = () => import('@/view/stock/Num15')
+const Index16 = () => import('@/view/stock/Num16')
+const Index17 = () => import('@/view/stock/Num17')
+const Index18 = () => import('@/view/stock/Num18')
+const Index19 = () => import('@/view/stock/Num19')
+const Index20 = () => import('@/view/stock/Num20')
+const Index21 = () => import('@/view/stock/Num21')
+const Index22 = () => import('@/view/stock/strategyWatch/Num22')
+const Index23 = () => import('@/view/stock/optionalPool/Num23')
+const Index24 = () => import('@/view/stock/Num24')
+const Index25 = () => import('@/view/stock/moduleFuture/Num25')
+const Index26 = () => import('@/view/stock/Num26')
+const Index27 = () => import('@/view/stock/Num27')
+const Index28 = () => import('@/view/stock/Num28')
+const Index29 = () => import('@/view/stock/Num29')
+const Index30 = () => import('@/view/stock/Num30')
+const Index31 = () => import('@/view/stock/Num31')
+const Index32 = () => import('@/view/stock/Num32')
+const Index33 = () => import('@/view/stock/Num33')
+const Index34 = () => import('@/view/stock/Num34')
+const Index35 = () => import('@/view/stock/Num35')
+const Index36 = () => import('@/view/stock/anomalousBehavior/Num36')
+const Index37 = () => import('@/view/stock/optionalPlate/Num37')
+const Index38 = () => import('@/view/stock/Num38')
+const Index39 = () => import('@/view/stock/abStatic/Num39')
+const Index40 = () => import('@/view/stock/Num40')
+const Index41 = () => import('@/view/stock/Num41')
 
 
-
-const LearnVue1 = () =>import('@/view/learn/Num1')
-
+const LearnVue1 = () => import('@/view/learn/Num1')
 
 
-const IntervalStatic = () =>import('@/view/river/IntervalStatic')
-const IntervalTimeInfo = () =>import('@/view/river/IntervalTimeInfo')
+const IntervalStatic = () => import('@/view/river/IntervalStatic')
+const IntervalTimeInfo = () => import('@/view/river/IntervalTimeInfo')
 
 
-const JamesLegge1 = () =>import('@/view/jamesLegge/Num1')
-const JamesLegge2 = () =>import('@/view/jamesLegge/Num2')
-const JamesLegge3 = () =>import('@/view/jamesLegge/Num3')
-const JamesLegge4 = () =>import('@/view/jamesLegge/Num4')
-const JamesLegge5 = () =>import('@/view/jamesLegge/Num5')
-const JamesLegge6 = () =>import('@/view/jamesLegge/Num6')
+const JamesLegge1 = () => import('@/view/jamesLegge/Num1')
+const JamesLegge2 = () => import('@/view/jamesLegge/Num2')
+const JamesLegge3 = () => import('@/view/jamesLegge/Num3')
+const JamesLegge4 = () => import('@/view/jamesLegge/Num4')
+const JamesLegge5 = () => import('@/view/jamesLegge/Num5')
+const JamesLegge6 = () => import('@/view/jamesLegge/Num6')
 
 
-const MenuInfo = () =>import('@/view/menu/MenuInfo')
-const DialogMenuDetail = () =>import('@/view/menu/DialogMenuDetail')
-
+const MenuInfo = () => import('@/view/menu/MenuInfo')
+const DialogMenuDetail = () => import('@/view/menu/DialogMenuDetail')
 
 
 const routes = [
@@ -108,9 +111,24 @@ const routes = [
         component: OpenWatch4,
     },
     {
+        path: "/OpenWatch5",
+        name: "OpenWatch5",
+        component: OpenWatch5,
+    },
+    {
         path: "/OpenTheme",
         name: "OpenTheme",
         component: OpenTheme,
+    },
+    {
+        path: "/HistoryAuctionSimulate",
+        name: "HistoryAuctionSimulate",
+        component: HistoryAuctionSimulate,
+    },
+    {
+        path: "/FilterUpLimitInfo",
+        name: "FilterUpLimitInfo",
+        component: FilterUpLimitInfo,
     },
     {
         path: "/CloseWatch",
@@ -123,10 +141,30 @@ const routes = [
         component: CloseWatch1,
     },
     {
+        path: "/jamesLegge1",
+        name: "jamesLegge1",
+        component: JamesLegge1,
+    },
+    {
+        path: "/jamesLegge4",
+        name: "jamesLegge4",
+        component: JamesLegge4,
+    },
+    {
+        path: "/jamesLegge5",
+        name: "jamesLegge5",
+        component: JamesLegge5,
+    },
+    {
+        path: "/jamesLegge6",
+        name: "jamesLegge6",
+        component: JamesLegge6,
+    },
+    {
         path: "/",
         name: "Home",
         component: Home,
-        children:[
+        children: [
             {
                 path: "/index1",
                 name: "index1",
@@ -328,6 +366,11 @@ const routes = [
                 component: Index40,
             },
             {
+                path: "/index41",
+                name: "index41",
+                component: Index41,
+            },
+            {
                 path: "/intervalStatic",
                 name: "intervalStatic",
                 component: IntervalStatic,
@@ -339,8 +382,6 @@ const routes = [
             },
 
 
-
-
             {
                 path: "/learn-vue-1",
                 name: "learn-vue-1",
@@ -348,12 +389,6 @@ const routes = [
             },
 
 
-
-            {
-                path: "/jamesLegge1",
-                name: "jamesLegge1",
-                component: JamesLegge1,
-            },
             {
                 path: "/jamesLegge2",
                 name: "jamesLegge2",
@@ -364,21 +399,7 @@ const routes = [
                 name: "jamesLegge3",
                 component: JamesLegge3,
             },
-            {
-                path: "/jamesLegge4",
-                name: "jamesLegge4",
-                component: JamesLegge4,
-            },
-            {
-                path: "/jamesLegge5",
-                name: "jamesLegge5",
-                component: JamesLegge5,
-            },
-            {
-                path: "/jamesLegge6",
-                name: "jamesLegge6",
-                component: JamesLegge6,
-            },
+
             {
                 path: "/menuInfo",
                 name: "menuInfo",
@@ -398,9 +419,21 @@ const router = createRouter({
     routes,
 });
 
+function validToken(token) {
+    //一天有效
+    let number = new Date().getTime() - token;
+    if (number / 1000 / 60 / 60 / 24 > 1 || number / 1000 / 60 / 60 / 24 < 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 router.beforeEach((to, from, next) => {
     let token = localStorage.getItem("token");
-    if (token || to.path === "/login") {
+    if (to.path === "/login") {
+        next();
+    } else if (validToken(token)) {
         next();
     } else {
         next("/login");

@@ -222,7 +222,8 @@ export default {
         return;
       }
       axios.post(AxiosUrl.stock.stockQuery.strategy, {
-        riverStockTemplateId: props.queryParam.id == null  ? '1481302460344696832' : convert,
+        riverStockTemplateId:  convert,
+        riverStockTemplateSign: props.queryParam.templateSign ,
         dateStr: props.queryParam.dateStr,
         timeStr: props.queryParam.timeStr,
         stockCode: props.queryParam.stockCode,

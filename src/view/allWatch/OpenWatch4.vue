@@ -80,7 +80,8 @@
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="24">
         <el-button @click="jumpTo({erb:templateTableQueryParam5.id,dateStr: endDate})">首次涨停（查看二板栏板）</el-button>
-        <el-button type="text" @click="stockDetail({erb:templateTableQueryParam5.id,dateStr: endDate})">详情</el-button>
+        <el-button type="text" @click="stockDetail({erb:templateTableQueryParam5.id,dateStr: endDate,templateSign:templateTableQueryParam5.templateSign})">详情</el-button>
+        <el-button type="text" @click="historyStockDetail({erb:templateTableQueryParam5.id,dateStr: endDate,templateSign:templateTableQueryParam5.templateSign})">历史详情</el-button>
 
         <el-button type="text" @click="buildAbDate({id:templateTableQueryParam5.id,dateStr: endDate})">构建数据</el-button>
         <TemplateQueryTable :query-param="templateTableQueryParam5"
@@ -102,13 +103,11 @@
 </template>
 
 <script setup>
-import PanelGroup from '@/components/PanelGroup'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
 import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
-import UpLimitStatic from '@/view/stock/UpLimitStatic'
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
@@ -125,7 +124,7 @@ const showInfo = ref({
 })
 const queryRef = ref()
 const time = ref()
-const beginDate = ref()
+const beginDate = ref(ConfigInfo.getBeforeEndDayStr(ConfigInfo.nowDate,15))
 const endDate = ref(ConfigInfo.nowDate)
 const yesterday = ref()
 const queryParam = ref({
@@ -152,6 +151,7 @@ const templateTableQueryParam3 = ref({
 
 const templateTableQueryParam5 = ref({
   id: '1506450265249808384',
+  templateSign:'FIRST_UP_LIMIT_WATCH_TWO',
   dateStr: endDate.value,
 })
 
@@ -199,6 +199,10 @@ function jumpTo(routerParam) {
 
 function stockDetail(routerParam) {
   const {href} = router.resolve({name: "OpenWatch3", query: routerParam});
+  window.open(href, '_blank');
+}
+function historyStockDetail(routerParam) {
+  const {href} = router.resolve({name: "HistoryAuctionSimulate", query: routerParam});
   window.open(href, '_blank');
 }
 

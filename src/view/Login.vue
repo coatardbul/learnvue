@@ -13,6 +13,9 @@
   </form>
 </template>
 <script>
+import axios from "axios";
+import AxiosUrl from "@/constant/AxiosUrl";
+
 export default {
   name: 'Login',
   data() {
@@ -23,12 +26,20 @@ export default {
   },
   methods: {
     login() {
-      if ("admin" === this.username && "123456" === this.password) {
-        this.$router.push("/");
-        localStorage.setItem("token","123456");
-      }else {
-        alert("用户名密码错误");
-      }
+      axios.post(AxiosUrl.river.user.login, {
+        account: this.username,
+        password:this.password,
+      }).then((res) => {
+          this.$router.push("/");
+        localStorage.setItem("username",this.username);
+        localStorage.setItem("token",res);
+      });
+      // if ("admin" === this.username && "123456" === this.password) {
+      //   this.$router.push("/");
+      //   localStorage.setItem("token","123456");
+      // }else {
+      //   alert("用户名密码错误");
+      // }
     }
   }
 }

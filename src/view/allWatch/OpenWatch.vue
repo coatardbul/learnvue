@@ -99,7 +99,6 @@
 </template>
 
 <script setup>
-import PanelGroup from '@/components/PanelGroup'
 import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
@@ -124,7 +123,7 @@ const showInfo = ref({
 })
 const queryRef = ref()
 const time = ref()
-const beginDate = ref()
+const beginDate = ref(ConfigInfo.getBeforeEndDayStr(ConfigInfo.nowDate,30))
 const endDate = ref(ConfigInfo.nowDate)
 const yesterday = ref()
 const queryParam = ref({

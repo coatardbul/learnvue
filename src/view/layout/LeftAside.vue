@@ -67,7 +67,9 @@ const list = ref([
 
 const isCollapse=ref(false)
 function getMenuInfo() {
-  axios.post(AxiosUrl.river.menu.getAllMenu, {}).then((res) => {
+  axios.post(AxiosUrl.river.menu.getAllMenuByUser, {
+    account:localStorage.getItem("username"),
+  }).then((res) => {
     list.value.length=0
     res.sort(CollectionUtils.compareAsc('sequent'))
     res.forEach(v => {

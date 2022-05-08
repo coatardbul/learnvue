@@ -31,6 +31,12 @@
     <el-form-item label="时间" v-show="showInfo.timeStr">
       <el-input v-model="queryParam.timeStr" placeholder="HH:mm"></el-input>
     </el-form-item>
+    <el-form-item label="题材" v-show="showInfo.themeStr">
+      <el-input v-model="queryParam.themeStr" placeholder="题材"></el-input>
+    </el-form-item>
+    <el-form-item label="模板标识" v-show="showInfo.templateSign">
+      <el-input v-model="queryParam.templateSign" placeholder="模板标识"></el-input>
+    </el-form-item>
     <el-form-item v-show="showInfo.baseButton">
       <el-button type="primary" @click.prevent="getIntervalStatic">查询</el-button>
     </el-form-item>
@@ -71,6 +77,8 @@ export default {
           objectSign: false,
           timeInterval: false,
           timeStr: false,
+          themeStr:false,
+          templateSign:false,
           forceRefreshName: '强制刷新',
           supplementRefreshButton: false,
           supplementRefreshName: '补充刷新',

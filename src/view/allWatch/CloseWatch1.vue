@@ -7,7 +7,6 @@
         @query="getIntervalStatic"
     ></EmotionFormLine>
   </el-affix>
-  <PanelGroup></PanelGroup>
   <el-row :gutter="32">
     <el-col :xs="24" :sm="24" :lg="24">
       <div>历史30日涨停数据</div>
@@ -45,7 +44,6 @@
 </template>
 
 <script setup>
-import PanelGroup from '@/components/PanelGroup'
 
 import UplimitDescriptTable from '@/view/stock/UpLimitDescribeTable'
 

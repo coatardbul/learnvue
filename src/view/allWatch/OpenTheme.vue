@@ -55,12 +55,36 @@
       </div>
     </el-col>
   </el-row>
+  <el-scrollbar max-height="400px">
 
+    <BaseLineChart
+        :base-line-echarts="baseLineEcharts"
+        :char-style="charStyle"
+        v-if=" baseLineEcharts.series.length>0"
+    ></BaseLineChart>
+    <BaseLineChart
+        :base-line-echarts="baseLineEcharts"
+        :char-style="charStyle"
+        v-if=" baseLineEcharts.series.length>0"
+    ></BaseLineChart>
+    <BaseLineChart
+        :base-line-echarts="baseLineEcharts"
+        :char-style="charStyle"
+        v-if=" baseLineEcharts.series.length>0"
+    ></BaseLineChart>
+  </el-scrollbar>
   <div>
     <el-tag type="danger">{{ currTheme }}</el-tag>
     <el-tag type="success" v-for="item in twoThemeStockMap"
     >{{ item[0] }}
     </el-tag>
+    <el-switch
+        v-model="queryParam.value1"
+        class="ml-2"
+        size="large"
+        active-text="定时刷新"
+        @change="refreshDateJob"
+    />
     <span>||</span>
     <el-tag type="success" v-for="item in oneThemeStockMap"
     >{{ item[0] }}
@@ -69,9 +93,11 @@
 
   </div>
   <div>
-    <TemplateQueryTable :query-param="templateTableQueryParam"
-                        :key="time">
-    </TemplateQueryTable>
+    <TemplateTableInfo
+        :table-data="tableData"
+        :table-prop="tableProp"
+        :key="time">
+    </TemplateTableInfo>
 
   </div>
 
@@ -83,7 +109,7 @@ import {ref} from "vue";
 
 import StockBaseInfoObject from "@/module/StockBaseInfo";
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
-import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
+import TemplateTableInfo from '@/view/stock/TemplateTableInfo'
 import LastTwoAboveUpLimitStatic from '@/view/stock/LastTwoAboveUpLimitStatic'
 
 
@@ -92,16 +118,27 @@ import moment from "moment";
 import axios from "axios";
 import AxiosUrl from "@/constant/AxiosUrl";
 import router from "@/config/router";
+import {reactive} from "vue";
+import BaseLineChart from "@/components/BaseLineChart";
+
+import BaseEcharts from "@/module/BaseEcharts";
+import BaseLineEcharts from "@/module/BaseLineEcharts";
 import ConfigInfo from "@/constant/ConfigInfo";
+import EchartsUtils from "@/module/EchartsUtils";
 
 export default {
   name: 'openWatch3.vue',
-  components: {EmotionFormLine, TemplateQueryTable, LastTwoAboveUpLimitStatic},
+  components: {EmotionFormLine, TemplateTableInfo, LastTwoAboveUpLimitStatic,BaseLineChart},
 
 
   setup(props, context) {
     const queryParam = ref({})
     const queryRef = ref({})
+
+    const tableData = ref([])
+    const tableProp = ref([])
+    const baseLineEcharts = reactive(Object.assign(new BaseEcharts(), new BaseLineEcharts()))
+    const charStyle = reactive({width: '100%', height: '200px'})
 
     const upLimitList = ref([])
     const describeArr = ref([])
@@ -126,6 +163,8 @@ export default {
     const currTheme = ref()
     const hoverTheme = ref()
 
+
+    const refreshDateJobId = ref()
     const currDateStr = ref()
     const templateTableQueryParam = ref({
       id: '1520443939201613824',
@@ -151,7 +190,7 @@ export default {
         return;
       }
       oneStockThemeMap.value = new Map()
-      oneStockNameMap.value= new Map();
+      oneStockNameMap.value = new Map();
       axios.post(AxiosUrl.stock.stockQuery.strategy, {
         riverStockTemplateId: '1506450265249808384',
         dateStr: queryRef.value.queryParam.dateStr
@@ -310,6 +349,19 @@ export default {
       return stockInfo;
     }
 
+    function refreshDateJob(val) {
+      if (val) {
+        refreshDateJobId.value = setInterval(getUpdateStockInfoArr, 2000);
+      } else {
+        clearInterval(refreshDateJobId.value); //清除计时器
+        refreshDateJobId.value = null; //设置为null
+      }
+    }
+
+    function getUpdateStockInfoArr() {
+      getAllStockInfo();
+      time.value = new Date().getTime();
+    }
 
     function getIntervalStatic() {
       if (queryRef.value.queryParam) {
@@ -329,6 +381,98 @@ export default {
       timeStr: true,
     })
 
+    function getAllStockInfo() {
+
+      let convert = '';
+      if (templateTableQueryParam.value.id != null) {
+        if (typeof (templateTableQueryParam.value.id) == 'object') {
+          convert = templateTableQueryParam.value.id.join();
+        }
+        if (typeof (templateTableQueryParam.value.id) == 'string') {
+          convert = templateTableQueryParam.value.id;
+        }
+      }
+      if (templateTableQueryParam.value.id == null || templateTableQueryParam.value.dateStr == null || templateTableQueryParam.value.dateStr.length == 0) {
+        return;
+      }
+      axios.post(AxiosUrl.stock.stockQuery.strategy, {
+        riverStockTemplateId: templateTableQueryParam.value.id == null ? '1481302460344696832' : convert,
+        dateStr: templateTableQueryParam.value.dateStr,
+        timeStr: templateTableQueryParam.value.timeStr,
+        stockCode: templateTableQueryParam.value.stockCode,
+        themeStr: templateTableQueryParam.value.themeStr,
+
+      }).then((res) => {
+        if (res.data) {
+          let datum = res.data[0];
+          if (!datum) {
+            return;
+          }
+          tableData.value.length = 0;
+          tableProp.value.length = 0;
+          let keyArr = []
+          Object.keys(datum).forEach(key => {
+            keyArr.push(key)
+          })
+          sortArr(keyArr, 'code', 'market_code');
+          sortArr(keyArr, '股票简称');
+          sortArr(keyArr, '涨停强弱概览');
+          sortArr(keyArr, '封单范围');
+          sortArr(keyArr, '首次封单差值');
+          sortArr(keyArr, '有效封单差值');
+          sortArr(keyArr, '打开涨停次数');
+          sortArr(keyArr, '封单比率');
+          sortArr(keyArr, '首次涨停时间');
+          sortArr(keyArr, '竞价涨幅');
+          sortArr(keyArr, '竞价金额', '{*}');
+          sortArr(keyArr, '竞价金额', '{/}');
+          sortArr(keyArr, '{/}');
+          sortArr(keyArr, '涨幅');
+          sortArr(keyArr, '成交额');
+          sortArr(keyArr, '涨跌幅');
+          sortArr(keyArr, '换手率');
+          sortArr(keyArr, '市值');
+          sortArr(keyArr, '振幅');
+          sortArr(keyArr, '时间');
+          sortArr(keyArr, '封单额');
+          sortArr(keyArr, '封单量');
+
+          keyArr.forEach(key => {
+            let propInfo = {
+              prop: key,
+              label: key,
+            }
+            tableProp.value.push(propInfo);
+          })
+
+
+          tableData.value = res.data
+        }
+      });
+    }
+
+    function sortArr(keyArr, keyName, notKeyName) {
+      while (true) {
+        let index;
+        if (notKeyName) {
+          index = keyArr.findIndex(key => key.indexOf(keyName) != -1 && key.indexOf(notKeyName) == -1)
+        } else {
+          index = keyArr.findIndex(key => key.indexOf(keyName) != -1)
+        }
+        if (index > 0) {
+          let propInfo = {
+            prop: keyArr[index],
+            label: keyArr[index],
+          }
+          tableProp.value.push(propInfo);
+          keyArr.splice(index, 1);
+        } else {
+          break;
+        }
+      }
+    }
+
+
     function clickTheme(key) {
       templateTableQueryParam.value.themeStr = key;
       templateTableQueryParam.value.dateStr = queryRef.value.queryParam.dateStr;
@@ -345,8 +489,49 @@ export default {
           twoThemeStockMap.value.set(item.name);
         })
       }
-
+      getAllStockInfo();
+      getAllStockInfoByDate();
       time.value = new Date().getTime();
+    }
+    function getAllStockInfoByDate() {
+      if (!queryRef.value.queryParam) {
+        return;
+      }
+      EchartsUtils.clearCache(baseLineEcharts);
+      baseLineEcharts.legend.selected = {
+        '中位数': true,
+        '标准差': true,
+        '竞价金额平均值': false,
+        '成交额平均值': false,
+        '涨跌幅平均值': false,
+      }
+      axios.post(AxiosUrl.stock.themeStatic.getRangeStatic, {
+        beginDate:ConfigInfo.getBeforeEndDayStr(queryRef.value.queryParam.dateStr,30),
+        endDate: queryRef.value.queryParam.dateStr,
+        objectEnumSign: 'THEME_AUCTION',
+        themeStr:currTheme.value
+      }).then((res) => {
+        res.forEach(obj => {
+          baseLineEcharts.xAxis[0].data.push(obj.date)
+          JSON.parse(obj.objectStaticArray).forEach(v => {
+
+            let seriesIndex = baseLineEcharts.series.find(item=>item.name==v.name);
+            if(seriesIndex){
+              seriesIndex.data.push(v.value);
+            }else {
+              let seriesIndexDateArr=[]
+              seriesIndexDateArr.push(v.value);
+              let medianArrayObject = {
+                name: v.name,
+                type: 'line',
+                data: seriesIndexDateArr
+              }
+              baseLineEcharts.series.push(medianArrayObject);
+            }
+          })
+        })
+
+      });
     }
 
     function getUpLimitInfo() {
@@ -437,7 +622,13 @@ export default {
       getOneHoverStyle,
       allThemeStockArr,
       describeArr,
-      upLimitList
+      upLimitList,
+      refreshDateJobId,
+      refreshDateJob,
+      tableData,
+      tableProp,
+      getAllStockInfo,
+      baseLineEcharts, charStyle,getAllStockInfoByDate
     }
   }
 }

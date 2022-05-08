@@ -30,6 +30,15 @@ const stock = {
         getDayStatic: label.stock + '/stockQuery/getDayStatic',
         getRangeStatic:label.stock + '/stockQuery/getRangeStatic',
     },
+    themeStatic: {
+        refreshDay: label.stock + '/themeStatic/refreshDay',
+        deleteDay:label.stock + '/themeStatic/deleteDay',
+        refreshDayRange: label.stock + '/themeStatic/refreshDayRange',
+        forceRefreshDayRange: label.stock + '/themeStatic/forceRefreshDayRange',
+        getDayDetail: label.stock + '/themeStatic/getDayDetail',
+        getDayStatic: label.stock + '/themeStatic/getDayStatic',
+        getRangeStatic:label.stock + '/themeStatic/getRangeStatic',
+    },
     scatterStatic:{
         refreshDay: label.stock + '/scatter/refreshDay',
         deleteDay:label.stock + '/scatter/deleteDay',
@@ -68,6 +77,13 @@ const stock = {
         saveDate:label.stock + '/stockQuery/saveDate',
         getAllStatic:label.stock + '/stockQuery/getAllStatic',
     },
+    stockFilter:{
+        save:label.stock + '/stockFilter/save',
+        delete:label.stock + '/stockFilter/delete',
+        modify:label.stock + '/stockFilter/modify',
+        getFilterInfo:label.stock + '/stockFilter/getFilterInfo',
+        getDirectFilterInfo:label.stock + '/stockFilter/getDirectFilterInfo',
+    },
     stockPredict:{
         execute:label.stock + '/stockPredict/execute',
         getAll:label.stock + '/stockPredict/getAll',
@@ -99,11 +115,17 @@ const stock = {
     }
 }
 const river = {
-
+    user:{
+        login: 'river/user/login',
+        getUserInfo: 'river/user/getUserInfo',
+    },
     menu: {
         getAllMenu: 'river/menu/getAllMenu',
+        getAllMenuByUser: 'river/menu/getAllMenuByUser',
+
         editMenu: 'river/menu/modify',
-        addMenu: 'river/menu/add'
+        addMenu: 'river/menu/add',
+        delete: 'river/menu/delete'
     },
     stockTemplate: {
         getQuery:'river/api/stockTemplate/getQuery',

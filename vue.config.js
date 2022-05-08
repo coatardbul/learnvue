@@ -13,9 +13,16 @@ module.exports = {
                 pathRewrite: {  //替换路径中的/api
                     '^/river': '/river'
                 }
-                /*pathRequiresRewrite: {
-                  '^/api': ''
-                }*/
+
+            },
+            '/gl': {  //代理别名
+                target: 'https://mapv.baidu.com',   //代理目标值
+                changeOrigin: true,
+                secure: true,
+                pathRewrite: {  //替换路径中的/api
+                    '^/gl': '/gl'
+                }
+
             },
             '/stock': {  //代理别名
                 target: 'http://localhost:9006',   //代理目标值
@@ -24,9 +31,7 @@ module.exports = {
                 pathRewrite: {  //替换路径中的/api
                     '^/stock': '/stock'
                 }
-                /*pathRequiresRewrite: {
-                  '^/api': ''
-                }*/
+
             }
         },
         overlay: {

@@ -1,5 +1,5 @@
 <template>
-  <FormLIne  @query-menu="queryMenuInfo"></FormLIne>
+  <FormLIne ref="queryRef" @query-menu="queryMenuInfo"></FormLIne>
   <DialogMenuDetail :button-info="addButtonInfo" :menu-info="menuInfo"></DialogMenuDetail>
 
   <el-table :data="tableData" border highlight-current-row
@@ -41,12 +41,13 @@
       </template>
     </el-table-column>
 
-    <el-table-column fixed="right" label="操作" width="120">
+    <el-table-column fixed="right" label="操作" width="180">
       <template #default="scope">
         <DialogMenuDetail :button-info="buttonInfo" :menu-info="scope.row">{{
             buttonInfo.buttonName
           }}
         </DialogMenuDetail>
+        <el-button type="text" @click="deleteInfo(scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -62,13 +63,13 @@ import Button from '@/constant/Button'
 import DialogMenuDetail from './DialogMenuDetail'
 
 const tableData = reactive([])
-const menuInfo=ref({})
+const menuInfo = ref({})
 const addButtonInfo = ref({
   buttonName: Button.buttonStatus.add.name,
   buttonUrl: AxiosUrl.river.menu.addMenu,
   buttonType: 'button'
 })
-
+const queryRef=ref({})
 const buttonInfo = reactive(
     {
       buttonName: Button.buttonStatus.edit.name,
@@ -76,15 +77,27 @@ const buttonInfo = reactive(
     })
 
 
-function queryMenuInfo(queryInfo){
-  tableData.length=0
-  axios.post(AxiosUrl.river.menu.getAllMenu,queryInfo).then((res) => {
+function queryMenuInfo() {
+  if(!queryRef.value){
+    return;
+  }
+  tableData.length = 0
+  axios.post(AxiosUrl.river.menu.getAllMenu, queryRef.value.queryParam).then((res) => {
     res.forEach(v => {
       tableData.push(v);
     })
   });
 }
 
+function deleteInfo(row) {
+  axios.post(AxiosUrl.river.menu.delete, {
+    id: row.id,
+  }).then(() => {
+    queryMenuInfo();
+      }
+  )
+
+}
 
 function getAllMenuInfo() {
   tableData.length = 0

@@ -10,8 +10,22 @@
         <el-input v-model="menuInfo.id" autocomplete="on"></el-input>
       </el-form-item>
       <el-form-item label="父节点id" :label-width="formLabelWidth">
-        <el-input v-model="menuInfo.parentMenuId" autocomplete="off"></el-input>
+        <el-select
+            filterable
+            clearable
+            v-model="menuInfo.parentMenuId"
+            placeholder="Select"
+            style="width: 240px"
+        >
+          <el-option
+              v-for="item in parentMenuList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
       </el-form-item>
+
       <el-form-item label="菜单名称" :label-width="formLabelWidth">
         <el-input v-model="menuInfo.menuName" autocomplete="off"></el-input>
       </el-form-item>
@@ -46,6 +60,7 @@
 import {inject, onMounted, reactive, ref} from 'vue'
 import Button from '/src/constant/Button'
 import axios from "axios";
+import AxiosUrl from "@/constant/AxiosUrl";
 
 
 export default {
@@ -81,6 +96,7 @@ export default {
     const formLabelWidth = '140px'
     const confirmName = ref(Button.buttonStatus.confirm.name)
     const cancelName = ref(Button.buttonStatus.cancel.name)
+    const parentMenuList = ref([])
 
 
     function clickConfirmDialog() {
@@ -96,8 +112,22 @@ export default {
       dialogFormVisible.value = false
     }
 
+    onMounted(() => {
+      axios.post(AxiosUrl.river.menu.getAllMenu, {
+        parentMenuId: 0
+      }).then((res) => {
+        parentMenuList.value.length = 0
+        res.forEach(templateInfo => {
+          let templateTemp = {
+            label: templateInfo.menuName,
+            value: templateInfo.id,
+          }
+          parentMenuList.value.push(templateTemp);
+        })
+      });
+    })
     return {
-      dialogFormVisible, formLabelWidth, clickConfirmDialog, cancelName, confirmName
+      dialogFormVisible, formLabelWidth, clickConfirmDialog, cancelName, confirmName,parentMenuList
     }
   }
 }
