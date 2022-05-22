@@ -56,6 +56,12 @@
         <span>{{ forMatterMoneyNum(scope.row.marketValue) }}</span>
       </template>
     </el-table-column>
+    <el-table-column label="换手率" width="150" sortable
+                     :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span>{{ forMatterRate(scope.row.turnoverRate) }}</span>
+      </template>
+    </el-table-column>
     <el-table-column label="买入价格" width="100" :show-overflow-tooltip="true">
       <template #default="scope">
         <span>{{ scope.row.buyPrice }}</span>
@@ -68,7 +74,7 @@
     </el-table-column>
     <el-table-column label="增长百分比" width="100" sortable :show-overflow-tooltip="true">
       <template #default="scope">
-        <span  :style="getIncreaseRate(scope.row)">{{
+        <span :style="getIncreaseRate(scope.row)">{{
             Number((scope.row.salePrice - scope.row.buyPrice) / scope.row.buyPrice * 100).toFixed(2) + '%'
           }}</span>
       </template>
@@ -125,22 +131,22 @@ function deleteInfo(row) {
 
 }
 
-function getIncreaseRate(row){
- let increaseRate= Number((row.salePrice - row.buyPrice) / row.buyPrice * 100).toFixed(2);
+function getIncreaseRate(row) {
+  let increaseRate = Number((row.salePrice - row.buyPrice) / row.buyPrice * 100).toFixed(2);
 
-  if(increaseRate>10){
+  if (increaseRate > 10) {
     return {color: '#f6061b'}
   }
- if(increaseRate>5){
+  if (increaseRate > 5) {
     return {color: '#cb1d2c'}
   }
-  if(increaseRate>0){
+  if (increaseRate > 0) {
     return {color: '#8d3a42'}
   }
-  if(increaseRate<-10){
+  if (increaseRate < -10) {
     return {color: '#06f806'}
   }
-  if(increaseRate<0){
+  if (increaseRate < 0) {
     return {color: '#2cb42c'}
   }
 
@@ -163,6 +169,11 @@ function formatter(row, column, cellValue, index) {
   } else {
     return cellValue;
   }
+}
+
+function forMatterRate(cellValue) {
+  return Number(cellValue).toFixed(2) + '%';
+
 }
 
 

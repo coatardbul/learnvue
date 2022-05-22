@@ -3,10 +3,12 @@ import AxiosUrl from "@/constant/AxiosUrl";
 import {ref} from "vue";
 import StockBaseInfoObject from "@/module/StockBaseInfo";
 
-export default function (queryRef, styleInfo,hisNowFlag) {
+export default function (queryRef, styleInfo, hisNowFlag, queryParam) {
     const stockInfoArr = ref([])
     const stockCodeMap = ref(new Map())
     const stockThemeMap = ref(new Map())
+    const dragonTigerMap = ref(new Map())
+    const dialogFormVisible = ref(false)
     const time = ref()
     const simHisTimeStr = ref('09:25')
 
@@ -15,25 +17,54 @@ export default function (queryRef, styleInfo,hisNowFlag) {
             return
         }
         stockInfoArr.value.length = 0
+        dragonTigerMap.value = new Map()
         stockThemeMap.value = new Map()
         stockCodeMap.value = new Map()
         axios.post(AxiosUrl.stock.stockQuery.strategy, {
             riverStockTemplateId: queryRef.value.queryParam.id,
             riverStockTemplateSign: queryRef.value.queryParam.templateSign,
-            dateStr: queryRef.value.queryParam.dateStr
+            dateStr: queryRef.value.queryParam.dateStr,
+            timeStr:isNowRequest()?'':simHisTimeStr.value,
         }).then((res) => {
             res.data.forEach(item => {
-                let stockInfo = rebuildHisStockInfo(item);
+                let stockInfo = rebuildStockInfo(item);
                 stockInfoArr.value.push(stockInfo);
                 addStockCodeMapAndThemeMap(stockInfo);
             })
         });
     }
 
-    function clearStockCodeMapAndThemeMap(){
-        stockCodeMap.value=new Map();
-        stockThemeMap.value=new Map();
+    function clearStockCodeMapAndThemeMap() {
+        stockCodeMap.value = new Map();
+        stockThemeMap.value = new Map();
 
+    }
+
+    function rebuildStockInfo(item) {
+        let stockInfo = '';
+        if (isNowRequest()) {
+            stockInfo = rebuildNowStockInfo(item);
+        } else {
+            stockInfo = rebuildHisStockInfo(item);
+        }
+        return stockInfo;
+    }
+
+    /**
+     * 默认为空按照历史处理
+     * @returns {boolean}
+     */
+    function isNowRequest() {
+        if (!hisNowFlag) {
+            return false;
+        }
+        if ('now' == hisNowFlag) {
+            return true;
+        }
+        if ('his' == hisNowFlag) {
+            return false;
+        }
+        return false;
     }
 
 
@@ -58,64 +89,78 @@ export default function (queryRef, styleInfo,hisNowFlag) {
         }
     }
 
+    function rebuildCommonStockInfo(stockDetailIndex, key, stockInfo, dateStr) {
+        if (key == '封单范围') {
+            stockInfo.upLimitVolRange = stockDetailIndex[key];
+        }
+        if (key == '首次封单差值') {
+            stockInfo.upLimitMixSubVolRange = stockDetailIndex[key];
+        }
+        if (key == '有效封单差值') {
+            stockInfo.upLimitMaxSubVolRange = stockDetailIndex[key];
+        }
+        if (key == '打开涨停次数') {
+            stockInfo.upLimitOpenNum = stockDetailIndex[key];
+        }
+        if (key == '涨停强弱概览') {
+            stockInfo.upLimitDetail = stockDetailIndex[key];
+        }
+        if (key == 'code') {
+            stockInfo.code = stockDetailIndex[key];
+        }
+        if (key == '股票简称') {
+            stockInfo.name = stockDetailIndex[key];
+        }
+        if (key.indexOf('竞价涨幅') > -1 && key.indexOf(dateStr) > -1
+        ) {
+            stockInfo.auctionIncreaseRate = stockDetailIndex[key];
+        }
+        //昨日竞价涨幅
+        if (key.indexOf('竞价涨幅') > -1 && key.indexOf(dateStr) == -1
+        ) {
+            stockInfo.lastAuctionIncreaseRate = stockDetailIndex[key];
+        }
+        if (key.indexOf('竞价金额') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('{/}') < 0
+        ) {
+            stockInfo.auctionTradeAmount = stockDetailIndex[key];
+        }
+        if (key.indexOf('总市值') > -1 && key.indexOf(dateStr) > -1
+        ) {
+            stockInfo.marketValue = stockDetailIndex[key];
+        }
+        if (key.indexOf('涨停原因类别') > -1
+        ) {
+            stockInfo.theme = stockDetailIndex[key];
+        }
+        if (key.indexOf('市值') > -1 && key.indexOf('总') < 0
+        ) {
+            stockInfo.circulationMarketValue = stockDetailIndex[key];
+        }
+        if (key.indexOf('股票代码') > -1
+        ) {
+            let codeArr = stockDetailIndex[key].split('.');
+            stockInfo.codeUrl = codeArr[1].toLowerCase() + codeArr[0];
+        }
+
+    }
+
     function rebuildNowStockInfo(stockDetailIndex) {
         let dateStr = queryRef.value.queryParam.dateStr.replaceAll("-", "");
         let stockInfo = new StockBaseInfoObject();
         Object.keys(stockDetailIndex).forEach(key => {
-            if (key == '封单范围') {
-                stockInfo.upLimitVolRange = stockDetailIndex[key];
-            }
-            if (key == '首次封单差值') {
-                stockInfo.upLimitMixSubVolRange = stockDetailIndex[key];
-            }
-            if (key == '有效封单差值') {
-                stockInfo.upLimitMaxSubVolRange = stockDetailIndex[key];
-            }
-            if (key == '打开涨停次数') {
-                stockInfo.upLimitOpenNum = stockDetailIndex[key];
-            }
-            if (key == '涨停强弱概览') {
-                stockInfo.upLimitDetail = stockDetailIndex[key];
-            }
-            if (key == 'code') {
-                stockInfo.code = stockDetailIndex[key];
-            }
-            if (key == '股票简称') {
-                stockInfo.name = stockDetailIndex[key];
-            }
-
-            if (key.indexOf('竞价涨幅') > -1 && key.indexOf(dateStr) > -1
-            ) {
-                stockInfo.auctionIncreaseRate = stockDetailIndex[key];
-            }
+            rebuildCommonStockInfo(stockDetailIndex, key, stockInfo, dateStr);
 
             if (key.indexOf('涨跌幅') > -1 && key.indexOf(dateStr) > -1
             ) {
                 stockInfo.newIncreaseRate = stockDetailIndex[key];
             }
-            if (key.indexOf('竞价金额') > -1 && key.indexOf(dateStr) && key.indexOf('{/}') < 0
-            ) {
-                stockInfo.auctionTradeAmount = stockDetailIndex[key];
-            }
-            if (key.indexOf('成交额') > -1 && key.indexOf(dateStr) && key.indexOf('{/}') < 0
+            if (key.indexOf('成交额') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('{/}') < 0
             ) {
                 stockInfo.tradeAmount = stockDetailIndex[key];
             }
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1
             ) {
                 stockInfo.auctionTurnOverRate = stockDetailIndex[key];
-            }
-            if (key.indexOf('总市值') > -1 && key.indexOf(dateStr) > -1
-            ) {
-                stockInfo.marketValue = stockDetailIndex[key];
-            }
-            if (key.indexOf('市值') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('总') < 0
-            ) {
-                stockInfo.circulationMarketValue = stockDetailIndex[key];
-            }
-            if (key.indexOf('涨停原因类别') > -1
-            ) {
-                stockInfo.theme = stockDetailIndex[key];
             }
             if (key.indexOf('换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('分时') < 0
             ) {
@@ -132,64 +177,23 @@ export default function (queryRef, styleInfo,hisNowFlag) {
     }
 
 
-
     function rebuildHisStockInfo(stockDetailIndex) {
         let dateStr = queryRef.value.queryParam.dateStr.replaceAll("-", "");
         let stockInfo = new StockBaseInfoObject();
         Object.keys(stockDetailIndex).forEach(key => {
-            if (key == '封单范围') {
-                stockInfo.upLimitVolRange = stockDetailIndex[key];
-            }
-            if (key == '首次封单差值') {
-                stockInfo.upLimitMixSubVolRange = stockDetailIndex[key];
-            }
-            if (key == '有效封单差值') {
-                stockInfo.upLimitMaxSubVolRange = stockDetailIndex[key];
-            }
-            if (key == '打开涨停次数') {
-                stockInfo.upLimitOpenNum = stockDetailIndex[key];
-            }
-            if (key == '涨停强弱概览') {
-                stockInfo.upLimitDetail = stockDetailIndex[key];
-            }
-            if (key == 'code') {
-                stockInfo.code = stockDetailIndex[key];
-            }
-            if (key == '股票简称') {
-                stockInfo.name = stockDetailIndex[key];
-            }
-            if (key.indexOf('竞价涨幅') > -1 && key.indexOf(dateStr) > -1
-            ) {
-                stockInfo.auctionIncreaseRate = stockDetailIndex[key];
-            }
+            rebuildCommonStockInfo(stockDetailIndex, key, stockInfo, dateStr);
 
             if (key.indexOf('分时涨跌幅') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') < 0
             ) {
                 stockInfo.newIncreaseRate = stockDetailIndex[key];
             }
-            if (key.indexOf('竞价金额') > -1 && key.indexOf(dateStr) && key.indexOf('{/}') < 0
-            ) {
-                stockInfo.auctionTradeAmount = stockDetailIndex[key];
-            }
-            if (key.indexOf('分时成交额') > -1 && key.indexOf(dateStr) && key.indexOf('{/}') < 0
+            if (key.indexOf('分时成交额') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('{/}') < 0
             ) {
                 stockInfo.tradeAmount = stockDetailIndex[key];
             }
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') > 0
             ) {
                 stockInfo.auctionTurnOverRate = stockDetailIndex[key];
-            }
-            if (key.indexOf('总市值') > -1 && key.indexOf(dateStr) > -1
-            ) {
-                stockInfo.marketValue = stockDetailIndex[key];
-            }
-            if (key.indexOf('市值') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('总') < 0
-            ) {
-                stockInfo.circulationMarketValue = stockDetailIndex[key];
-            }
-            if (key.indexOf('涨停原因类别') > -1
-            ) {
-                stockInfo.theme = stockDetailIndex[key];
             }
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') < 0
             ) {
@@ -212,26 +216,21 @@ export default function (queryRef, styleInfo,hisNowFlag) {
                 riverStockTemplateId: queryRef.value.queryParam.id,
                 dateStr: queryRef.value.queryParam.dateStr,
                 riverStockTemplateSign: queryRef.value.queryParam.templateSign,
-                timeStr: simHisTimeStr.value,
+                timeStr: isNowRequest() ? '' : simHisTimeStr.value,
             }).then((res) => {
                 let allInfo = []
                 res.data.forEach(item => {
-                    let stockInfo ='';
-                    if(!hisNowFlag){
-                        stockInfo = rebuildHisStockInfo(item);
-                    }else  if('now'==hisNowFlag.value){
-                        stockInfo = rebuildNowStockInfo(item);
-                    }else if('his'==hisNowFlag.value){
-                         stockInfo = rebuildHisStockInfo(item);
-                    }else {
-                        stockInfo = rebuildHisStockInfo(item);
-                    }
+                    let stockInfo = rebuildStockInfo(item);
                     allInfo.push(stockInfo);
                 })
                 let newInfo = []
                 stockInfoArr.value.forEach(item => {
                     let find = allInfo.find(itemTemp => itemTemp.code == item.code);
                     if (find) {
+                        let code = find.code;
+                        if (dragonTigerMap.value.has(code)) {
+                            find.dragonTiger = dragonTigerMap.value.get(code);
+                        }
                         newInfo.push(find);
                     }
                 })
@@ -315,7 +314,17 @@ export default function (queryRef, styleInfo,hisNowFlag) {
         stockInfoArr.value = stockInfoArr.value.sort(function (a, b) {
             var x = a[key];
             var y = b[key];
-            return ((x > y) ? -1 : (x < y) ? 1 : 0)
+            if(typeof (x)=='string'){
+                if (x.indexOf("千万") > -1) {
+                    x = a[key].split('千万')[0];
+                    y = b[key].split('千万')[0];
+                } else if (x.indexOf("万") > -1) {
+                    x = a[key].split('万')[0];
+                    y = b[key].split('万')[0];
+                }
+            }
+
+            return ((Number(x) > Number(y)) ? -1 : (Number(x) < Number(y)) ? 1 : 0)
         })
     }
 
@@ -372,6 +381,82 @@ export default function (queryRef, styleInfo,hisNowFlag) {
         }
     }
 
+    function increaseRateSort(val) {
+        if (val) {
+            sortAndRefresh('auctionIncreaseRate');
+        }
+        setTimeout(() => {
+            queryParam.value.callAuctionIncreaseRateSortFlag = false;
+        }, 3000);
+    }
+
+    function turnOverSort(val) {
+        if (val) {
+            sortAndRefresh('auctionTurnOverRate');
+        }
+        setTimeout(() => {
+            queryParam.value.callAuctionTurnOverFlag = false;
+        }, 3000);
+
+    }
+
+    function tradeAmountSort(val) {
+        if (val) {
+            sortAndRefresh('auctionTradeAmount');
+        }
+        setTimeout(() => {
+            queryParam.value.callAuctionTradeAmountFlag = false;
+        }, 3000);
+    }
+
+    function ergodic() {
+        for (let i = 0; i < stockInfoArr.value.length; i++) {
+            let code = stockInfoArr.value[i].code;
+            if (dragonTigerMap.value.has(code)) {
+                stockInfoArr.value[i].dragonTiger = dragonTigerMap.value.get(code);
+            }
+        }
+    }
+
+    /**
+     * 五虎
+     */
+    function dragonTiger() {
+        dragonTigerMap.value = new Map()
+        //竞价涨幅
+        sortAndRefresh('auctionIncreaseRate');
+        setDragonTigerDescribeMap('涨幅');
+        //换手率
+        sortAndRefresh('auctionTurnOverRate');
+        setDragonTigerDescribeMap('换手');
+        //竞价金额
+        sortAndRefresh('auctionTradeAmount');
+        setDragonTigerDescribeMap('金额');
+        ergodic();
+        time.value = new Date().getTime();
+    }
+
+    function setDragonTigerDescribeMap(describe) {
+        if (stockInfoArr.value.length > 0) {
+            let maxLength = 0;
+            if (stockInfoArr.value.length > 10) {
+                maxLength = 10;
+            } else {
+                maxLength = stockInfoArr.value.length;
+            }
+            for (let i = 0; i < maxLength; i++) {
+                let code = stockInfoArr.value[i].code;
+                if (dragonTigerMap.value.has(code)) {
+                    dragonTigerMap.value.set(code, dragonTigerMap.value.get(code) + '-' + describe + (i + 1));
+                } else {
+                    dragonTigerMap.value.set(code, describe + (i + 1));
+                }
+            }
+        }
+
+    }
+
+
     return {
         getStockInfoArr,
         getUpdateStockInfoArr,
@@ -383,10 +468,17 @@ export default function (queryRef, styleInfo,hisNowFlag) {
         addStockCodeMapAndThemeMap,
         clearStockCodeMapAndThemeMap,
         filterCallAuctionStockInfo,
+        increaseRateSort,
+        turnOverSort,
+        tradeAmountSort,
+        dragonTiger,
+        isNowRequest,
         stockInfoArr,
+        dialogFormVisible,
         stockThemeMap,
         stockCodeMap,
         simHisTimeStr,
+        dragonTigerMap,
         time,
     }
 }

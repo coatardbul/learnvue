@@ -3,10 +3,17 @@ export default class StockBaseInfo {
         this.upLimitVolRange = '';
         this.upLimitMixSubVolRange = '';
         this.upLimitMaxSubVolRange = '';
+        //昨日竞价涨幅
+        this.lastAuctionIncreaseRate='';
+        this.lastNewIncreaseRate='';
+        this.lastSubIncreaseRate='';
+
         this.upLimitOpenNum = '';
         this.upLimitDetail = '';
         this.name = '';
         this.code = '';
+        //sh001234
+        this.codeUrl='';
         this.auctionIncreaseRate = '';
         this.newIncreaseRate = '';
         this.subIncreaseRate = '';

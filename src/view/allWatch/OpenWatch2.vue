@@ -7,14 +7,7 @@
         @query="getIntervalStatic"
     ></EmotionFormLine>
   </el-affix>
-  <el-row :gutter="32">
-    <el-col :xs="24" :sm="24" :lg="24">
-      <div @click="jumpTo({erb:templateTableQueryParam6.id,dateStr: endDate})">破剑式+二板以上集合竞价</div>
-      <TemplateQueryTable :query-param="templateTableQueryParam6"
-                          :key="time">
-      </TemplateQueryTable>
-    </el-col>
-  </el-row>
+
   <el-row :gutter="5">
     <el-col :span="10">
       <div style="background-color: rgb(236,245,255)">
@@ -90,7 +83,7 @@
 </template>
 
 <script setup>
-import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
+import BaseMintureStatistic from "@/view/stock/MintureEmotionStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
 import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
@@ -125,10 +118,7 @@ const templateTableQueryParam = ref({
   templateSign:'TWO_UP_LIMIT_ABOVE_CALL_AUCTION',
   dateStr: endDate.value,
 })
-const templateTableQueryParam6 = ref({
-  id: '1502896274603638784,1481302460344696832',
-  dateStr: endDate.value,
-})
+
 
 const charStypeUpDown = {width: '100%', height: '300px'};
 const charStypeDayMedian = {width: '100%', height: '300px'};
@@ -139,7 +129,6 @@ function getIntervalStatic() {
   }
   endDate.value = queryRef.value.queryParam.dateStr;
   templateTableQueryParam.value.dateStr = queryRef.value.queryParam.dateStr;
-  templateTableQueryParam6.value.dateStr = queryRef.value.queryParam.dateStr;
   axios.post(AxiosUrl.river.calendar.getSpecialDay, {
     dateStr: endDate.value,
     dateProp: 1,

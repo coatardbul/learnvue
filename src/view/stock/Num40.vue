@@ -65,7 +65,6 @@ export default {
         opacity: 0.2,
         riseTime: 20000,
         blend:'lighter',
-        style:'windowAnimation',
         selectedColor: '#11ee1c', // 选中项颜色
         autoSelect: true, // 根据鼠标位置来自动设置选中项
         onClick: (e) => { // 点击事件
@@ -78,16 +77,7 @@ export default {
 
       map.setDefaultCursor('default');
 
-      /*
-      setInterval(() => {
-          polygons = polygons.map((item) => {
-              item.properties.preHeight = item.properties.height;
-              item.properties.height = Math.random() * 100;
-              return item;
-          });
-          shapeLayer.setData(polygons);
-      }, 2000);
-      */
+
 
     });
   },

@@ -36,14 +36,15 @@ export default {
       var myChart = echarts.init(chart.value);
       // 指定图表的配置项和数据
       var option = {
-        // color:props.baseLineEcharts.color,
         //提示框组件
         tooltip: props.baseLineEcharts.tooltip,
         //图例组件
         legend: props.baseLineEcharts.legend,
         //标题
         title:props.baseLineEcharts.title,
+        color:props.baseLineEcharts.color,
         grid: props.baseLineEcharts.grid,
+        dataZoom:props.baseLineEcharts.dataZoom,
         toolbox: props.baseLineEcharts.toolbox,
         xAxis:props.baseLineEcharts.xAxis,
         yAxis: props.baseLineEcharts.yAxis,
@@ -52,16 +53,16 @@ export default {
         visualMap:props.baseLineEcharts.visualMap,
         dataset:props.baseLineEcharts.dataset,
       };
-      if (props.baseLineEcharts.hasXaxisEvent) {
-        myChart.on('click', function (params) {
-          router.push({path: props.baseLineEcharts.xAxisRouter, query: {erb: params.value}})
-        });
-      }
+      // if (props.baseLineEcharts.hasXaxisEvent) {
+      //   myChart.on('click', function (params) {
+      //     router.push({path: props.baseLineEcharts.xAxisRouter, query: {erb: params.value}})
+      //   });
+      // }
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     }
     return {
-      chart, init
+      chart
     }
   }
 

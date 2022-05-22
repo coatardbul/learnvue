@@ -6,16 +6,19 @@
     <el-button type="text" @click="ss('OpenWatch1')">首板，二板预览界面</el-button>
   </div>
   <div>
-    <el-button type="text" @click="ss('OpenWatch2')">两板以上涨停预览界面</el-button>
+    <el-button style="color: #ce1121" type="text" @click="ss('OpenWatch2')">两板以上涨停预览界面</el-button>
   </div>
   <div>
-    <el-button type="text" @click="ss('OpenWatch4')">首板，二板预览界面(新)</el-button>
+    <el-button style="color: #ce1121" type="text" @click="ss('OpenWatch4')">首板，二板预览界面(新)</el-button>
   </div>
   <div>
     <el-button type="text" @click="ss('OpenTheme')">一进二，二板以上题材</el-button>
   </div>
   <div>
-    <el-button type="text" @click="tt('OpenWatch5')">题材全量</el-button>
+    <el-button type="text" @click="tt('OpenWatch5')">题材全量查询</el-button>
+  </div>
+  <div>
+    <el-button type="text" @click="tt('OpenWatch6')">开局总揽</el-button>
   </div>
   <div>
     <el-button style="color: #ce1121" type="text" @click="vv('FilterUpLimitInfo','FIRST_UP_LIMIT')">首板，二板过滤涨停信息</el-button>

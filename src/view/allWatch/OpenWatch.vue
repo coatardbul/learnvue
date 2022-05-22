@@ -99,7 +99,7 @@
 </template>
 
 <script setup>
-import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
+import BaseMintureStatistic from "@/view/stock/MintureEmotionStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
 import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'
@@ -137,7 +137,7 @@ const templateTableQueryParam = ref({
   dateStr: endDate.value,
 })
 const templateTableQueryParam1 = ref({
-  id: '1502896274603638784,1505216687434235904',
+  id: '1505216687434235904',
   dateStr: endDate.value,
 })
 const templateTableQueryParam2 = ref({
@@ -153,11 +153,11 @@ const templateTableQueryParam4 = ref({
   dateStr: endDate.value,
 })
 const templateTableQueryParam5 = ref({
-  id: '1506450265249808384,1508081049291325440',
+  id: '1508081049291325440',
   dateStr: endDate.value,
 })
 const templateTableQueryParam6 = ref({
-  id: '1502896274603638784,1481302460344696832',
+  id: '1481302460344696832',
   dateStr: endDate.value,
 })
 

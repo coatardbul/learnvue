@@ -4,21 +4,26 @@ import ConfigInfo from "@/constant/ConfigInfo";
 
 const AllWatch = () => import('@/view/allWatch/OpenWatch')
 const OpenWatch1 = () => import('@/view/allWatch/OpenWatch1')
+const Test = () => import('@/view/allWatch/Test')
+
 const OpenWatch2 = () => import('@/view/allWatch/OpenWatch2')
-const OpenWatch3 = () => import('@/view/allWatch/OpenWatch3')
+const OpenWatch3 = () => import('@/view/allWatch/NowAuction')
 const OpenWatch4 = () => import('@/view/allWatch/OpenWatch4')
 const OpenWatch5 = () => import('@/view/allWatch/ThemeHistorySimulate')
+const OpenWatch6 = () => import('@/view/allWatch/OpenWatch6')
+
 const OpenTheme = () => import('@/view/allWatch/OpenTheme')
 const HistoryAuctionSimulate = () => import('@/view/allWatch/HistoryAuctionSimulate')
 const FilterUpLimitInfo = () => import('@/view/allWatch/FilterUpLimitInfo')
 
 const CloseWatch = () => import('@/view/allWatch/CloseWatch')
 const CloseWatch1 = () => import('@/view/allWatch/CloseWatch1')
+const CloseWatch2 = () => import('@/view/allWatch/CloseWatch2')
 
 const Home = () => import('@/view/layout/Home')
 const Login = () => import('@/view/Login')
 const Index1 = () => import('@/view/stock/Num1')
-const Index2 = () => import('@/view/stock/Num2')
+const Index2 = () => import('@/view/stock/upLimit/Num2')
 const Index3 = () => import('@/view/stock/stratrgy/Num3')
 const Index4 = () => import('@/view/stock/templatedQuery/Num4')
 const Index5 = () => import('@/view/stock/BaseLine')
@@ -58,6 +63,12 @@ const Index38 = () => import('@/view/stock/Num38')
 const Index39 = () => import('@/view/stock/abStatic/Num39')
 const Index40 = () => import('@/view/stock/Num40')
 const Index41 = () => import('@/view/stock/Num41')
+const Index42 = () => import('@/view/stock/Num42')
+const Index43 = () => import('@/view/stock/Num43')
+const Index44 = () => import('@/view/stock/Num44')
+const Index45 = () => import('@/view/stock/Num45')
+const Index46 = () => import('@/view/stock/Num46')
+const Index47 = () => import('@/view/stock/Num47')
 
 
 const LearnVue1 = () => import('@/view/learn/Num1')
@@ -101,6 +112,11 @@ const routes = [
         component: OpenWatch2,
     },
     {
+        path: "/Test",
+        name: "Test",
+        component: Test,
+    },
+    {
         path: "/OpenWatch3",
         name: "OpenWatch3",
         component: OpenWatch3,
@@ -114,6 +130,11 @@ const routes = [
         path: "/OpenWatch5",
         name: "OpenWatch5",
         component: OpenWatch5,
+    },
+    {
+        path: "/OpenWatch6",
+        name: "OpenWatch6",
+        component: OpenWatch6,
     },
     {
         path: "/OpenTheme",
@@ -139,6 +160,11 @@ const routes = [
         path: "/CloseWatch1",
         name: "CloseWatch1",
         component: CloseWatch1,
+    },
+    {
+        path: "/CloseWatch2",
+        name: "CloseWatch2",
+        component: CloseWatch2,
     },
     {
         path: "/jamesLegge1",
@@ -371,6 +397,36 @@ const routes = [
                 component: Index41,
             },
             {
+                path: "/index42",
+                name: "index42",
+                component: Index42,
+            },
+            {
+                path: "/index43",
+                name: "index43",
+                component: Index43,
+            },
+            {
+                path: "/index44",
+                name: "index44",
+                component: Index44,
+            },
+            {
+                path: "/index45",
+                name: "index45",
+                component: Index45,
+            },
+            {
+                path: "/index46",
+                name: "index46",
+                component: Index46,
+            },
+            {
+                path: "/index47",
+                name: "index47",
+                component: Index47,
+            },
+            {
                 path: "/intervalStatic",
                 name: "intervalStatic",
                 component: IntervalStatic,
@@ -420,8 +476,8 @@ const router = createRouter({
 });
 
 function validToken(token) {
-    //一天有效
-    let number = new Date().getTime() - token;
+    //一天有效,特么的服务器和当前时间有误差？
+    let number = new Date().getTime() - token+10*1000;
     if (number / 1000 / 60 / 60 / 24 > 1 || number / 1000 / 60 / 60 / 24 < 0) {
         return false;
     } else {

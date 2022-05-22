@@ -23,7 +23,7 @@
       </el-form-item>
     </el-form>
   </el-affix>
-  <div class="big-body" :key="time">
+  <div style="width: 300%" class="big-body" :key="time">
     <div class="jiang-en-column" v-for="i in queryParam.colTotal" :key="i">
       <div :class="specialColClass(i,j)" v-for="j in queryParam.colTotal" :key="j">
         {{ getValueByArr(i, j) }}
@@ -82,6 +82,12 @@ const jiangEnDateInfo = ref([
   {
     dateStr: '2022-03-16',
     remark: '3023低点（2022-03-09）',
+    type: 2,
+    num: 1
+  },
+  {
+    dateStr: '2022-04-27',
+    remark: '2888低点（2022-04-27）',
     type: 2,
     num: 1
   },

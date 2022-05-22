@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import BaseMintureStatistic from "@/view/stock/BaseMintureStatistic";
+import BaseMintureStatistic from "@/view/stock/MintureEmotionStatistic";
 import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
 import BaseDayUpDownStatistic from '@/view/stock/BaseDayUpDownStatistic'
 import TemplateQueryTable from '@/view/stock/UpLimitTemplateQueryTable'

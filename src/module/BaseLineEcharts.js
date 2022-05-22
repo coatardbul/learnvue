@@ -14,6 +14,7 @@ export default class BaseLineEcharts {
         this.yAxis = this.getDefaultYaxis();
         //图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
         this.legend = new Legend();
+        this.color=this.getDefaultColor();
         //x轴时间
         this.hasXaxisEvent = true;
         this.xAxisRouter = '/index4';
@@ -32,6 +33,21 @@ export default class BaseLineEcharts {
         let arr = []
         arr.push(new Xaxis());
         return arr;
+    }
+    getDefaultColor(){
+        let arr=[
+            '#5470c6',
+            '#91cc75',
+            '#fac858',
+            '#ee6666',
+            '#73c0de',
+            '#3ba272',
+            '#fc8452',
+            '#9a60b4',
+            '#ea7ccc',
+        ]
+        return arr;
+
     }
 
 }

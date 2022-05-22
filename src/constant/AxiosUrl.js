@@ -20,6 +20,9 @@ const stock = {
         getDayDetail: label.stock + '/stockMinuteStatic/getDayDetail',
         getDayStatic: label.stock + '/stockMinuteStatic/getDayStatic',
         filterDate:label.stock + '/stockMinuteStatic/filterDate',
+        quickRefreshDay:label.stock + '/stockMinuteStatic/quickRefreshDay',
+        quickSaveRedisData:label.stock + '/stockMinuteStatic/quickSaveRedisData',
+
     },
     stockDayStatic: {
         refreshDay: label.stock + '/stockQuery/refreshDay',

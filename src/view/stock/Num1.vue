@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="chart" id="main" style="width: 100%;height:700px;"></div>
+    <div ref="chart" id="main" style="width: 600%;height:700px;"></div>
   </div>
 </template>
 <script setup>

@@ -17,6 +17,8 @@ export default class BaseEcharts {
         this.toolbox = {};
         //标题
         this.title={};
+        //缩放
+        this.dataZoom=[];
         this.xAxis = [];
         this.yAxis =[];
         //图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。

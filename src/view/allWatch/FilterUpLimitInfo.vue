@@ -4,17 +4,9 @@
       :show-info="showInfo"
       @query="getIntervalStatic"
   ></EmotionFormLine>
-  <div style="margin-left: 30%">
+  <div style="margin-left: 20%">
     <el-form :inline="true" :model="queryParam" class="demo-form-inline">
-      <el-form-item>
-        <el-switch
-            v-model="queryParam.value1"
-            class="ml-2"
-            size="large"
-            active-text="定时刷新"
-            @change="refreshDateJob"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-switch
             v-model="queryParam.value2"
@@ -26,11 +18,38 @@
       </el-form-item>
       <el-form-item>
         <el-switch
-            v-model="queryParam.value3"
+            v-model="queryParam.callAuctionTurnOverFlag"
             class="ml-2"
             size="large"
-            active-text="涨幅排序"
-            @change="refreshValueJob"
+            active-text="竞价换手率排序"
+            @change="turnOverSort"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-switch
+            v-model="queryParam.callAuctionTradeAmountFlag"
+            class="ml-2"
+            size="large"
+            active-text="竞价金额排序"
+            @change="tradeAmountSort"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-switch
+            v-model="queryParam.upLimitVolFlag"
+            class="ml-2"
+            size="large"
+            active-text="封单量排序"
+            @change="upLimitVolSort"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-switch
+            v-model="queryParam.upLimitVolSubFlag"
+            class="ml-2"
+            size="large"
+            active-text="封单量差值排序"
+            @change="upLimitVolSubSort"
         />
       </el-form-item>
       <el-form-item>
@@ -41,9 +60,6 @@
             active-text="过滤数据"
             @change="filterStockInfo"
         />
-      </el-form-item>
-      <el-form-item>
-        <span style="font-size: 30px;">  {{ simHisTimeStr }}</span>
       </el-form-item>
       <el-form-item>
         <el-button type="warning" @click="saveFilterDate">保存现有数据</el-button>
@@ -71,18 +87,22 @@
     <StockBaseInfo @close="deleteFilterStockInfo" :key="item"
                    :style-info="styleInfo"
                    :stock-info="item"
+                   @dialog-form-visible="showDialog"
                    v-for="item in stockInfoArr "></StockBaseInfo>
   </div>
 
-
+  <el-dialog v-model="dialogFormVisible" title="分时图" append-to-body>
+    <ExternalPage :key="time3" :code-str="codeUrl"></ExternalPage>
+  </el-dialog>
 </template>
 
 <script>
 import {ref} from "vue";
 import UpLimitDayStatic from '@/view/stock/UpLimitDayStatic'
 import UpLimitStatic from '@/view/stock/UpLimitStatic'
-import StockBaseInfo from '@/view/allWatch/StockBaseInfo'
+import StockBaseInfo from '@/view/allWatch/StockBaseDivInfo'
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
+import ExternalPage from '@/view/allWatch/ExternalPage'
 
 
 import {onMounted} from "vue";
@@ -94,7 +114,7 @@ import AxiosUrl from "@/constant/AxiosUrl";
 
 export default {
   name: 'openWatch3.vue',
-  components: {UpLimitDayStatic, UpLimitStatic, StockBaseInfo, EmotionFormLine},
+  components: {UpLimitDayStatic, ExternalPage, StockBaseInfo, EmotionFormLine},
 
 
   setup(props, context) {
@@ -111,17 +131,17 @@ export default {
       showTheme,
       addStockCodeMapAndThemeMap,
       clearStockCodeMapAndThemeMap,
+      dialogFormVisible,
       stockInfoArr,
       stockThemeMap,
       stockCodeMap,
-      simHisTimeStr,
       time,
-    } = BaseUpLimitInfo(queryRef, styleInfo)
+    } = BaseUpLimitInfo(queryRef, styleInfo, 'now', queryParam)
 
+    const codeUrl = ref()
 
-    const refreshDateJobId = ref()
     const refreshSpeedJobId = ref()
-    const refreshValueJobId = ref()
+    const time3 = ref()
     const showInfo = ref({
       tradeButton: true,
       baseButton: true,
@@ -132,14 +152,6 @@ export default {
       timeStr.value = moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS');
     }
 
-    function refreshDateJob(val) {
-      if (val) {
-        refreshDateJobId.value = setInterval(getUpdateStockInfoArr, 2000);
-      } else {
-        clearInterval(refreshDateJobId.value); //清除计时器
-        refreshDateJobId.value = null; //设置为null
-      }
-    }
 
     function refreshSpeedJob(val) {
       if (val) {
@@ -154,22 +166,14 @@ export default {
       sortAndRefresh('subIncreaseRate');
     }
 
-    function refreshValueJob(val) {
-      if (val) {
-        refreshValueJobId.value = setInterval(sortAndRefreshValue, 1000);
-      } else {
-        clearInterval(refreshValueJobId.value); //清除计时器
-        refreshValueJobId.value = null; //设置为null
-      }
-    }
-
-    function sortAndRefreshValue() {
-      sortAndRefresh('newIncreaseRate');
+    function showDialog(val) {
+      dialogFormVisible.value = true;
+      codeUrl.value = val;
+      time3.value = new Date().getTime()
     }
 
 
     function getIntervalStatic() {
-      simHisTimeStr.value = '09:25'
       getStockInfoArr();
     }
 
@@ -221,6 +225,52 @@ export default {
       }
     }
 
+    function increaseRateSort(val) {
+      if (val) {
+        sortAndRefresh('auctionIncreaseRate');
+      }
+      setTimeout(() => {
+        queryParam.value.callAuctionIncreaseRateSortFlag = false;
+      }, 3000);
+    }
+
+    function turnOverSort(val) {
+      if (val) {
+        sortAndRefresh('auctionTurnOverRate');
+      }
+      setTimeout(() => {
+        queryParam.value.callAuctionTurnOverFlag = false;
+      }, 3000);
+
+    }
+
+    function tradeAmountSort(val) {
+      if (val) {
+        sortAndRefresh('auctionTradeAmount');
+      }
+      setTimeout(() => {
+        queryParam.value.callAuctionTradeAmountFlag = false;
+      }, 3000);
+    }
+
+    function upLimitVolSubSort(val) {
+      if (val) {
+        sortAndRefresh('upLimitMixSubVolRange');
+      }
+      setTimeout(() => {
+        queryParam.value.upLimitVolSubFlag = false;
+      }, 3000);
+    }
+
+    function upLimitVolSort(val) {
+      if (val) {
+        sortAndRefresh('upLimitVolRange');
+      }
+      setTimeout(() => {
+        queryParam.value.upLimitVolFlag = false;
+      }, 3000);
+    }
+
 
     function saveFilterDate() {
       axios.post(AxiosUrl.stock.stockFilter.save, {
@@ -254,6 +304,11 @@ export default {
       deleteFilterStockInfo,
       stockCodeMap,
       getUpdateStockInfoArr,
+      increaseRateSort,
+      turnOverSort,
+      tradeAmountSort,
+      upLimitVolSubSort,
+      upLimitVolSort,
       stockThemeMap,
       showTheme,
       styleInfo,
@@ -261,9 +316,14 @@ export default {
       filterStockInfo,
       time,
       showInfo,
-      clickTheme, refreshDateJob, refreshSpeedJob, refreshValueJob,
-      refreshDateJobId, refreshSpeedJobId, refreshValueJobId,
-      getIntervalStatic, queryRef, simHisTimeStr
+      codeUrl,
+      clickTheme,
+      showDialog,
+      refreshSpeedJob,
+      dialogFormVisible,
+      refreshSpeedJobId,
+      time3,
+      getIntervalStatic, queryRef,
     }
   }
 }

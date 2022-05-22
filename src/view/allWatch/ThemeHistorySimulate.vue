@@ -70,7 +70,7 @@ import {ref} from "vue";
 import ConfigInfo from "@/constant/ConfigInfo";
 import UpLimitDayStatic from '@/view/stock/UpLimitDayStatic'
 import UpLimitStatic from '@/view/stock/UpLimitStatic'
-import StockBaseInfo from '@/view/allWatch/StockBaseInfo'
+import StockBaseInfo from '@/view/allWatch/StockBaseDivInfo'
 import StockBaseInfoObject from "@/module/StockBaseInfo";
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
 
@@ -109,7 +109,7 @@ export default {
       stockCodeMap,
       simHisTimeStr,
       time,
-    } = BaseUpLimitInfo(queryRef)
+    } = BaseUpLimitInfo(queryRef,styleInfo,null,queryParam)
 
 
     const refreshDateJobId = ref()

@@ -72,6 +72,18 @@ export default {
             let serviceIndex = {
               name: key,
               type: 'scatter',
+              label: {
+                normal: {
+                  position: 'inside',
+                  show: true,
+                  formatter: function (params){
+                    return params.data[3];
+                  },
+                  backgroundColor: '#eee',
+                  fontSize: 15,
+                  color: 'rgba(234,8,8,0.86)'
+                }
+              },
               itemStyle: {
                 opacity: 0.8,
                 shadowBlur: 10,
@@ -119,7 +131,7 @@ export default {
         formatter: function (param) {
           var value = param.value;
           // prettier-ignore
-          return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+          return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 19px;padding-bottom: 7px;margin-bottom: 7px">'
               + value[0] + '日：'
               + '</div>'
               + schema[1].text + '：' + value[1] + '<br>'

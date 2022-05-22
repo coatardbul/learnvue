@@ -16,6 +16,16 @@ function increaseRateColor(rowValue) {
     }
 }
 
+function openNumColor(rowValue){
+    if (rowValue >= 10) {
+        return {backgroundColor: 'rgba(246,6,27,0.53)'};
+    }
+    if (rowValue > 5) {
+        return {backgroundColor: 'rgba(13,155,231,0.74)'};
+    }
+}
+
+
 function forMatMoneyNum(cellValue) {
     if (Number(cellValue) < 1) {
         return null;
@@ -32,5 +42,5 @@ function forMatIncreaseRate(cellValue) {
 }
 
 export default {
-    increaseRateColor, forMatIncreaseRate, forMatMoneyNum
+    increaseRateColor,openNumColor, forMatIncreaseRate, forMatMoneyNum
 }

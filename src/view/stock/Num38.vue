@@ -1,5 +1,16 @@
 <template>
-  <div className="spatialSampling">
+  <div :style="{
+
+  width:'1400px',
+  height:'800px',
+   backgroundColor:'#ef0d05',
+  // backgroundImage: 'url(' + require('/src/assets/jamesLegge/jamesLegge2.jpeg') + ')',
+  //
+  // backgroundRepeat: 'no-repeat',
+  //
+  // backgroundSize: '100% 100%'
+
+}" className="spatialSampling">
     <div id="map_container"></div>
   </div>
 </template>
