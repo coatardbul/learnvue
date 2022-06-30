@@ -4,6 +4,99 @@
       :show-info="showInfo"
       @query="getIntervalStatic"
   ></EmotionFormLine>
+  <el-row :gutter="20">
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨停：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.UP_LEVEL_5 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于7：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.UP_LEVEL_4 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于5小于7：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.UP_LEVEL_3 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于3小于5：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.UP_LEVEL_2 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于0小于3：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.UP_LEVEL_1 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="4">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅等于0：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.LEVEL_0 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于-3小于0：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.DOWN_LEVEL_1 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于-5小于-3：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.DOWN_LEVEL_2 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于-7小于-5：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.DOWN_LEVEL_3 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">涨幅大于-7：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.DOWN_LEVEL_4 }}</div>
+      </div>
+    </el-col>
+    <el-col :span="2">
+      <div :style="divStyle">
+        <div :style="increaseWordStyle">跌停：</div>
+        <div :style="increaseNumStyle">{{ increaseNumInfo.DOWN_LEVEL_5 }}</div>
+      </div>
+    </el-col>
+  </el-row>
+
+  <el-row :gutter="20">
+    <el-col :span="12">
+      <div>
+        喇叭口
+        <BaseDayStandardDeviationStatistic :char-style="charStyleDayMedian"
+                                           :key="time12"
+                                           :begin-date="beginDate"
+                                           :end-date="endDate"
+        ></BaseDayStandardDeviationStatistic>
+      </div>
+    </el-col>
+    <el-col :span="12">
+      <div style="background-color: rgb(236,245,255)">
+        晋级率
+        <BaseDayUpLimitPromotionStatistic :char-style="charStyleDayMedian"
+                                          :key="time12"
+                                          :begin-date="beginDate"
+                                          :end-date="endDate">
+        </BaseDayUpLimitPromotionStatistic>
+      </div>
+    </el-col>
+  </el-row>
+  <div>量比中位数{{ volRateMedian }}---{{ volRateMedianFenshi }}</div>
+  <div>量比标准差{{ volRateStd }}---{{ volRateStdFenshi }}</div>
   <div style="margin-left: 1%">
     <el-form :inline="true" :model="queryParam" class="demo-form-inline">
       <el-form-item>
@@ -140,22 +233,28 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import UpLimitDayStatic from '@/view/stock/UpLimitDayStatic'
 import UpLimitStatic from '@/view/stock/UpLimitStatic'
 import StockBaseInfo from '@/view/allWatch/StockBaseDivInfo'
 import EmotionFormLine from '@/view/stock/EmotionMinuteFormLine'
-
+import BaseDayStandardDeviationStatistic from '@/view/stock/BaseDayStandardDeviationStatistic'
+import BaseDayUpLimitPromotionStatistic from '@/view/stock/BaseDayUpLimitPromotionStatistic'
 
 import {onMounted} from "vue";
 import moment from "moment";
 import router from "@/config/router";
 import ExternalPage from '@/view/allWatch/ExternalPage'
 import BaseUpLimitInfo from '@/view/allWatch/BaseUpLimitInfo'
+import axios from "axios";
+import AxiosUrl from "@/constant/AxiosUrl";
+import ConfigInfo from "@/constant/ConfigInfo";
+import RebuildBaseUpLimitInfo from "@/view/allWatch/RebuildBaseUpLimitInfo";
+import {reactive} from "vue";
 
 export default {
   name: 'historyAuctionSimulate.vue',
-  components: {UpLimitDayStatic, UpLimitStatic, StockBaseInfo, EmotionFormLine, ExternalPage},
+  components: {UpLimitDayStatic, UpLimitStatic, StockBaseInfo, EmotionFormLine, ExternalPage,BaseDayStandardDeviationStatistic,BaseDayUpLimitPromotionStatistic},
 
   props: {
     hisNowFlag: {
@@ -168,6 +267,8 @@ export default {
     const queryRef = ref({})
     const styleInfo = ref({})
     const time3 = ref()
+    const time12 = ref()
+
     const codeUrl = ref()
     const timeStr = ref()
 
@@ -193,10 +294,91 @@ export default {
       time,
     } = BaseUpLimitInfo(queryRef, styleInfo, props.hisNowFlag, queryParam)
 
+    const volRateMedian = computed(() => {
+      let allVol = 0;
+      if (stockInfoArr.value.length == 0) {
+        return 0;
+      }
+      stockInfoArr.value.forEach(item => {
+        allVol += Number(item.lastVolRate);
+      })
+      return Number(allVol / stockInfoArr.value.length).toFixed(2);
+    })
+
+    const volRateStd = computed(() => {
+      let allVol = 0;
+      if (stockInfoArr.value.length == 0) {
+        return 0;
+      }
+      stockInfoArr.value.forEach(item => {
+        allVol += Number(item.lastVolRate);
+      })
+      let volMedian = Number(allVol / stockInfoArr.value.length);
+
+      let allStdVol = Number(0);
+      stockInfoArr.value.forEach(item => {
+        allStdVol += (item.lastVolRate - volMedian) * (item.lastVolRate - volMedian);
+      })
+      return Number(allStdVol / stockInfoArr.value.length).toFixed(2);
+    })
+
+    async function setUpDownNum(key, objectSign) {
+      await axios.post(AxiosUrl.stock.stockQuery.strategy, {
+        dateStr: queryRef.value && queryRef.value.queryParam && queryRef.value.queryParam.dateStr ? queryRef.value.queryParam.dateStr : ConfigInfo.nowDate,
+        timeStr: '09:25',
+        riverStockTemplateSign: objectSign,
+      }).then((res) => {
+        increaseNumInfo[key] = res.totalNum;
+      });
+    }
+
+
+    const volRateMedianFenshi = computed(() => {
+      let allVol = 0;
+      if (stockInfoArr.value.length == 0) {
+        return 0;
+      }
+      stockInfoArr.value.forEach(item => {
+        allVol += Number(item.auctionVol);
+      })
+      return Number(allVol / stockInfoArr.value.length).toFixed(2);
+    })
+
+
+    const volRateStdFenshi = computed(() => {
+      let allVol = 0;
+      if (stockInfoArr.value.length == 0) {
+        return 0;
+      }
+      stockInfoArr.value.forEach(item => {
+        allVol += Number(item.auctionVol);
+      })
+      let volMedian = Number(allVol / stockInfoArr.value.length);
+
+      let allStdVol = Number(0);
+      stockInfoArr.value.forEach(item => {
+        allStdVol += (item.auctionVol - volMedian) * (item.auctionVol - volMedian);
+      })
+      return Number(allStdVol / stockInfoArr.value.length).toFixed(2);
+    })
+
+    const divStyle = ref({backgroundColor: '#8ee326'})
+
+    const increaseWordStyle = ref({textAlign: 'center', fontSize: '12px'})
+    const increaseNumStyle = ref({textAlign: 'center', fontSize: '20px'})
+    const charStyleDayMedian = {width: '100%', height: '300px'};
+
+
+
+
+    const beginDate = ref(ConfigInfo.getBeforeEndDayStr(ConfigInfo.nowDate, 30))
+    const endDate = ref(ConfigInfo.nowDate)
 
     const refreshDateJobId = ref()
     const refreshSpeedJobId = ref()
     const refreshValueJobId = ref()
+    const increaseNumInfo = reactive({})
+
     const showInfo = ref({
       tradeButton: true,
       baseButton: true,
@@ -257,6 +439,7 @@ export default {
         queryParam.value.upLimitVolSubFlag = false;
       }, 3000);
     }
+
     function upLimitVolSort(val) {
       if (val) {
         sortAndRefresh('upLimitVolRange');
@@ -268,10 +451,30 @@ export default {
 
 
     function getIntervalStatic() {
+
+      if(queryRef.value.queryParam&&queryRef.value.queryParam.dateStr){
+        beginDate.value = ConfigInfo.getBeforeEndDayStr(queryRef.value.queryParam.dateStr, 30);
+        endDate.value = queryRef.value.queryParam.dateStr;
+      }
+      time12.value=new Date().getTime();
+      setUpDownNum('UP_LEVEL_5', 'UP_LEVEL_5');
+      setUpDownNum('UP_LEVEL_4', 'UP_LEVEL_4');
+      setUpDownNum('UP_LEVEL_3', 'UP_LEVEL_3');
+      setUpDownNum('UP_LEVEL_2', 'UP_LEVEL_2');
+      setUpDownNum('UP_LEVEL_1', 'UP_LEVEL_1');
+      setUpDownNum('LEVEL_0', 'LEVEL_0');
+      setUpDownNum('DOWN_LEVEL_1', 'DOWN_LEVEL_1');
+      setUpDownNum('DOWN_LEVEL_2', 'DOWN_LEVEL_2');
+      setUpDownNum('DOWN_LEVEL_3', 'DOWN_LEVEL_3');
+      setUpDownNum('DOWN_LEVEL_4', 'DOWN_LEVEL_4');
+      setUpDownNum('DOWN_LEVEL_5', 'DOWN_LEVEL_5');
+
       if (!isNowRequest()) {
         simHisTimeStr.value = '09:25'
       }
       getStockInfoArr();
+
+
 
     }
 
@@ -320,6 +523,18 @@ export default {
       clickTheme, refreshDateJob, refreshSpeedJob, refreshValueJob,
       refreshDateJobId, refreshSpeedJobId, refreshValueJobId,
       getIntervalStatic, queryRef,
+      volRateStd,
+      volRateMedian,
+      volRateStdFenshi,
+      volRateMedianFenshi,
+      divStyle,
+      increaseWordStyle,
+      increaseNumStyle,
+      time12,
+      beginDate,
+      endDate,
+      increaseNumInfo,
+      charStyleDayMedian,
     }
   }
 }

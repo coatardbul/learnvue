@@ -11,6 +11,7 @@ const OpenWatch3 = () => import('@/view/allWatch/NowAuction')
 const OpenWatch4 = () => import('@/view/allWatch/OpenWatch4')
 const OpenWatch5 = () => import('@/view/allWatch/ThemeHistorySimulate')
 const OpenWatch6 = () => import('@/view/allWatch/OpenWatch6')
+const OpenWatch7 = () => import('@/view/allWatch/OpenWatch7')
 
 const OpenTheme = () => import('@/view/allWatch/OpenTheme')
 const HistoryAuctionSimulate = () => import('@/view/allWatch/HistoryAuctionSimulate')
@@ -69,6 +70,16 @@ const Index44 = () => import('@/view/stock/Num44')
 const Index45 = () => import('@/view/stock/Num45')
 const Index46 = () => import('@/view/stock/Num46')
 const Index47 = () => import('@/view/stock/Num47')
+const Index48 = () => import('@/view/stock/tradeUrl/Num48')
+const Index49 = () => import('@/view/stock/Num49')
+const Index50 = () => import('@/view/stock/assertAndPosition/Num50')
+const Index51 = () => import('@/view/stock/tradeSell/Num51')
+const Index52 = () => import('@/view/stock/tradeBuy/Num52')
+const Index55 = () => import('@/view/stock/Num55')
+const Index56 = () => import('@/view/stock/Num56')
+const Index57 = () => import('@/view/stock/Num57')
+const Index58 = () => import('@/view/stock/Num58')
+const Index59 = () => import('@/view/stock/Num59')
 
 
 const LearnVue1 = () => import('@/view/learn/Num1')
@@ -120,6 +131,7 @@ const routes = [
         path: "/OpenWatch3",
         name: "OpenWatch3",
         component: OpenWatch3,
+        
     },
     {
         path: "/OpenWatch4",
@@ -135,6 +147,11 @@ const routes = [
         path: "/OpenWatch6",
         name: "OpenWatch6",
         component: OpenWatch6,
+    },
+    {
+        path: "/OpenWatch7",
+        name: "OpenWatch7",
+        component: OpenWatch7,
     },
     {
         path: "/OpenTheme",
@@ -425,6 +442,56 @@ const routes = [
                 path: "/index47",
                 name: "index47",
                 component: Index47,
+            },
+            {
+                path: "/index48",
+                name: "index48",
+                component: Index48,
+            },
+            {
+                path: "/index49",
+                name: "index49",
+                component: Index49,
+            },
+            {
+                path: "/index50",
+                name: "index50",
+                component: Index50,
+            },
+            {
+                path: "/index51",
+                name: "index51",
+                component: Index51,
+            },
+            {
+                path: "/index52",
+                name: "index52",
+                component: Index52,
+            },
+            {
+                path: "/index55",
+                name: "index55",
+                component: Index55,
+            },
+            {
+                path: "/index56",
+                name: "index56",
+                component: Index56,
+            },
+            {
+                path: "/index57",
+                name: "index57",
+                component: Index57,
+            },
+            {
+                path: "/index58",
+                name: "index58",
+                component: Index58,
+            },
+            {
+                path: "/index59",
+                name: "index59",
+                component: Index59,
             },
             {
                 path: "/intervalStatic",

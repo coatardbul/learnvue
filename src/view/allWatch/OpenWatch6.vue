@@ -163,6 +163,21 @@
         </div>
       </el-scrollbar>
     </el-col>
+    <el-col :span="12">
+      <span>稳中有升（大阳-阴-阳）</span>
+      <el-scrollbar height="400px">
+        <div :key="time">
+          <StockBaseInfo
+              v-for="item in stockInfoArr8 "
+              @close="deleteStockInfo(stockInfoArr8,item)"
+              :key="item"
+              :style-info="styleInfo"
+              :stock-info="item"
+              @dialog-form-visible="showDialog"
+          ></StockBaseInfo>
+        </div>
+      </el-scrollbar>
+    </el-col>
   </el-row>
 
   <el-dialog v-model="dialogFormVisible" title="分时图" append-to-body>
@@ -233,6 +248,12 @@ const queryParam7 = ref({
   timeInterval: 2,
   hisNowFlag: 'now',
 })
+const queryParam8 = ref({
+  dateStr: ConfigInfo.nowDate,
+  objectSign: 'STEADY_THREE_INCREASE_UP_DOWN_UP',
+  timeInterval: 2,
+  hisNowFlag: 'now',
+})
 
 
 const increaseNumInfo = reactive({})
@@ -250,6 +271,7 @@ const time = ref()
 const stockInfoArr5 = ref([])
 const stockInfoArr6 = ref([])
 const stockInfoArr7 = ref([])
+const stockInfoArr8 = ref([])
 
 
 async function setUpDownNum(key, objectSign) {
@@ -292,6 +314,7 @@ function getIntervalStatic() {
     queryParam5.value.dateStr = queryRef.value.queryParam.dateStr;
     queryParam6.value.dateStr = queryRef.value.queryParam.dateStr;
     queryParam7.value.dateStr = queryRef.value.queryParam.dateStr;
+    queryParam8.value.dateStr = queryRef.value.queryParam.dateStr;
 
     axios.post(AxiosUrl.river.calendar.getSpecialDay, {
       dateStr: queryRef.value.queryParam.dateStr,
@@ -308,6 +331,8 @@ function getIntervalStatic() {
     RebuildBaseUpLimitInfo(queryParam6.value).getStockInfoArr(stockInfoArr6.value);
     stockInfoArr7.value.length = 0;
     RebuildBaseUpLimitInfo(queryParam7.value).getStockInfoArr(stockInfoArr7.value);
+    stockInfoArr8.value.length = 0;
+    RebuildBaseUpLimitInfo(queryParam8.value).getStockInfoArr(stockInfoArr8.value);
 
   }
 

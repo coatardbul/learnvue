@@ -56,6 +56,12 @@ const stock = {
         delete:label.stock +'/stockStrategyWatch/delete',
         hisSimulate:label.stock +'/stockStrategyWatch/hisSimulate',
     },
+    tradeUrl: {
+        findAll: label.stock +'/tradeUrl/findAll',
+        add:label.stock +'/tradeUrl/add',
+        modify:label.stock +'/tradeUrl/modify',
+        delete:label.stock +'/tradeUrl/delete',
+    },
     stockOptionalPool: {
         findAll: label.stock +'/stockOptionalPool/findAll',
         add:label.stock +'/stockOptionalPool/add',
@@ -91,6 +97,7 @@ const stock = {
         execute:label.stock + '/stockPredict/execute',
         getAll:label.stock + '/stockPredict/getAll',
         deleteById:label.stock + '/stockPredict/deleteById',
+        deleteByQuery:label.stock + '/stockPredict/deleteByQuery',
     },
     stockValPrice:{
         execute:label.stock + '/stockValPrice/execute',
@@ -108,6 +115,33 @@ const stock = {
         getAllAnomalousBehaviorData:label.stock + '/stockAnomalousBehavior/getAllAnomalousBehaviorData',
         deleteAnomalousBehaviorData:label.stock + '/stockAnomalousBehavior/deleteAnomalousBehaviorData',
         getAbStatic:label.stock + '/stockAnomalousBehavior/getAbStatic',
+
+    },
+    file:{
+        getHeadList:label.stock + '/file/getHeadList',
+        upload:label.stock + '/file/upload',
+        mkdir:label.stock + '/file/mkdir',
+        delete:label.stock + '/file/delete',
+        deleteFolder:label.stock + '/file/deleteFolder',
+    },
+    tradeUser:{
+        baseInfo:label.stock + '/tradeUser/baseInfo',
+        login:label.stock + '/tradeUser/login',
+        updateCookie:label.stock + '/tradeUser/updateCookie',
+    },
+    trade:{
+        queryAssetAndPosition:label.stock + '/trade/queryAssetAndPosition',
+        addSellInfo:label.stock + '/trade/addSellInfo',
+        modifySellInfo:label.stock + '/trade/modifySellInfo',
+        querySellInfo:label.stock + '/trade/querySellInfo',
+        deleteSellInfo:label.stock + '/trade/deleteSellInfo',
+
+        syncBuyInfo:label.stock + '/trade/syncBuyInfo',
+        initBuyInfo:label.stock + '/trade/initBuyInfo',
+        modifyBuyInfo:label.stock + '/trade/modifyBuyInfo',
+        deleteBuyInfo:label.stock + '/trade/deleteBuyInfo',
+        queryBuyInfo:label.stock + '/trade/queryBuyInfo',
+
 
     },
     cookie:{

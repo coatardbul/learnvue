@@ -11,8 +11,20 @@
       >
       </el-date-picker>
     </el-form-item >
-    <el-form-item label="对象标识"  v-show="showInfo.objectSign" >
-      <el-input v-model="queryParam.objectSign" ></el-input>
+    <el-form-item label="对象标识" v-show="showInfo.objectSign">
+      <el-select
+          filterable
+          v-model="queryParam.objectSign"
+          placeholder="Select"
+          style="width: 240px"
+      >
+        <el-option
+            v-for="item in objectSignList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
     </el-form-item>
     <el-form-item  v-show="showInfo.baseButton">
       <el-button type="primary" @click.prevent="getIntervalStatic">查询</el-button>
@@ -31,7 +43,9 @@
 
 <script>
 import ConfigInfo from '/src/constant/ConfigInfo'
-import {reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
+import AxiosUrl from "@/constant/AxiosUrl";
+import axios from "axios";
 
 export default {
   name: "EmotionDayFormLine.vue",
@@ -85,9 +99,25 @@ export default {
       context.emit('refresh',queryParam)
 
     }
+    const objectSignList = ref([])
+
+    onMounted(() => {
+      axios.post(AxiosUrl.stock.staticTemplate.findAll,{
+        staticLatitude:2,
+      }).then((res) => {
+        res.forEach(v => {
+          let objectEnumSignTemp = {
+            label: v.remark,
+            value: v.objectEnumSign,
+          }
+          objectSignList.value.push(objectEnumSignTemp);
+        })
+      });
+    })
+
 
     return {
-      getIntervalStatic, reset, queryParam, supplementRefresh,refresh
+      getIntervalStatic, reset, queryParam, supplementRefresh,refresh,objectSignList
     }
   }
 }

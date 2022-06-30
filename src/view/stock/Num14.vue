@@ -12,6 +12,9 @@
     <el-button style="color: #ce1121" type="text" @click="ss('OpenWatch4')">首板，二板预览界面(新)</el-button>
   </div>
   <div>
+    <el-button style="color: #ce1121" type="text" @click="vv('OpenWatch7','FIRST_UP_LIMIT')">二板预览界面(新)</el-button>
+  </div>
+  <div>
     <el-button type="text" @click="ss('OpenTheme')">一进二，二板以上题材</el-button>
   </div>
   <div>

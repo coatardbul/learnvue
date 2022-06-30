@@ -129,6 +129,10 @@ export default function (queryParam) {
             ) {
                 stockInfo.auctionTurnOverRate = stockDetailIndex[key];
             }
+            if (key.indexOf('分时量比') > -1 && key.indexOf(dateStr) > -1
+            ) {
+                stockInfo.auctionVol = stockDetailIndex[key];
+            }
             if (key.indexOf('换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('分时') < 0
             ) {
                 stockInfo.turnOverRate = stockDetailIndex[key];
@@ -161,6 +165,10 @@ export default function (queryParam) {
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') > 0
             ) {
                 stockInfo.auctionTurnOverRate = stockDetailIndex[key];
+            }
+            if (key.indexOf('分时量比') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') > 0
+            ) {
+                stockInfo.auctionVol = stockDetailIndex[key];
             }
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') < 0
             ) {

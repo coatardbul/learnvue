@@ -110,8 +110,8 @@ function  getContent(data){
  function getDayDetail(queryTemp) {
   tableData.length = 0;
   axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
-    beginDateStr: moment(value.value).format('YYYY-MM') + '-01',
-    endDateStr: moment(value.value).format('YYYY-MM') + '-31',
+    dateBeginStr: moment(value.value).format('YYYY-MM') + '-01',
+    dateEndStr: moment(value.value).format('YYYY-MM') + '-31',
     objectEnumSign: queryTemp != null ? queryTemp.objectSign : queryRef.value.queryParam.objectSign
     ,
   }).then((res) => {

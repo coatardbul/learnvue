@@ -10,6 +10,8 @@ export default class StockBaseInfo {
 
         this.upLimitOpenNum = '';
         this.upLimitDetail = '';
+        this.lastTurnOverRate='';
+        this.lastVolRate='';
         this.name = '';
         this.code = '';
         //sh001234
@@ -20,6 +22,7 @@ export default class StockBaseInfo {
         this.auctionTradeAmount = '';
         this.tradeAmount = '';
         this.auctionTurnOverRate = '';
+        this.auctionVol = '';
         this.turnOverRate = '';
 
         this.marketValue = '';

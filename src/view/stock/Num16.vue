@@ -98,8 +98,8 @@ function updateDate(queryParam){
 function getDaylStatic(queryParam) {
   tableData.length=0
   axios.post(AxiosUrl.stock.stockDayStatic.getRangeStatic, {
-    beginDateStr: queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[0]:ConfigInfo.getDayStr(queryParam.dateRangeArray[0]),
-    endDateStr:queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[1]:ConfigInfo.getDayStr(queryParam.dateRangeArray[1]),
+    dateBeginStr: queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[0]:ConfigInfo.getDayStr(queryParam.dateRangeArray[0]),
+    dateEndStr:queryParam==null||queryParam.dateRangeArray.length==0?ConfigInfo.dateUtil.rangeDateArray[1]:ConfigInfo.getDayStr(queryParam.dateRangeArray[1]),
     objectEnumSign:queryParam==null||queryParam.objectSign.length==0?ConfigInfo.emotionInfo.defaultDayObjectSign:queryParam.objectSign,
   }).then((res) => {
     res.forEach(v => {

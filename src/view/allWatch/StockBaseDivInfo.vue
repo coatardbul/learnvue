@@ -19,6 +19,14 @@
       <p :style=" getOpenNumColor(stockInfo.upLimitOpenNum)">
         开板次数：{{ stockInfo.upLimitOpenNum }}
       </p>
+      <p :style="pStyle">
+        <span>换手量比：</span>
+        <span >{{forMatIncreaseRate(stockInfo.lastTurnOverRate) }}
+        </span>
+        <span>--</span>
+        <span >{{ Number(stockInfo.lastVolRate).toFixed(2)   }}
+        </span>
+      </p>
       <el-tooltip
           trigger='hover'
           class="box-item"
@@ -68,6 +76,11 @@
         <span>{{ forMatIncreaseRate(stockInfo.auctionTurnOverRate) }}</span>
         <span>--</span>
         <span>{{ forMatIncreaseRate(stockInfo.turnOverRate) }}</span>
+      </p>
+      <p :style="getVolCalcColor(stockInfo)">
+        <span>量比：</span>
+        <span>{{ Number(stockInfo.auctionVol).toFixed(2)  }}</span>
+        <span>--</span>
       </p>
       <p :style="Object.assign( {color: '#ef0d05'},pStyle)">{{ stockInfo.dragonTiger }}</p>
     </div>
@@ -169,7 +182,18 @@ export default {
       }
       return calc;
     }
+    function getVolCalcColor(value) {
+      let calc = {marginTop: '0px', marginBottom: '0px', lineWidth: '10px', fontSize: '14px',};
+      if (Number(value.auctionVol) < 10) {
+        return Object.assign(calc, {backgroundColor: '#e3b726'})
+      }else if (Number(value.auctionVol) > 50) {
+        return Object.assign(calc, {backgroundColor: '#e3263c'})
+      }else if (Number(value.auctionVol) > 40) {
+        return Object.assign(calc, {backgroundColor: '#9e26e3'})
+      }
 
+      return calc;
+    }
 
     function forMatIncreaseRate(cellValue) {
       return StockInfoUtil.forMatIncreaseRate(cellValue);
@@ -197,7 +221,8 @@ export default {
       pColStyle,
       dialogFormVisible,
       pInlineStyle,
-      getIncreaseRateCalcColor
+      getIncreaseRateCalcColor,
+      getVolCalcColor
     }
   }
 

@@ -20,6 +20,10 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     response => {
+        if(response.config.url.indexOf("/downLoadFile")>-1){
+            debugger
+            return Promise.resolve(response.data);
+        }
         if (response.status == 200) {
             //对参数统一处理
             if(response.data &&response.data.code==200){

@@ -141,6 +141,14 @@ export default function (queryRef, styleInfo, hisNowFlag, queryParam) {
             let codeArr = stockDetailIndex[key].split('.');
             stockInfo.codeUrl = codeArr[1].toLowerCase() + codeArr[0];
         }
+        if (key.indexOf('换手率') > -1 && key.indexOf('分时') <0 && key.indexOf(dateStr) < 0 && key.indexOf('{/}') < 0
+        ) {
+            stockInfo.lastTurnOverRate = stockDetailIndex[key];
+        }
+        if (key.indexOf('量比') > -1 && key.indexOf(dateStr) < 0 && key.indexOf('{/}') < 0
+        ) {
+            stockInfo.lastVolRate = stockDetailIndex[key];
+        }
 
     }
 
@@ -161,6 +169,10 @@ export default function (queryRef, styleInfo, hisNowFlag, queryParam) {
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1
             ) {
                 stockInfo.auctionTurnOverRate = stockDetailIndex[key];
+            }
+            if (key.indexOf('分时量比') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') > 0
+            ) {
+                stockInfo.auctionVol = stockDetailIndex[key];
             }
             if (key.indexOf('换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('分时') < 0
             ) {
@@ -195,6 +207,11 @@ export default function (queryRef, styleInfo, hisNowFlag, queryParam) {
             ) {
                 stockInfo.auctionTurnOverRate = stockDetailIndex[key];
             }
+            if (key.indexOf('分时量比') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') > 0
+            ) {
+                stockInfo.auctionVol = stockDetailIndex[key];
+            }
+
             if (key.indexOf('分时换手率') > -1 && key.indexOf(dateStr) > -1 && key.indexOf('09:25') < 0
             ) {
                 stockInfo.turnOverRate = stockDetailIndex[key];

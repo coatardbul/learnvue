@@ -23,6 +23,9 @@ function openNumColor(rowValue){
     if (rowValue > 5) {
         return {backgroundColor: 'rgba(13,155,231,0.74)'};
     }
+    if (rowValue > 0) {
+        return {backgroundColor: 'rgba(13,231,107,0.74)'};
+    }
 }
 
 

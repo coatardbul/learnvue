@@ -3,6 +3,7 @@
       ref="queryRef"
       @query="query"
       @excute="excute"
+      @delete-info="deleteQuery"
   >
   </ModulePredictFormLine>
   <el-table :data="tableData" border highlight-current-row
@@ -28,6 +29,20 @@
     <el-table-column label="买入时间" width="100" :show-overflow-tooltip="true">
       <template #default="scope">
         <span>{{ scope.row.buyTime }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="买入涨幅" width="100" :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span  :style="getColor(scope.row.buyIncreaseRate)">{{
+            Number( scope.row.buyIncreaseRate).toFixed(2) + '%'
+            }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="收盘涨幅" width="100" :show-overflow-tooltip="true">
+      <template #default="scope">
+        <span  :style="getColor(scope.row.closeIncreaseRate)">{{
+            Number( scope.row.closeIncreaseRate).toFixed(2) + '%'
+          }}</span>
       </template>
     </el-table-column>
     <el-table-column label="持有天数" width="50" :show-overflow-tooltip="true">
@@ -118,7 +133,20 @@ function query() {
 
   });
 }
+function deleteQuery(){
+  axios.post(AxiosUrl.stock.stockPredict.deleteByQuery, {
+    id: queryRef.value.queryParam.id.join(),
+    buyTime: queryRef.value.queryParam.buyTime,
+    beginDate: queryRef.value.queryParam.dateRangeArray[0],
+    endDate: queryRef.value.queryParam.dateRangeArray[1],
+    holeDay: queryRef.value.queryParam.holeDay,
+    saleTime: queryRef.value.queryParam.saleTime,
+  }).then(() => {
 
+        query();
+      }
+  )
+}
 function deleteInfo(row) {
 
   axios.post(AxiosUrl.stock.stockPredict.deleteById, {
@@ -134,6 +162,11 @@ function deleteInfo(row) {
 function getIncreaseRate(row) {
   let increaseRate = Number((row.salePrice - row.buyPrice) / row.buyPrice * 100).toFixed(2);
 
+ return getColor(increaseRate);
+
+}
+
+function  getColor(increaseRate){
   if (increaseRate > 10) {
     return {color: '#f6061b'}
   }
@@ -149,7 +182,6 @@ function getIncreaseRate(row) {
   if (increaseRate < 0) {
     return {color: '#2cb42c'}
   }
-
 }
 
 

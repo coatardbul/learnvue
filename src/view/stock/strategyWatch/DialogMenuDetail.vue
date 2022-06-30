@@ -10,16 +10,55 @@
         <el-input v-model="strategyInfo.id" ></el-input>
       </el-form-item>
       <el-form-item label="模板id" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.templatedId" autocomplete="off"></el-input>
+        <el-select
+            filterable
+            v-model="strategyInfo.templatedId"
+            placeholder="Select"
+            style="width: 240px"
+        >
+          <el-option
+              v-for="item in templateList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="开始时间" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.beginTime"  ></el-input>
       </el-form-item>
       <el-form-item label="结束时间" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.endTime"  type="textarea"></el-input>
+        <el-input v-model="strategyInfo.endTime" ></el-input>
+      </el-form-item>
+      <el-form-item label="是否打开交易" :label-width="formLabelWidth">
+        <el-select v-model="strategyInfo.isOpenTrade" class="m-2" placeholder="Select" size="large">
+          <el-option
+              v-for="item in isOpenTradeList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="查看等级" :label-width="formLabelWidth">
         <el-input v-model="strategyInfo.watchLevel" type="textarea"></el-input>
       </el-form-item>
+      <el-form-item label="模拟策略标识" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.strategySign" type="textarea"></el-input>
+      </el-form-item>
       <el-form-item label="类型" :label-width="formLabelWidth">
-        <el-input v-model="strategyInfo.type" autocomplete="off"></el-input>
+        <el-select v-model="strategyInfo.type" class="m-2" placeholder="Select" size="large">
+          <el-option
+              v-for="item in typeList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="买入条件对象" :label-width="formLabelWidth">
+        <el-input v-model="strategyInfo.buyCondition"   type="textarea"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -37,6 +76,8 @@
 import {inject, onMounted, reactive, ref} from 'vue'
 import Button from '/src/constant/Button'
 import axios from "axios";
+import enumInfo from '@/constant/Enum'
+import AxiosUrl from "@/constant/AxiosUrl";
 
 
 export default {
@@ -52,14 +93,18 @@ export default {
         }
       }
     },
+    templateList:{
+      type: Array
+    },
     strategyInfo: {
       type: Object,
       default: function () {
         return {
           id: '',
           templatedId: '',
+          beginTime:'',
           endTime:'',
-          // watchLevel: 1,
+          isOpenTrade: 0,
           // type: 1,
         }
       }
@@ -71,20 +116,33 @@ export default {
     const confirmName = ref(Button.buttonStatus.confirm.name)
     const cancelName = ref(Button.buttonStatus.cancel.name)
 
+    const isOpenTradeList=enumInfo.isOpenTradeList;
+    const typeList=enumInfo.typeList;
+
 
     function clickConfirmDialog() {
       axios.post(props.buttonInfo.buttonUrl, {
         id: props.strategyInfo.id,
         templatedId: props.strategyInfo.templatedId,
+        beginTime: props.strategyInfo.beginTime,
         endTime: props.strategyInfo.endTime,
+        isOpenTrade: props.strategyInfo.isOpenTrade,
         watchLevel: props.strategyInfo.watchLevel,
+        strategySign: props.strategyInfo.strategySign,
+        buyCondition: props.strategyInfo.buyCondition,
         type: props.strategyInfo.type,
       }).then()
       dialogFormVisible.value = false
     }
 
+    onMounted(()=>{
+
+
+
+    })
+
     return {
-      dialogFormVisible, formLabelWidth, clickConfirmDialog, cancelName, confirmName
+      dialogFormVisible, formLabelWidth, clickConfirmDialog, cancelName, confirmName,isOpenTradeList,typeList
     }
   }
 }

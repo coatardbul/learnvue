@@ -44,6 +44,9 @@
     <el-form-item>
       <el-button type="warning" @click.prevent="excute">执行</el-button>
     </el-form-item>
+    <el-form-item>
+      <el-button type="warning" @click.prevent="deleteInfo">删除</el-button>
+    </el-form-item>
   </el-form>
 </template>
 
@@ -69,7 +72,9 @@ export default {
     function excute() {
       context.emit('excute', queryParam)
     }
-
+    function deleteInfo() {
+      context.emit('delete-info', queryParam)
+    }
     function reset() {
       //清空reactive引用的对象
       Object.keys(queryParam).map(key => {
@@ -90,7 +95,7 @@ export default {
       });
     })
     return {
-      query, reset, queryParam, excute,templateList
+      query, reset, queryParam, excute,templateList,deleteInfo
     }
   }
 }
